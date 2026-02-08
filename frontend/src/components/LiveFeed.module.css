@@ -1,0 +1,66 @@
+.liveFeed {
+    background: black;
+    color: white;
+    padding: 10px 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    overflow: hidden;
+}
+
+.feedContent {
+    display: flex;
+    align-items: center;
+}
+
+.labelWrapper {
+    background: black;
+    padding-right: 20px;
+    z-index: 2;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.label {
+    color: var(--primary-green);
+}
+
+.tickerWrapper {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.ticker {
+    display: flex;
+    gap: 40px;
+    white-space: nowrap;
+    animation: scroll 40s linear infinite;
+    width: fit-content;
+}
+
+.playerItem {
+    display: flex;
+    gap: 8px;
+}
+
+.playerName {
+    color: #ccc;
+}
+
+.scoreGreen {
+    color: var(--primary-green);
+}
+
+.scoreRed {
+    color: #ff4d4d;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}

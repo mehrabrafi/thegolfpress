@@ -1,0 +1,83 @@
+.latestNews {
+    margin-top: 40px;
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.sectionHeader h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+.viewAll {
+    color: var(--primary-green);
+    font-weight: 700;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.newsCard {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.imageWrapper {
+    position: relative;
+    height: 200px;
+}
+
+.imageWrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tag {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.cardBody {
+    padding: 20px;
+}
+
+.cardBody h3 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    line-height: 1.3;
+    margin-bottom: 10px;
+}
+
+.cardBody p {
+    font-size: 0.9rem;
+    color: #777;
+    margin-bottom: 15px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.time {
+    font-size: 0.75rem;
+    color: #999;
+    font-weight: 600;
+}

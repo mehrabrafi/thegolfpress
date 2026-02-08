@@ -1,0 +1,131 @@
+.container {
+    padding: 40px 0 80px 0;
+}
+
+.header {
+    margin-bottom: 40px;
+}
+
+.title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--text-dark);
+}
+
+.subtitle {
+    color: var(--text-light);
+    font-weight: 600;
+    margin-top: 5px;
+    letter-spacing: 0.1em;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.tab {
+    padding: 10px 20px;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.tab:hover {
+    border-color: var(--primary-green);
+}
+
+.activeTab {
+    background: var(--primary-green);
+    color: var(--white);
+    border-color: var(--primary-green);
+}
+
+.rankingsGrid {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    background: var(--light-gray);
+    padding: 15px 20px;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table td {
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.95rem;
+    vertical-align: middle;
+}
+
+.rankCell {
+    font-weight: 800;
+    color: var(--text-light);
+    width: 60px;
+}
+
+.playerCell {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #f0f0f0;
+}
+
+.playerName {
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.valueCell {
+    font-weight: 800;
+    color: var(--primary-green);
+    text-align: right;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    font-weight: 700;
+    color: var(--text-light);
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px 15px;
+    }
+
+    .title {
+        font-size: 1.8rem;
+    }
+}

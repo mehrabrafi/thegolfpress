@@ -1,0 +1,66 @@
+.hero {
+    position: relative;
+    height: 500px;
+    background-image: url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?auto=format&fit=crop&q=80&w=1200');
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 100%);
+    display: flex;
+    align-items: center;
+    padding: 40px;
+}
+
+.content {
+    max-width: 600px;
+    color: white;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--primary-green);
+    color: black;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.content h1 {
+    font-size: 3rem;
+    line-height: 1.1;
+    margin-bottom: 15px;
+    font-weight: 800;
+}
+
+.content p {
+    font-size: 1.1rem;
+    color: #ccc;
+    margin-bottom: 25px;
+}
+
+.readBtn {
+    background: var(--primary-green);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.arrow {
+    font-size: 1.2rem;
+}
