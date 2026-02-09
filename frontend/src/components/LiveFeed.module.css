@@ -21,7 +21,10 @@
 }
 
 .label {
-    color: var(--primary-green);
+    color: var(--golf-green);
+    font-family: var(--font-sans-condensed);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .tickerWrapper {
@@ -48,7 +51,7 @@
 }
 
 .scoreGreen {
-    color: var(--primary-green);
+    color: var(--golf-green);
 }
 
 .scoreRed {

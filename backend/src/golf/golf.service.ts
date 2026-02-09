@@ -159,8 +159,25 @@ export class GolfService {
     }
 
     async getNewsById(id: string) {
-        return this.prisma.news.findUnique({
+        return this.prisma.news.update({
             where: { id },
+            data: {
+                viewCount: {
+                    increment: 1
+                }
+            },
+            include: {
+                author: true
+            }
+        });
+    }
+
+    async getTrendingNews() {
+        return this.prisma.news.findMany({
+            orderBy: {
+                viewCount: 'desc'
+            },
+            take: 5,
             include: {
                 author: true
             }

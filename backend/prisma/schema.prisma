@@ -32,6 +32,7 @@ model News {
   content     String   @default("")
   authorId    String
   author      Author   @relation(fields: [authorId], references: [id])
+  viewCount   Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

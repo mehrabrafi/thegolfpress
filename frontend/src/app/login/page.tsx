@@ -22,34 +22,58 @@ export default function LoginPage() {
 
     return (
         <div className={styles.container}>
-            <div className={styles.card}>
-                <h1 className={styles.title}>Login</h1>
-                {error && <div className={styles.error}>{error}</div>}
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    <div className={styles.group}>
-                        <label>Email</label>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}
-                            required
-                            className={styles.input}
-                        />
+            {/* Left Image Section */}
+            <div className={styles.imageSection}>
+                {/* Optional: Overlay or other content on image */}
+            </div>
+
+            {/* Right Form Section */}
+            <div className={styles.formSection}>
+                <div className={styles.formContent}>
+                    {/* Brand Logo */}
+                    <Link href="/" className={styles.logo}>
+                        T<span className={styles.dot}>.</span>G<span className={styles.dot}>.</span>P
+                    </Link>
+
+                    <h1 className={styles.title}>SIGN IN</h1>
+
+                    {error && <div className={styles.error}>{error}</div>}
+
+                    <form onSubmit={handleSubmit} className={styles.form}>
+                        <div className={styles.group}>
+                            <label>EMAIL</label>
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={e => setEmail(e.target.value)}
+                                required
+                                className={styles.input}
+                            />
+                        </div>
+
+                        <div className={styles.group}>
+                            <label>PASSWORD</label>
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                                required
+                                className={styles.input}
+                            />
+                            <Link href="/forgot-password" className={styles.forgotPassword}>
+                                Forgot your password?
+                            </Link>
+                        </div>
+
+                        <button type="submit" className={styles.submitBtn}>
+                            SIGN IN
+                        </button>
+                    </form>
+
+                    <div className={styles.footer}>
+                        Don't have an account?
+                        <Link href="/signup" className={styles.footerLink}>SIGN UP</Link>
                     </div>
-                    <div className={styles.group}>
-                        <label>Password</label>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
-                            required
-                            className={styles.input}
-                        />
-                    </div>
-                    <button type="submit" className={styles.btn}>Sign In</button>
-                </form>
-                <div className={styles.footer}>
-                    Don't have an account? <Link href="/signup">Sign up</Link>
                 </div>
             </div>
         </div>

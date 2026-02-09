@@ -1,21 +1,20 @@
 .hero {
     position: relative;
-    height: 500px;
+    height: 600px;
     background-image: url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?auto=format&fit=crop&q=80&w=1200');
+    /* Fallback */
     background-size: cover;
     background-position: center;
-    border-radius: 12px;
     overflow: hidden;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: flex-end;
 }
 
 .overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 100%);
-    display: flex;
-    align-items: center;
-    padding: 40px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
+    width: 100%;
+    padding: 60px 40px;
 }
 
 .content {
@@ -24,41 +23,53 @@
 }
 
 .tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--primary-green);
-    color: black;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.75rem;
+    display: inline-block;
+    background: var(--primary-red);
+    color: var(--white);
+    padding: 5px 10px;
+    font-size: 0.85rem;
     font-weight: 700;
-    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-family: var(--font-sans-condensed);
+    margin-bottom: 20px;
+    letter-spacing: 1px;
 }
 
 .content h1 {
-    font-size: 3rem;
+    font-size: 3.5rem;
     line-height: 1.1;
-    margin-bottom: 15px;
-    font-weight: 800;
+    margin-bottom: 20px;
+    font-weight: 700;
+    font-family: var(--font-serif);
+    color: var(--white);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .content p {
     font-size: 1.1rem;
-    color: #ccc;
-    margin-bottom: 25px;
+    color: #e0e0e0;
+    margin-bottom: 30px;
+    font-family: var(--font-sans);
+    max-width: 80%;
+    line-height: 1.6;
 }
 
 .readBtn {
-    background: var(--primary-green);
+    background: var(--primary-red);
+    color: var(--white);
     border: none;
-    padding: 12px 24px;
-    border-radius: 6px;
+    padding: 12px 30px;
     font-weight: 700;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    text-transform: uppercase;
+    font-family: var(--font-sans-condensed);
+    letter-spacing: 1px;
+    transition: background 0.3s;
+    display: inline-block;
+}
+
+.readBtn:hover {
+    background: #c92b36;
 }
 
 .arrow {

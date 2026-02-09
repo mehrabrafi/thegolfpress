@@ -41,6 +41,11 @@ export class GolfController {
         return this.golfService.getNews();
     }
 
+    @Get('news/trending')
+    async getTrendingNews() {
+        return this.golfService.getTrendingNews();
+    }
+
     @Get('news/:id')
     async getNewsById(@Param('id') id: string) {
         return this.golfService.getNewsById(id);

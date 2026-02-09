@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { fetchNews, createNews, updateNews, deleteNews, uploadImage } from '@/lib/api';
-
+import RichTextEditor from '@/components/RichTextEditor';
 import styles from './news.module.css';
 
 export default function AdminNewsPage() {
@@ -231,12 +231,12 @@ export default function AdminNewsPage() {
                         </div>
                         <div className={styles.formGroup}>
                             <label>Content</label>
-                            <textarea
-                                value={formData.content}
-                                onChange={e => setFormData({ ...formData, content: e.target.value })}
-                                required
-                                rows={6}
-                            />
+                            <div style={{ minHeight: '300px' }}>
+                                <RichTextEditor
+                                    value={formData.content}
+                                    onChange={(html: string) => setFormData({ ...formData, content: html })}
+                                />
+                            </div>
                         </div>
                         <button type="submit" className={styles.submitBtn}>
                             {editId ? 'Update Article' : 'Publish Article'}

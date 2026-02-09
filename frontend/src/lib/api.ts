@@ -42,6 +42,12 @@ export async function fetchNewsById(id: string) {
     return res.json();
 }
 
+export async function fetchTrendingNews() {
+    const res = await fetch(`${API_BASE_URL}/news/trending`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch trending news');
+    return res.json();
+}
+
 export const AUTH_BASE_URL = 'http://localhost:5001/auth';
 
 export async function login(credentials: any) {

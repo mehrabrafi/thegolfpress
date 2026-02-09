@@ -30,15 +30,7 @@ export default function NewsPage() {
 
     return (
         <div className={`container ${styles.container}`}>
-            <header className={styles.headerContent}>
-                <div className={styles.titleArea}>
-                    <span className={styles.label}>LATEST UPDATES</span>
-                    <h1>News Archive</h1>
-                </div>
-                <div className={styles.description}>
-                    Stay informed with the latest breaking news, tournament coverage, and in-depth analysis from the world of professional golf.
-                </div>
-            </header>
+
 
             <div className={styles.mainGrid}>
                 <div className={styles.content}>

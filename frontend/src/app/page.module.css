@@ -1,8 +1,20 @@
 .mainGrid {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 30px;
-  margin-top: 30px;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.leftCol {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 }
 
 @media (max-width: 968px) {
