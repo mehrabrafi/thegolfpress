@@ -69,7 +69,7 @@ export default function Header() {
                                 <Link href="/how-to">HOW TO</Link>
                                 <Link href="/courses">COURSES</Link>
                                 <Link href="/scores">SCORES</Link>
-                                <Link href="/players">PLAYERS</Link>
+
                                 <Link href="/rankings">RANKINGS</Link>
                             </nav>
 

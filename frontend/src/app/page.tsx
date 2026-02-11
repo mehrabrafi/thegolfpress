@@ -7,6 +7,8 @@ import SubNews from '@/components/SubNews';
 import Leaderboard from '@/components/Leaderboard';
 import Upcoming from '@/components/Upcoming';
 import LatestNews from '@/components/LatestNews';
+import HowToSection from '@/components/HowToSection';
+import CoursesSection from '@/components/CoursesSection';
 import { fetchLeaderboard, fetchUpcoming, fetchNews } from '@/lib/api';
 import styles from './page.module.css';
 
@@ -14,6 +16,8 @@ export default function Home() {
   const [lbData, setLbData] = useState<any>(null);
   const [upcoming, setUpcoming] = useState<any[] | null>(null);
   const [news, setNews] = useState<any[] | null>(null);
+  const [howTo, setHowTo] = useState<any[] | null>(null);
+  const [courses, setCourses] = useState<any[] | null>(null);
 
   useEffect(() => {
     // Fetch data in parallel without blocking each other
@@ -29,9 +33,20 @@ export default function Home() {
         .catch(err => console.error('Error loading upcoming:', err));
 
       // News
+      // News
       fetchNews()
         .then(data => setNews(data))
         .catch(err => console.error('Error loading news:', err));
+
+      // How To
+      fetchNews('HOW-TO')
+        .then(data => setHowTo(data))
+        .catch(err => console.error('Error loading how-to:', err));
+
+      // Courses
+      fetchNews('COURSES')
+        .then(data => setCourses(data))
+        .catch(err => console.error('Error loading courses:', err));
     }
     loadData();
   }, []);
@@ -89,6 +104,10 @@ export default function Home() {
             )}
           </div>
         </div>
+
+        {/* Dedicated Sections */}
+        <HowToSection articles={howTo || []} />
+        <CoursesSection courses={courses || []} />
 
         {/* Latest News Loading State */}
         {news ? (

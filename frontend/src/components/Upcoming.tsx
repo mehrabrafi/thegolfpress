@@ -15,7 +15,7 @@ export default function Upcoming({ events }: { events: Event[] }) {
                 <h3><span className={styles.icon}>📅</span> Upcoming</h3>
             </div>
             <div className={styles.eventList}>
-                {events.slice(0, 4).map((event, idx) => (
+                {events.slice(0, 3).map((event, idx) => (
                     <div key={idx} className={styles.eventItem}>
                         <div className={styles.dateBox}>
                             <span className={styles.month}>{event.month}</span>
@@ -30,7 +30,7 @@ export default function Upcoming({ events }: { events: Event[] }) {
                 ))}
             </div>
             <a href="/schedule" className={styles.viewAllBtn}>
-                View All Tournaments <span>→</span>
+                VIEW ALL TOURNAMENTS <span>→</span>
             </a>
         </div>
     );
