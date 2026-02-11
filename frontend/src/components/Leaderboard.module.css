@@ -13,15 +13,19 @@
 }
 
 .cardHeader h3 {
-    font-size: 1.2rem;
-    font-family: var(--font-serif);
-    font-weight: 700;
-    color: var(--black);
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-family: var(--font-sans-condensed);
+    margin: 0;
+    line-height: 1;
+    letter-spacing: 1px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    gap: 10px;
+    border-left: 5px solid var(--primary-red);
+    padding-left: 15px;
+    color: var(--black);
 }
 
 .liveTag {

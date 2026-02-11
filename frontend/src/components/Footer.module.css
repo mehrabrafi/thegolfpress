@@ -1,0 +1,220 @@
+.footer {
+    background-color: #121212;
+    color: #ffffff;
+    padding: 60px 0 40px;
+    margin-top: 60px;
+    border-top: 1px solid #222;
+}
+
+.topSection {
+    display: grid;
+    grid-template-columns: 1.5fr 1.8fr 1fr 1fr;
+    gap: 100px;
+    padding-bottom: 40px;
+}
+
+.logo {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--white);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+}
+
+.description {
+    color: #bbb;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    max-width: 340px;
+    margin-bottom: 25px;
+}
+
+.monogram {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 800;
+    color: #fff;
+    opacity: 0.6;
+    letter-spacing: 2px;
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    width: fit-content;
+    padding: 8px 16px;
+    line-height: 1;
+    margin-bottom: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contactCol {
+    display: flex;
+    flex-direction: column;
+}
+
+.inquiryItem {
+    margin-bottom: 15px;
+}
+
+.inquiryLabel {
+    display: block;
+    font-family: var(--font-sans-condensed);
+    font-size: 0.65rem;
+    color: #666;
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.inquiryEmail {
+    color: #eee;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+    border-bottom: 1px solid transparent;
+}
+
+.emailWrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.mailIcon {
+    color: #666;
+    transition: color 0.2s ease;
+}
+
+.emailWrapper:hover .mailIcon {
+    color: var(--primary-red);
+}
+
+.emailWrapper:hover .inquiryEmail {
+    color: var(--primary-red);
+    border-bottom-color: var(--primary-red);
+}
+
+.linksCol h4,
+.socialSection h4,
+.contactCol h4 {
+    font-family: var(--font-sans-condensed);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #888;
+    margin-bottom: 25px;
+}
+
+.linksCol ul {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 40px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.linksCol li {
+    margin-bottom: 0;
+}
+
+.linksCol a {
+    color: #eee;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.linksCol a:hover {
+    color: var(--primary-red);
+}
+
+.socialIcons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.socialIconItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    color: #eee;
+}
+
+.iconCircle {
+    width: 28px;
+    height: 28px;
+    background: #1a1a1a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #333;
+    transition: all 0.3s ease;
+}
+
+.platformName {
+    font-size: 0.85rem;
+    font-family: var(--font-sans);
+    font-weight: 400;
+}
+
+.socialIconItem:hover .iconCircle {
+    background: var(--primary-red);
+    border-color: var(--primary-red);
+    transform: scale(1.1);
+}
+
+.socialIconItem:hover .platformName {
+    color: var(--primary-red);
+}
+
+.bottomSection {
+    padding-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: #666;
+    border-top: 1px solid #222;
+}
+
+.legalLinks {
+    display: flex;
+    gap: 30px;
+}
+
+.legalLinks a {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.legalLinks a:hover {
+    color: #999;
+}
+
+@media (max-width: 1024px) {
+    .topSection {
+        gap: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .topSection {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .bottomSection {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+}

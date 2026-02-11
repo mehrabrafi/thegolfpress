@@ -1,20 +1,20 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import LiveFeed from '@/components/LiveFeed';
 import Hero from '@/components/Hero';
 import SubNews from '@/components/SubNews';
+import SidebarNews from '@/components/SidebarNews';
 import Leaderboard from '@/components/Leaderboard';
-import Upcoming from '@/components/Upcoming';
-import LatestNews from '@/components/LatestNews';
 import HowToSection from '@/components/HowToSection';
 import CoursesSection from '@/components/CoursesSection';
-import { fetchLeaderboard, fetchUpcoming, fetchNews } from '@/lib/api';
+import { fetchLeaderboard, fetchNews } from '@/lib/api';
 import styles from './page.module.css';
 
 export default function Home() {
   const [lbData, setLbData] = useState<any>(null);
-  const [upcoming, setUpcoming] = useState<any[] | null>(null);
+
   const [news, setNews] = useState<any[] | null>(null);
   const [howTo, setHowTo] = useState<any[] | null>(null);
   const [courses, setCourses] = useState<any[] | null>(null);
@@ -27,12 +27,7 @@ export default function Home() {
         .then(data => setLbData(data))
         .catch(err => console.error('Error loading leaderboard:', err));
 
-      // Upcoming
-      fetchUpcoming()
-        .then(data => setUpcoming(data))
-        .catch(err => console.error('Error loading upcoming:', err));
 
-      // News
       // News
       fetchNews()
         .then(data => setNews(data))
@@ -52,12 +47,14 @@ export default function Home() {
   }, []);
 
   const feedPlayers = lbData?.players?.slice(0, 10) || [];
-  const leaderboardPlayers = lbData?.players?.slice(0, 4) || [];
+  const leaderboardPlayers = lbData?.players?.slice(0, 7) || [];
 
   // Distribute news if available
   const heroArticle = news && news.length > 0 ? news[0] : null;
-  const subNewsArticles = news && news.length > 1 ? news.slice(1, 3) : [];
-  const latestNewsArticles = news && news.length > 3 ? news.slice(3) : [];
+  // Get next 6 articles for sub-news grid (bottom left) - fills two rows of 3
+  const subArticles = news && news.length > 1 ? news.slice(1, 7) : [];
+  // Get next 5 articles for sidebar news (right column) - shifted after subArticles
+  const sidebarArticles = news && news.length > 7 ? news.slice(7, 12) : [];
 
   return (
     <main>
@@ -75,7 +72,7 @@ export default function Home() {
             {news ? (
               <>
                 {heroArticle && <Hero article={heroArticle} />}
-                {subNewsArticles.length > 0 && <SubNews articles={subNewsArticles} />}
+                {subArticles.length > 0 && <SubNews articles={subArticles} />}
               </>
             ) : (
               <div className={styles.skeleton} style={{ height: '400px' }}>
@@ -94,30 +91,16 @@ export default function Home() {
               </div>
             )}
 
-            {/* Upcoming Loading State */}
-            {upcoming ? (
-              <Upcoming events={upcoming} />
-            ) : (
-              <div className={styles.skeleton} style={{ height: '200px' }}>
-                Loading Events...
-              </div>
-            )}
+            {/* Sidebar News */}
+            {sidebarArticles.length > 0 && <SidebarNews articles={sidebarArticles} />
+            }
           </div>
         </div>
 
         {/* Dedicated Sections */}
         <HowToSection articles={howTo || []} />
         <CoursesSection courses={courses || []} />
-
-        {/* Latest News Loading State */}
-        {news ? (
-          latestNewsArticles.length > 0 && <LatestNews articles={latestNewsArticles} />
-        ) : (
-          <div className={styles.skeleton} style={{ marginTop: '40px', height: '200px' }}>
-            Loading Latest News...
-          </div>
-        )}
       </div>
-    </main>
+    </main >
   );
 }
