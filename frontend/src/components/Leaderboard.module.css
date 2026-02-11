@@ -58,12 +58,35 @@
     gap: 10px;
 }
 
+.playerLink {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+}
+
+.playerLink:hover {
+    transform: translateX(5px);
+}
+
+.playerLink:hover .playerName {
+    color: var(--primary-red);
+    text-decoration: underline;
+}
+
 .avatar {
     width: 32px;
     height: 32px;
     border-radius: 50%;
     background: #eee;
     object-fit: cover;
+    transition: box-shadow 0.2s ease;
+}
+
+.playerLink:hover .avatar {
+    box-shadow: 0 0 0 2px var(--primary-red);
 }
 
 .playerName {

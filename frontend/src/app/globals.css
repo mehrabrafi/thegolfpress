@@ -11,6 +11,9 @@
   --white: #ffffff;
   --border-color: #e2e2e2;
   --golf-green: #2ecc71;
+  --primary-green: #2ecc71;
+  --text-dark: #121212;
+  --text-light: #767676;
 
   /* Fonts */
   --font-serif: 'Playfair Display', serif;

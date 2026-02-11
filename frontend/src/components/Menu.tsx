@@ -53,6 +53,10 @@ export default function Menu({ isOpen, toggleMenu }: MenuProps) {
                         Scores
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
                     </Link>
+                    <Link href="/players" className={styles.navItem} onClick={toggleMenu}>
+                        Players
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+                    </Link>
                     <Link href="/rankings" className={styles.navItem} onClick={toggleMenu}>
                         Rankings
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>

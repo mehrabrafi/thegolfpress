@@ -57,14 +57,20 @@ export default function ScoresPage() {
                             <tr key={idx}>
                                 <td className={styles.posCell}>{p.position}</td>
                                 <td className={styles.playerCell}>
-                                    <img src={p.image || 'https://via.placeholder.com/40'} alt={p.name} className={styles.avatar} />
-                                    <div>
-                                        <div className={styles.pName}>{p.name}</div>
-                                        <div className={styles.pCountry}>
-                                            <img src={p.country} alt="flag" className={styles.flag} />
-                                            {p.countryName}
+                                    <a
+                                        href={`/players/${p.id}`}
+                                        className={styles.playerLink}
+                                        title="View Player Profile"
+                                    >
+                                        <img src={p.image || 'https://via.placeholder.com/40'} alt={p.name} className={styles.avatar} />
+                                        <div>
+                                            <div className={styles.pName}>{p.name}</div>
+                                            <div className={styles.pCountry}>
+                                                <img src={p.country} alt="flag" className={styles.flag} />
+                                                {p.countryName}
+                                            </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </td>
                                 <td className={p.score?.startsWith('-') ? styles.scoreMinus : styles.scorePlus}>
                                     {p.score}

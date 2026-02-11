@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { fetchRankings } from '@/lib/api';
-import styles from './rankings.module.css';
+import styles from './players.module.css';
 
-export default function RankingsPage() {
+export default function PlayersPage() {
     const [categories, setCategories] = useState<any[]>([]);
     const [activeCategoryId, setActiveCategoryId] = useState<string>('');
     const [loading, setLoading] = useState(true);
@@ -18,7 +18,7 @@ export default function RankingsPage() {
                     setActiveCategoryId(data[0].id);
                 }
             } catch (err) {
-                console.error('Error loading rankings:', err);
+                console.error('Error loading players:', err);
             } finally {
                 setLoading(false);
             }
@@ -29,14 +29,14 @@ export default function RankingsPage() {
     const activeCategory = categories.find(c => c.id === activeCategoryId);
 
     if (loading) {
-        return <div className={styles.loading}>Loading PGA Tour Rankings...</div>;
+        return <div className={styles.loading}>Loading PGA Tour Players...</div>;
     }
 
     return (
         <div className={`container ${styles.container}`}>
             <div className={styles.header}>
-                <h1 className={styles.title}>PGA Tour Rankings</h1>
-                <p className={styles.subtitle}>2026 SEASON STATISTICS</p>
+                <h1 className={styles.title}>PGA Tour Players</h1>
+                <p className={styles.subtitle}>PLAYER PERFORMANCE & PROFILES</p>
             </div>
 
             <div className={styles.tabs}>

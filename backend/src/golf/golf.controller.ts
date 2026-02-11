@@ -36,6 +36,11 @@ export class GolfController {
         return this.golfService.getRankings();
     }
 
+    @Get('players/:id')
+    async getPlayerProfile(@Param('id') id: string) {
+        return this.golfService.getPlayerProfile(id);
+    }
+
     @Get('news')
     async getNews(@Query('category') category?: string) {
         return this.golfService.getNews(category);

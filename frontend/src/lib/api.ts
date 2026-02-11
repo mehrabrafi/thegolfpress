@@ -30,6 +30,14 @@ export async function fetchRankings() {
     return res.json();
 }
 
+export async function fetchPlayerProfile(id: string) {
+    const url = `${API_BASE_URL}/players/${id}`;
+    console.log('Fetching player profile from URL:', url);
+    const res = await fetch(url, { next: { revalidate: 3600 } });
+    if (!res.ok) throw new Error('Failed to fetch player profile');
+    return res.json();
+}
+
 export async function fetchNews(category?: string) {
     const url = new URL(`${API_BASE_URL}/news`);
     if (category) url.searchParams.append('category', category);
@@ -124,7 +132,7 @@ export async function deleteNews(id: string, token: string) {
     return res.json();
 }
 
-export const UPLOAD_URL = 'http://localhost:5001/upload';
+export const UPLOAD_URL = 'http://127.0.0.1:5001/upload';
 
 export async function uploadImage(file: File, token: string) {
     const formData = new FormData();

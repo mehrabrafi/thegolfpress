@@ -2,6 +2,7 @@ import Link from 'next/link';
 import styles from './Leaderboard.module.css';
 
 interface Player {
+    id: string;
     position: string;
     name: string;
     score: string;
@@ -31,13 +32,19 @@ export default function Leaderboard({ players }: { players: Player[] }) {
                         <tr key={idx}>
                             <td>{p.position}</td>
                             <td className={styles.playerCell}>
-                                <img src={p.image} alt={p.name} className={styles.avatar} />
-                                <div>
-                                    <div className={styles.playerName}>{p.name}</div>
-                                    <div className={styles.playerCountry}>
-                                        <img src={p.country} alt="" className={styles.miniFlag} />
+                                <Link
+                                    href={`/players/${p.id}`}
+                                    className={styles.playerLink}
+                                    title="View Player Profile"
+                                >
+                                    <img src={p.image} alt={p.name} className={styles.avatar} />
+                                    <div>
+                                        <div className={styles.playerName}>{p.name}</div>
+                                        <div className={styles.playerCountry}>
+                                            <img src={p.country} alt="" className={styles.miniFlag} />
+                                        </div>
                                     </div>
-                                </div>
+                                </Link>
                             </td>
                             <td className={p.score.startsWith('-') ? styles.scoreMinus : ''}>{p.score}</td>
                             <td>{p.thru}</td>

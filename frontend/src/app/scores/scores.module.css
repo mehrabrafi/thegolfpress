@@ -102,12 +102,35 @@
     gap: 15px;
 }
 
+.playerLink {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+}
+
+.playerLink:hover {
+    transform: translateX(5px);
+}
+
+.playerLink:hover .pName {
+    color: var(--primary-red);
+    text-decoration: underline;
+}
+
 .avatar {
     width: 45px;
     height: 45px;
     border-radius: 50%;
     object-fit: cover;
     background: #eee;
+    transition: box-shadow 0.2s ease;
+}
+
+.playerLink:hover .avatar {
+    box-shadow: 0 0 0 2px var(--primary-red);
 }
 
 .pName {
