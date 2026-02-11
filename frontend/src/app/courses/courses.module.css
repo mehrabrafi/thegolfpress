@@ -1,0 +1,438 @@
+.container {
+    background-color: var(--white);
+    min-height: calc(100vh - 80px);
+}
+
+.layout {
+    display: flex;
+    gap: 0;
+    margin-top: 30px;
+    border-top: 1px solid var(--border-color);
+}
+
+.listPanel {
+    flex: 1;
+    max-width: 600px;
+    border-right: 1px solid var(--border-color);
+    padding-right: 0;
+    height: calc(100vh - 120px);
+    overflow-y: auto;
+}
+
+.mapPanel {
+    flex: 1.5;
+    background-color: var(--light-gray);
+    position: sticky;
+    top: 80px;
+    height: calc(100vh - 120px);
+    overflow: hidden;
+}
+
+.header {
+    padding: 60px 40px 0;
+    margin-bottom: 30px;
+}
+
+.title {
+    font-family: var(--font-serif);
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--black);
+}
+
+.subtitle {
+    font-family: var(--font-sans-condensed);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    color: var(--medium-gray);
+    text-transform: uppercase;
+}
+
+.courseCard {
+    padding: 40px;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.courseCard:hover {
+    background-color: var(--light-gray);
+}
+
+.courseInfo {
+    margin-bottom: 20px;
+}
+
+.rank {
+    font-family: var(--font-sans-condensed);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-red);
+    margin-bottom: 5px;
+    display: block;
+}
+
+.courseName {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    color: var(--dark-black);
+}
+
+.location {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--medium-gray);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.description {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--dark-gray);
+    margin-bottom: 25px;
+}
+
+.viewButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-sans-condensed);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--black);
+    text-decoration: none;
+}
+
+.redArrow {
+    background-color: var(--primary-red);
+    color: var(--white);
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.featuredImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 60px 40px 40px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    color: white;
+}
+
+.overlayTitle {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.overlayLocation {
+    font-family: var(--font-sans-condensed);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 1rem;
+}
+
+.filterBar {
+    display: flex;
+    gap: 30px;
+    margin-top: 40px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0;
+}
+
+.filterBtn {
+    background: none;
+    border: none;
+    font-family: var(--font-sans-condensed);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--medium-gray);
+    padding: 10px 0;
+    cursor: pointer;
+    position: relative;
+    letter-spacing: 1px;
+}
+
+.activeFilter {
+    color: var(--black);
+}
+
+.activeFilter::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--primary-red);
+}
+
+.statsRow {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+}
+
+.statLabel {
+    font-family: var(--font-sans-condensed);
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.statValue {
+    font-family: var(--font-sans-condensed);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+@media (max-width: 1024px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .listPanel {
+        max-width: 100%;
+        height: auto;
+        border-right: none;
+    }
+
+    .mapPanel {
+        height: 400px;
+        position: static;
+    }
+}
+
+/* Search Hero Section */
+.hero {
+    position: relative;
+    height: 500px;
+    width: 100%;
+    background-image: url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&q=80&w=2600');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.heroOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.heroContent {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    width: 100%;
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.heroTitle {
+    font-family: var(--font-sans-condensed);
+    font-size: 5rem;
+    font-weight: 700;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+    line-height: 1;
+}
+
+.heroSubtitle {
+    font-family: var(--font-sans-condensed);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+.searchBox {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--medium-gray);
+    z-index: 2;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 20px 20px 20px 60px;
+    font-size: 1.1rem;
+    font-family: var(--font-sans);
+    border: none;
+    border-radius: 4px;
+    background-color: var(--white);
+    color: var(--black);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    outline: none;
+}
+
+.searchInput::placeholder {
+    color: var(--medium-gray);
+}
+
+@media (max-width: 768px) {
+    .heroTitle {
+        font-size: 3rem;
+    }
+
+    .hero {
+        height: 400px;
+    }
+}
+
+/* Section styles */
+.section {
+    padding: 60px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.redBar {
+    width: 4px;
+    height: 24px;
+    background-color: var(--primary-red);
+}
+
+.sectionTitle {
+    font-family: var(--font-sans-condensed);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--black);
+}
+
+.cardsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.sliderContainer {
+    position: relative;
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding-bottom: 20px;
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.sliderContainer::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+}
+
+.categoryCard {
+    flex: 0 0 320px;
+    background: var(--white);
+    transition: transform 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.categoryCard:hover {
+    transform: translateY(-5px);
+}
+
+.cardImageWrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.cardImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.categoryCard:hover .cardImage {
+    transform: scale(1.05);
+}
+
+.cardContent {
+    padding: 5px 0;
+}
+
+.cardBrand {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--black);
+}
+
+.brandPlus {
+    color: var(--primary-red);
+    font-weight: 700;
+}
+
+.cardTitle {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--black);
+    line-height: 1.4;
+}
+
+@media (max-width: 1024px) {
+    .section {
+        padding: 40px 20px;
+    }
+}

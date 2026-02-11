@@ -37,20 +37,16 @@ export default function Menu({ isOpen, toggleMenu }: MenuProps) {
                 </div>
 
                 <div className={styles.mainNav}>
+                    <Link href="/news" className={styles.navItem} onClick={toggleMenu}>
+                        News
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+                    </Link>
                     <Link href="/how-to" className={styles.navItem} onClick={toggleMenu}>
                         How To
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
                     </Link>
-                    <Link href="/equipment" className={styles.navItem} onClick={toggleMenu}>
-                        Equipment
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
-                    </Link>
                     <Link href="/courses" className={styles.navItem} onClick={toggleMenu}>
                         Courses
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
-                    </Link>
-                    <Link href="/news" className={styles.navItem} onClick={toggleMenu}>
-                        News
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
                     </Link>
                     <Link href="/scores" className={styles.navItem} onClick={toggleMenu}>

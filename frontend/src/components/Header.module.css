@@ -90,7 +90,6 @@
 /* --- Navigation Bar --- */
 .navBarWrapper {
     border-top: 1px solid var(--border-color);
-    border-bottom: 1px solid var(--border-color);
     background: var(--white);
 }
 
@@ -161,6 +160,75 @@
 
 .searchItem:hover {
     color: var(--primary-red);
+}
+
+.searchItem:hover {
+    color: var(--primary-red);
+}
+
+/* --- Category Page Header (Single Row) --- */
+.categoryHeader {
+    height: 60px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.catHeaderContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    position: relative;
+    padding: 0 20px;
+}
+
+.catHeaderLeft {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 200px;
+}
+
+.sectionTitle {
+    font-family: var(--font-sans-condensed);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #999;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.logoSmall {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-serif);
+    font-weight: 800;
+    font-size: 1.8rem;
+    letter-spacing: -1px;
+    color: var(--black);
+    text-decoration: none;
+    line-height: 1;
+}
+
+.catHeaderRight {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: flex-end;
+    min-width: 200px;
+}
+
+.loginLinkSmall {
+    font-family: var(--font-sans-condensed);
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--black);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
 }
 
 /* Responsive */

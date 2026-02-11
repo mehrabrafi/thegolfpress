@@ -12,55 +12,92 @@ import styles from './page.module.css';
 
 export default function Home() {
   const [lbData, setLbData] = useState<any>(null);
-  const [upcoming, setUpcoming] = useState<any[]>([]);
-  const [news, setNews] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [upcoming, setUpcoming] = useState<any[] | null>(null);
+  const [news, setNews] = useState<any[] | null>(null);
 
   useEffect(() => {
+    // Fetch data in parallel without blocking each other
     async function loadData() {
-      try {
-        const [lb, up, newsData] = await Promise.all([
-          fetchLeaderboard(),
-          fetchUpcoming(),
-          fetchNews()
-        ]);
-        setLbData(lb);
-        setUpcoming(up);
-        setNews(newsData);
-      } catch (err) {
-        console.error('Error loading data:', err);
-      } finally {
-        setLoading(false);
-      }
+      // Leaderboard
+      fetchLeaderboard()
+        .then(data => setLbData(data))
+        .catch(err => console.error('Error loading leaderboard:', err));
+
+      // Upcoming
+      fetchUpcoming()
+        .then(data => setUpcoming(data))
+        .catch(err => console.error('Error loading upcoming:', err));
+
+      // News
+      fetchNews()
+        .then(data => setNews(data))
+        .catch(err => console.error('Error loading news:', err));
     }
     loadData();
   }, []);
 
-  if (loading) return <div style={{ padding: '100px', textAlign: 'center' }}>Loading...</div>;
-
   const feedPlayers = lbData?.players?.slice(0, 10) || [];
   const leaderboardPlayers = lbData?.players?.slice(0, 4) || [];
 
-  // Distribute news
-  const heroArticle = news[0];
-  const subNewsArticles = news.slice(1, 3);
-  const latestNewsArticles = news.slice(3);
+  // Distribute news if available
+  const heroArticle = news && news.length > 0 ? news[0] : null;
+  const subNewsArticles = news && news.length > 1 ? news.slice(1, 3) : [];
+  const latestNewsArticles = news && news.length > 3 ? news.slice(3) : [];
 
   return (
     <main>
-      <LiveFeed players={feedPlayers} />
+      {/* Live Feed Loading State */}
+      {lbData ? (
+        <LiveFeed players={feedPlayers} />
+      ) : (
+        <div className={styles.skeleton} style={{ padding: '20px' }}>Loading Live Feed...</div>
+      )}
+
       <div className="container">
         <div className={styles.mainGrid}>
           <div className={styles.leftCol}>
-            <Hero article={heroArticle} />
-            <SubNews articles={subNewsArticles} />
+            {/* Hero & SubNews Loading State */}
+            {news ? (
+              <>
+                {heroArticle && <Hero article={heroArticle} />}
+                {subNewsArticles.length > 0 && <SubNews articles={subNewsArticles} />}
+              </>
+            ) : (
+              <div className={styles.skeleton} style={{ height: '400px' }}>
+                Loading News...
+              </div>
+            )}
           </div>
+
           <div className={styles.rightCol}>
-            <Leaderboard players={leaderboardPlayers} />
-            <Upcoming events={upcoming.length > 0 ? upcoming : []} />
+            {/* Leaderboard Loading State */}
+            {lbData ? (
+              <Leaderboard players={leaderboardPlayers} />
+            ) : (
+              <div className={styles.skeleton} style={{ height: '300px' }}>
+                Loading Leaderboard...
+              </div>
+            )}
+
+            {/* Upcoming Loading State */}
+            {upcoming ? (
+              <Upcoming events={upcoming} />
+            ) : (
+              <div className={styles.skeleton} style={{ height: '200px' }}>
+                Loading Events...
+              </div>
+            )}
           </div>
         </div>
-        <LatestNews articles={latestNewsArticles} />
+
+        {/* Latest News Loading State */}
+        {news ? (
+          latestNewsArticles.length > 0 && <LatestNews articles={latestNewsArticles} />
+        ) : (
+          <div className={styles.skeleton} style={{ marginTop: '40px', height: '200px' }}>
+            Loading Latest News...
+          </div>
+        )}
       </div>
     </main>
   );

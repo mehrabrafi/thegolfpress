@@ -32,27 +32,28 @@ export default function NewsPage() {
         <div className={`container ${styles.container}`}>
 
 
+            {featured && (
+                <Link href={`/news/${featured.id}`} className={styles.featuredStory}>
+                    <div
+                        className={styles.featuredImage}
+                        style={{ backgroundImage: `url(${featured.image})` }}
+                    />
+                    <div className={styles.featuredContent}>
+                        <div className={styles.meta}>
+                            <span className={styles.category}>{featured.category}</span>
+                            <span className={styles.time}>{featured.time}</span>
+                        </div>
+                        <h2 className={styles.featuredTitle}>{featured.title}</h2>
+                        <p className={styles.excerpt}>{featured.excerpt}</p>
+                        <div className={styles.readMore}>
+                            Read Full Analysis <span>→</span>
+                        </div>
+                    </div>
+                </Link>
+            )}
+
             <div className={styles.mainGrid}>
                 <div className={styles.content}>
-                    {featured && (
-                        <Link href={`/news/${featured.id}`} className={styles.featuredStory}>
-                            <div
-                                className={styles.featuredImage}
-                                style={{ backgroundImage: `url(${featured.image})` }}
-                            />
-                            <div className={styles.featuredContent}>
-                                <div className={styles.meta}>
-                                    <span className={styles.category}>{featured.category}</span>
-                                    <span className={styles.time}>{featured.time}</span>
-                                </div>
-                                <h2 className={styles.featuredTitle}>{featured.title}</h2>
-                                <p className={styles.excerpt}>{featured.excerpt}</p>
-                                <div className={styles.readMore}>
-                                    Read Full Analysis <span>→</span>
-                                </div>
-                            </div>
-                        </Link>
-                    )}
 
                     <div className={styles.articleList}>
                         {regular.map(article => (
@@ -87,70 +88,30 @@ export default function NewsPage() {
                 </div>
 
                 <aside className={styles.sidebar}>
-                    <div className={styles.filterBox}>
-                        <div className={styles.filterHeader}>
-                            <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="21" y2="21" /><line x1="4" x2="20" y1="14" y2="14" /><line x1="4" x2="20" y1="7" y2="7" /></svg> Filters</h3>
-                            <span className={styles.reset}>Reset All</span>
-                        </div>
-
-                        <div className={styles.filterGroup}>
-                            <span className={styles.groupLabel}>Search Archive</span>
-                            <div className={styles.searchWrapper}>
-                                <span className={styles.searchIcon}>
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
-                                </span>
-                                <input type="text" className={styles.searchInput} placeholder="Keywords, players..." />
-                            </div>
-                        </div>
-
-                        <div className={styles.filterGroup}>
-                            <span className={styles.groupLabel}>Categories</span>
-                            <div className={styles.categoryList}>
-                                {[
-                                    { name: 'All News', count: 124, active: true },
-                                    { name: 'PGA Tour', count: 48 },
-                                    { name: 'LIV Golf', count: 22 },
-                                    { name: 'Gear & Equipment', count: 15 },
-                                    { name: 'Instruction', count: 8 },
-                                    { name: 'Opinion', count: 12 },
-                                ].map(cat => (
-                                    <div key={cat.name} className={styles.categoryItem}>
-                                        <div className={styles.catLeft}>
-                                            <div className={`${styles.checkbox} ${cat.active ? styles.activeCheckbox : ''}`} />
-                                            <span>{cat.name}</span>
+                    <div className={styles.latestSection}>
+                        <h3>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d0021b" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                            Latest News
+                        </h3>
+                        <div className={styles.latestList}>
+                            {articles
+                                .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                                .slice(0, 5)
+                                .map((article) => (
+                                    <Link href={`/news/${article.id}`} key={article.id} className={styles.latestItem}>
+                                        <div
+                                            className={styles.latestThumb}
+                                            style={{ backgroundImage: `url(${article.image})` }}
+                                        />
+                                        <div className={styles.latestContent}>
+                                            <span className={styles.latestTime}>{article.time}</span>
+                                            <h4 className={styles.latestTitle}>{article.title}</h4>
                                         </div>
-                                        <span className={styles.count}>{cat.count}</span>
-                                    </div>
+                                    </Link>
                                 ))}
-                            </div>
-                        </div>
-
-                        <div className={styles.filterGroup}>
-                            <span className={styles.groupLabel}>Date Range</span>
-                            <div className={styles.dateRange}>
-                                <select>
-                                    <option>Any Time</option>
-                                    <option>Past 24 Hours</option>
-                                    <option>Past Week</option>
-                                    <option>Past Month</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className={styles.popularSection}>
-                        <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="red" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m19 12-7 7-7-7" /><path d="M12 19V5" /></svg> Popular Right Now</h3>
-                        <div className={styles.popularList}>
-                            {[
-                                "Tiger Woods Spotted Testing New Bridgestone Prototype Ball",
-                                "LIV Golf Negotiation Update: What We Know So Far",
-                                "Why Rory McIlroy Changed His Putting Grip Mid-Tournament"
-                            ].map((title, i) => (
-                                <div key={i} className={styles.popularItem}>
-                                    <span className={styles.popRank}>{i + 1}</span>
-                                    <p className={styles.popTitle}>{title}</p>
-                                </div>
-                            ))}
                         </div>
                     </div>
                 </aside>

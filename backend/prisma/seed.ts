@@ -114,7 +114,83 @@ async function main() {
         },
     ];
 
-    for (const news of newsData) {
+    // Create How-To Articles (20 entries)
+    const howToTitles = [
+        { title: "The Perfect Backswing: Loading for Power", tag: "Swing Sequence" },
+        { title: "Hinge and Hold: The Secret to Chipping", tag: "Short Game" },
+        { title: "3 Drills for Better Distance Control", tag: "Putting" },
+        { title: "Finding Your Natural Tempo", tag: "Swing Sequence" },
+        { title: "How to Hit a Power Draw", tag: "Driving" },
+        { title: "5 Essential Stretches for Every Golfer", tag: "Fitness" },
+        { title: "Staying Calm Under Pressure", tag: "Mental Game" },
+        { title: "Bunker Basics: Splashing it Out", tag: "Short Game" },
+        { title: "Grip Pressure: How Tight is Too Tight?", tag: "Beginners" },
+        { title: "The Importance of Body Rotation", tag: "Swing Sequence" },
+        { title: "Lag Putting: Stop Three-Putting", tag: "Putting" },
+        { title: "Increase Your Clubhead Speed", tag: "Driving" },
+        { title: "Understanding Ball Flight Laws", tag: "Beginners" },
+        { title: "Pre-Shot Routine: The Blueprint", tag: "Mental Game" },
+        { title: "Core Stability for a Rock-Solid Swing", tag: "Fitness" },
+        { title: "Mastering the Flop Shot", tag: "Short Game" },
+        { title: "The Role of the Lead Arm", tag: "Swing Sequence" },
+        { title: "Reading Greens Like a Pro", tag: "Putting" },
+        { title: "Stinger Shot: Low and Straight", tag: "Driving" },
+        { title: "First Tee Jitters: Overcome Them", tag: "Beginners" }
+    ];
+
+    const howToData = howToTitles.map((item, i) => ({
+        id: `ht-${i + 1}`,
+        type: 'REGULAR',
+        category: 'HOW-TO',
+        categoryTag: item.tag,
+        title: item.title,
+        excerpt: `Discover the best techniques for ${item.title.toLowerCase()} to improve your game.`,
+        time: `${i + 1} days ago`,
+        image: `https://images.unsplash.com/photo-${1535131749006 + (i * 100)}?q=80&w=800&auto=format&fit=crop`,
+        content: `Detailed guide on ${item.title}. This instruction will help you master the craft of golf with professional tips and drills.`,
+        authorId: staff.id,
+    }));
+
+    // Create Course Articles (20 entries)
+    const courseTitles = [
+        { title: "St Andrews (Old Course), Scotland", tag: "Scotland" },
+        { title: "Royal County Down, N. Ireland", tag: "United Kingdom" },
+        { title: "Royal Dornoch, Scotland", tag: "Scotland" },
+        { title: "Muirfield, Scotland", tag: "Scotland" },
+        { title: "Carnoustie (Championship), Scotland", tag: "Scotland" },
+        { title: "Royal St George’s, England", tag: "England" },
+        { title: "Sunningdale (Old), England", tag: "England" },
+        { title: "Royal Birkdale, England", tag: "England" },
+        { title: "Pinehurst No. 2, North Carolina", tag: "USA" },
+        { title: "Pebble Beach, California", tag: "California" },
+        { title: "TPC Sawgrass, Florida", tag: "Florida" },
+        { title: "Bethpage Black, New York", tag: "New York" },
+        { title: "Austin Country Club, Texas", tag: "Texas" },
+        { title: "Monte Rei North, Portugal", tag: "Portugal" },
+        { title: "Valderrama, Spain", tag: "Spain" },
+        { title: "Kingsbarns, Scotland", tag: "Scotland" },
+        { title: "Royal Lytham & St Annes, England", tag: "England" },
+        { title: "Trump International Golf Links, Scotland", tag: "Scotland" },
+        { title: "Quinta do Lago (South), Portugal", tag: "Portugal" },
+        { title: "Finca Cortesin, Spain", tag: "Spain" }
+    ];
+
+    const coursesData = courseTitles.map((item, i) => ({
+        id: `course-${i + 1}`,
+        type: 'REGULAR',
+        category: 'COURSES',
+        categoryTag: item.tag,
+        title: item.title,
+        excerpt: `A comprehensive review of ${item.title}, one of the top-rated courses in the world.`,
+        time: `${i + 1} weeks ago`,
+        image: `https://images.unsplash.com/photo-${1587174486073 + (i * 100)}?q=80&w=800&auto=format&fit=crop`,
+        content: `${item.title} offers an unparalleled golfing experience with stunning views and challenging layouts.`,
+        authorId: staff.id,
+    }));
+
+    const allData = [...newsData, ...howToData, ...coursesData];
+
+    for (const news of allData) {
         await prisma.news.upsert({
             where: { id: news.id },
             update: news,

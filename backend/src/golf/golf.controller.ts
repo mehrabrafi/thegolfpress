@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Put, Delete, Body, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Param, Post, Put, Delete, Body, UseGuards, Request, Query } from '@nestjs/common';
 import { GolfService } from './golf.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -37,8 +37,8 @@ export class GolfController {
     }
 
     @Get('news')
-    async getNews() {
-        return this.golfService.getNews();
+    async getNews(@Query('category') category?: string) {
+        return this.golfService.getNews(category);
     }
 
     @Get('news/trending')

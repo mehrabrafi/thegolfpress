@@ -147,8 +147,9 @@ export class GolfService {
         }
     }
 
-    async getNews() {
+    async getNews(category?: string) {
         return this.prisma.news.findMany({
+            where: category ? { category } : {},
             include: {
                 author: true
             },

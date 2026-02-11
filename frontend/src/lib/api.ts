@@ -1,49 +1,52 @@
 export const API_BASE_URL = 'http://localhost:5001/golf';
 
 export async function fetchLeaderboard() {
-    const res = await fetch(`${API_BASE_URL}/leaderboard`, { cache: 'no-store' });
+    const res = await fetch(`${API_BASE_URL}/leaderboard`, { next: { revalidate: 60 } });
     if (!res.ok) throw new Error('Failed to fetch leaderboard');
     return res.json();
 }
 
 export async function fetchScoreboard() {
-    const res = await fetch(`${API_BASE_URL}/scoreboard`, { cache: 'no-store' });
+    const res = await fetch(`${API_BASE_URL}/scoreboard`, { next: { revalidate: 60 } });
     if (!res.ok) throw new Error('Failed to fetch scoreboard');
     return res.json();
 }
 
 export async function fetchUpcoming() {
-    const res = await fetch(`${API_BASE_URL}/upcoming`, { cache: 'no-store' });
+    const res = await fetch(`${API_BASE_URL}/upcoming`, { next: { revalidate: 300 } });
     if (!res.ok) throw new Error('Failed to fetch upcoming events');
     return res.json();
 }
 
 export async function fetchSchedule() {
-    const res = await fetch(`${API_BASE_URL}/schedule`, { cache: 'no-store' });
+    const res = await fetch(`${API_BASE_URL}/schedule`, { next: { revalidate: 3600 } });
     if (!res.ok) throw new Error('Failed to fetch schedule');
     return res.json();
 }
 
 export async function fetchRankings() {
-    const res = await fetch(`${API_BASE_URL}/rankings`, { cache: 'no-store' });
+    const res = await fetch(`${API_BASE_URL}/rankings`, { next: { revalidate: 3600 } });
     if (!res.ok) throw new Error('Failed to fetch rankings');
     return res.json();
 }
 
-export async function fetchNews() {
-    const res = await fetch(`${API_BASE_URL}/news`, { cache: 'no-store' });
+export async function fetchNews(category?: string) {
+    const url = new URL(`${API_BASE_URL}/news`);
+    if (category) url.searchParams.append('category', category);
+
+    const res = await fetch(url.toString(), { next: { revalidate: 60 } });
     if (!res.ok) throw new Error('Failed to fetch news');
     return res.json();
 }
 
 export async function fetchNewsById(id: string) {
-    const res = await fetch(`${API_BASE_URL}/news/${id}`, { cache: 'no-store' });
+    const res = await fetch(`${API_BASE_URL}/news/${id}`, { next: { revalidate: 60 } });
     if (!res.ok) throw new Error('Failed to fetch news detail');
     return res.json();
 }
 
 export async function fetchTrendingNews() {
-    const res = await fetch(`${API_BASE_URL}/news/trending`, { cache: 'no-store' });
+    const res = await fetch(`${API_BASE_URL}/news/trending`, { next: { revalidate: 60 } });
     if (!res.ok) throw new Error('Failed to fetch trending news');
     return res.json();
 }

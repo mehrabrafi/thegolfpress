@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className={`${playfair.variable} ${oswald.variable} ${roboto.variable}`}>
         <Providers>
           <Header />
-          <main style={{ minHeight: '80vh', paddingTop: '20px' }}>
+          <main style={{ minHeight: '80vh' }}>
             {children}
           </main>
         </Providers>
