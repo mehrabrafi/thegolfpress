@@ -148,62 +148,52 @@ export default function NewsDetailPage() {
 
                 {/* Right Column: Sidebar */}
                 <aside className={styles.sidebar}>
-                    {/* Trending Now */}
+                    {/* Related Coverage (Now in Sidebar) */}
                     <div className={styles.sidebarSection}>
                         <div className={styles.sectionHeader}>
                             <div className={styles.greenBar}></div>
-                            <h3 className={styles.sectionTitle}>Trending Now</h3>
+                            <h3 className={styles.sectionTitle}>Related Coverage</h3>
                         </div>
                         <div className={styles.trendingList}>
-                            {trendingNews.slice(0, 5).map((item, i) => (
-                                <a href={`/news/${item.id}`} key={i} className={styles.trendingItem}>
+                            {relatedNews.slice(0, 5).map((item, i) => (
+                                <Link href={`/news/${item.id}`} key={i} className={styles.trendingItem}>
                                     <img src={item.image} alt={item.title} className={styles.trendingThumb} />
                                     <div className={styles.trendingContent}>
                                         <span className={styles.trendingCategory}>{item.category}</span>
                                         <h4 className={styles.trendingTitle}>{item.title}</h4>
-                                        <span className={styles.trendingMeta}>{item.viewCount} views</span>
+                                        <span className={styles.trendingMeta}>{formatDate(item.createdAt || new Date().toISOString())}</span>
                                     </div>
-                                </a>
+                                </Link>
                             ))}
-                            <a href="/news" className={styles.viewAllTrending}>
-                                View All Trending <span>→</span>
-                            </a>
                         </div>
                     </div>
                 </aside>
             </div>
 
-            {/* Related Coverage (Outside Grid, Spans Full Width) */}
+            {/* Trending Now (Now at the Bottom) */}
             <div className={styles.bottomRelated}>
                 <div className={styles.sectionHeader}>
                     <div className={styles.greenBar}></div>
-                    <h3 className={styles.sectionTitle}>Related Coverage</h3>
+                    <h3 className={styles.sectionTitle}>Trending Now</h3>
                 </div>
 
-                <div className={styles.relatedLayout}>
-                    {relatedNews.length > 0 && (
-                        <div className={styles.relatedFeatured}>
-                            <div className={styles.featuredOverlayWrapper}>
-                                <img src={relatedNews[0].image} alt={relatedNews[0].title} className={styles.featuredThumb} />
-                                <div className={styles.featuredTextOverlay}>
-                                    <span className={styles.overlayTag}>{relatedNews[0].category}</span>
-                                    <h4 className={styles.overlayTitle}>{relatedNews[0].title}</h4>
+                <div className={styles.trendingGrid}>
+                    {trendingNews.slice(0, 8).map((item, i) => (
+                        <Link href={`/news/${item.id}`} key={i} className={styles.trendingCard}>
+                            <div className={styles.trendingCardThumbWrapper}>
+                                <img src={item.image} alt={item.title} className={styles.trendingCardThumb} />
+                                <span className={styles.trendingCardTag}>{item.category}</span>
+                            </div>
+                            <div className={styles.trendingCardContent}>
+                                <h4 className={styles.trendingCardTitle}>{item.title}</h4>
+                                <div className={styles.trendingCardMeta}>
+                                    <span>{item.viewCount} views</span>
+                                    <span>•</span>
+                                    <span>{formatDate(item.createdAt || new Date().toISOString())}</span>
                                 </div>
                             </div>
-                        </div>
-                    )}
-
-                    <div className={styles.relatedGrid}>
-                        {relatedNews.slice(1, 5).map((item, i) => (
-                            <Link href={`/news/${item.id}`} key={i} className={styles.relatedCard}>
-                                <img src={item.image} alt={item.title} className={styles.relatedCardThumb} />
-                                <div className={styles.relatedCardContent}>
-                                    <span className={styles.relatedCardTag}>{item.category}</span>
-                                    <h4 className={styles.relatedCardTitle}>{item.title}</h4>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
+                        </Link>
+                    ))}
                 </div>
             </div>
         </div>

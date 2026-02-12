@@ -66,6 +66,7 @@ export async function login(credentials: any) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials),
+        credentials: 'include',
     });
     if (!res.ok) {
         const error = await res.json();
@@ -79,6 +80,7 @@ export async function register(userData: any) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
+        credentials: 'include',
     });
     if (!res.ok) {
         const error = await res.json();
@@ -87,11 +89,24 @@ export async function register(userData: any) {
     return res.json();
 }
 
-export async function getProfile(token: string) {
+export async function getProfile(token?: string) {
+    const headers: any = {};
+    if (token) headers.Authorization = `Bearer ${token}`;
+
     const res = await fetch(`${AUTH_BASE_URL}/profile`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers,
+        credentials: 'include',
     });
     if (!res.ok) throw new Error('Failed to fetch profile');
+    return res.json();
+}
+
+export async function logout() {
+    const res = await fetch(`${AUTH_BASE_URL}/logout`, {
+        method: 'POST',
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Logout failed');
     return res.json();
 }
 
@@ -100,9 +115,10 @@ export async function createNews(data: any, token: string) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
+            ...(token && { Authorization: `Bearer ${token}` })
         },
         body: JSON.stringify(data),
+        credentials: 'include',
     });
     if (!res.ok) throw new Error('Failed to create news');
     return res.json();
@@ -113,9 +129,10 @@ export async function updateNews(id: string, data: any, token: string) {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
+            ...(token && { Authorization: `Bearer ${token}` })
         },
         body: JSON.stringify(data),
+        credentials: 'include',
     });
     if (!res.ok) throw new Error('Failed to update news');
     return res.json();
@@ -125,14 +142,15 @@ export async function deleteNews(id: string, token: string) {
     const res = await fetch(`${API_BASE_URL}/news/${id}`, {
         method: 'DELETE',
         headers: {
-            Authorization: `Bearer ${token}`
+            ...(token && { Authorization: `Bearer ${token}` })
         },
+        credentials: 'include',
     });
     if (!res.ok) throw new Error('Failed to delete news');
     return res.json();
 }
 
-export const UPLOAD_URL = 'http://127.0.0.1:5001/upload';
+export const UPLOAD_URL = 'http://localhost:5001/upload';
 
 export async function uploadImage(file: File, token: string) {
     const formData = new FormData();
@@ -141,9 +159,10 @@ export async function uploadImage(file: File, token: string) {
     const res = await fetch(UPLOAD_URL, {
         method: 'POST',
         headers: {
-            Authorization: `Bearer ${token}`
+            ...(token && { Authorization: `Bearer ${token}` })
         },
         body: formData,
+        credentials: 'include',
     });
 
     if (!res.ok) throw new Error('Failed to upload image');

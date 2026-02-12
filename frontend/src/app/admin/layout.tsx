@@ -7,7 +7,7 @@ import Link from 'next/link';
 import styles from './admin.module.css';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-    const { user, loading } = useAuth();
+    const { user, loading, logout } = useAuth();
     const router = useRouter();
 
     useEffect(() => {
@@ -27,7 +27,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <nav className={styles.nav}>
                     <Link href="/admin" className={styles.navItem}>Dashboard</Link>
                     <Link href="/admin/news" className={styles.navItem}>Manage News</Link>
+                    <Link href="/admin/news?action=new" className={styles.navItem}>Publish News</Link>
                     <Link href="/admin/users" className={styles.navItem}>Users</Link>
+                    <div className={styles.navDivider}></div>
+                    <button onClick={logout} className={styles.logoutBtn}>Logout</button>
                 </nav>
             </aside>
             <main className={styles.content}>

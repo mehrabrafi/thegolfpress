@@ -1,0 +1,140 @@
+.container {
+    background-color: var(--white);
+    min-height: 100vh;
+    padding-bottom: 80px;
+}
+
+.hero {
+    background-color: var(--light-gray);
+    padding: 80px 0;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.title {
+    font-family: var(--font-serif);
+    font-size: 3.5rem;
+    color: var(--black);
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+}
+
+.lastUpdated {
+    font-family: var(--font-sans-condensed);
+    font-size: 0.9rem;
+    color: var(--medium-gray);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.contentWrapper {
+    max-width: 800px;
+    margin: 60px auto 0;
+    padding: 0 20px;
+}
+
+.section {
+    margin-bottom: 50px;
+}
+
+.sectionTitle {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    color: var(--black);
+    margin-bottom: 25px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.sectionTitle::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background-color: var(--primary-red);
+}
+
+.text {
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.list {
+    margin-bottom: 25px;
+    padding-left: 20px;
+}
+
+.listItem {
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #333;
+    margin-bottom: 12px;
+    position: relative;
+}
+
+.listItem::before {
+    content: '•';
+    color: var(--primary-red);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+.subTitle {
+    font-family: var(--font-sans-condensed);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--black);
+    margin: 30px 0 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.contactBox {
+    background-color: var(--light-gray);
+    padding: 40px;
+    border-radius: 4px;
+    margin-top: 60px;
+    border-left: 4px solid var(--primary-red);
+}
+
+.contactBox h3 {
+    margin-top: 0;
+}
+
+.contactBox p {
+    margin-bottom: 0;
+}
+
+.link {
+    color: var(--primary-red);
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+
+.link:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 2.5rem;
+    }
+
+    .hero {
+        padding: 60px 0;
+    }
+
+    .sectionTitle {
+        font-size: 1.5rem;
+    }
+}

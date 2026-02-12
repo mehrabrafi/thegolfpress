@@ -28,3 +28,51 @@
     font-weight: 700;
     color: #0f172a;
 }
+
+.quickActions {
+    margin-bottom: 40px;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.sectionTitle {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 15px;
+}
+
+.actionBtn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    background: #f8fafc;
+}
+
+.actionBtn:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.actionBtn.primary {
+    background: #cc0000;
+    color: white;
+    border-color: #cc0000;
+}
+
+.actionBtn.primary:hover {
+    background: #a90000;
+    box-shadow: 0 4px 12px rgba(204, 0, 0, 0.2);
+}

@@ -96,6 +96,7 @@ const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
                 class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none',
             },
         },
+        immediatelyRender: false,
     });
 
     // Sync external value changes if needed (but care to avoid loops)

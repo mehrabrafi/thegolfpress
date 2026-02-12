@@ -58,13 +58,16 @@
     padding: 5px;
 }
 
-.logo {
-    font-family: var(--font-serif);
-    font-weight: 800;
-    font-size: 1.8rem;
-    letter-spacing: -1px;
-    color: var(--black);
-    text-transform: uppercase;
+.logoLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menuLogo {
+    height: 80px;
+    width: auto;
+    object-fit: contain;
 }
 
 .mainNav {
@@ -155,9 +158,9 @@
 
 .plusBrand {
     font-family: var(--font-serif);
-    font-weight: 800;
+    font-weight: 700;
     font-size: 1.8rem;
-    color: var(--black);
+    letter-spacing: -0.5px;
 }
 
 .plus {

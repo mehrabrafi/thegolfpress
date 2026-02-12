@@ -18,8 +18,8 @@
 }
 
 .categoryLabel {
-    background: #e8f5e9;
-    color: #2ecc71;
+    background: #fff5f5;
+    color: var(--primary-red);
     font-family: 'Inter', sans-serif;
     font-size: 0.75rem;
     font-weight: 700;
@@ -146,7 +146,7 @@
 }
 
 .articleBody blockquote {
-    border-left: 4px solid #2ecc71;
+    border-left: 4px solid var(--primary-red);
     padding-left: 20px;
     margin: 40px 0;
     font-style: italic;
@@ -158,7 +158,7 @@
 
 /* Quote Block */
 .quoteBlock {
-    border-left: 4px solid #2ecc71;
+    border-left: 4px solid var(--primary-red);
     padding-left: 20px;
     margin: 40px 0;
     font-style: italic;
@@ -188,7 +188,7 @@
 }
 
 .statsIcon {
-    color: #2ecc71;
+    color: var(--primary-red);
     font-weight: 900;
 }
 
@@ -272,7 +272,7 @@
 .greenBar {
     width: 4px;
     height: 24px;
-    background: #2ecc71;
+    background: var(--primary-red);
 }
 
 .sectionTitle {
@@ -318,7 +318,7 @@
 .trendingCategory {
     font-family: 'Inter', sans-serif;
     font-size: 0.65rem;
-    color: #2ecc71;
+    color: var(--primary-red);
     font-weight: 700;
     text-transform: uppercase;
     margin-bottom: 2px;
@@ -352,7 +352,7 @@
     padding: 12px;
     margin-top: 10px;
     background: #f8f9fa;
-    color: #2ecc71;
+    color: var(--primary-red);
     font-family: 'Inter', sans-serif;
     font-size: 0.85rem;
     font-weight: 700;
@@ -363,9 +363,9 @@
 }
 
 .viewAllTrending:hover {
-    background: #2ecc71;
+    background: var(--primary-red);
     color: white;
-    border-color: #2ecc71;
+    border-color: var(--primary-red);
 }
 
 .viewAllTrending span {
@@ -380,111 +380,109 @@
     border-top: 1px solid #e2e8f0;
 }
 
-.relatedLayout {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    gap: 30px;
+/* Trending Now Bottom Horizontal Scroll */
+.trendingGrid {
+    display: flex;
+    gap: 24px;
     margin-top: 30px;
+    overflow-x: auto;
+    padding-bottom: 20px;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
 }
 
-.featuredOverlayWrapper {
-    position: relative;
-    border-radius: 4px;
-    overflow: hidden;
-    height: 520px;
-    cursor: pointer;
+.trendingGrid::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
 }
 
-.featuredThumb {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.featuredOverlayWrapper:hover .featuredThumb {
-    transform: scale(1.03);
-}
-
-.featuredTextOverlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 40px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 100%);
-    color: white;
-}
-
-.overlayTag {
-    font-family: var(--font-sans);
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #cbd5e0;
-}
-
-.overlayTitle {
-    font-family: var(--font-sans-condensed);
-    font-size: 2.2rem;
-    font-weight: 800;
-    line-height: 1.1;
-    margin-top: 8px;
-    text-transform: uppercase;
-}
-
-.relatedGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 20px;
-}
-
-.relatedCard {
-    background: #fff;
+.trendingCard {
+    flex: 0 0 320px;
+    /* Fixed width for horizontal scrolling */
     display: flex;
     flex-direction: column;
     text-decoration: none;
-    transition: transform 0.2s ease;
+    transition: transform 0.3s ease;
 }
 
-.relatedCard:hover {
-    transform: translateY(-4px);
+.trendingCard:hover {
+    transform: translateY(-8px);
 }
 
-.relatedCardThumb {
+.trendingCardThumbWrapper {
+    position: relative;
     width: 100%;
-    height: 160px;
-    object-fit: cover;
-    border-radius: 4px;
+    aspect-ratio: 16/9;
+    border-radius: 8px;
+    overflow: hidden;
     margin-bottom: 15px;
 }
 
-.relatedCardTag {
-    font-family: var(--font-sans);
-    font-size: 0.65rem;
-    font-weight: 700;
-    color: #718096;
-    text-transform: uppercase;
-    margin-bottom: 6px;
+.trendingCardThumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
 }
 
-.relatedCardTitle {
-    font-family: var(--font-sans);
-    font-size: 0.95rem;
-    font-weight: 800;
-    color: #000;
-    line-height: 1.3;
+.trendingCard:hover .trendingCardThumb {
+    transform: scale(1.05);
+}
+
+.trendingCardTag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--primary-red);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.trendingCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.trendingCardTitle {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1a202c;
+    line-height: 1.4;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.trendingCardMeta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    color: #718096;
 }
 
 @media (max-width: 1100px) {
     .topLayout {
         grid-template-columns: 1fr;
     }
+}
 
-    .relatedLayout {
-        grid-template-columns: 1fr;
+@media (max-width: 600px) {
+    .trendingCard {
+        flex: 0 0 280px;
     }
 }
 
@@ -523,7 +521,7 @@
     position: absolute;
     top: 30px;
     left: 30px;
-    background: var(--primary-green);
+    background: var(--primary-red);
     color: white;
     padding: 6px 16px;
     border-radius: 99px;

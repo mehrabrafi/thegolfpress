@@ -10,15 +10,12 @@ export default function Footer() {
             <div className="container">
                 <div className={styles.topSection}>
                     <div className={styles.brandCol}>
-                        <Link href="/" className={styles.logo}>
-                            TheGolfPress
+                        <Link href="/" className={styles.footerLogo}>
+                            <img src="/logo.png" alt="The Golf Press" className={styles.logoImage} />
                         </Link>
                         <p className={styles.description}>
                             The definitive voice in golf, delivering real-time scores, expert instruction, and premium news.
                         </p>
-                        <div className={styles.monogram}>
-                            T . G . P
-                        </div>
                     </div>
 
                     <div className={styles.linksCol}>
@@ -91,6 +88,7 @@ export default function Footer() {
                     </div>
                     <div className={styles.legalLinks}>
                         <Link href="/privacy">Privacy Policy</Link>
+                        <Link href="/cookies-policy">Cookies Policy</Link>
                         <Link href="/terms">Terms of Service</Link>
                     </div>
                 </div>

@@ -51,27 +51,16 @@
 }
 
 /* T.G.P Logo */
-.logo {
-    display: block;
-    text-align: center;
-    font-family: 'Playfair Display', serif;
-    font-weight: 800;
-    font-size: 3rem;
-    letter-spacing: -1px;
-    color: #000000;
-    text-transform: uppercase;
+.logoLink {
+    display: flex;
+    justify-content: center;
     margin-bottom: 50px;
-    line-height: 1;
-    text-decoration: none;
 }
 
-.dot {
-    color: #ed3e49;
-    /* Golf Red */
-    font-size: 0.6em;
-    margin: 0 4px;
-    position: relative;
-    top: -4px;
+.authLogo {
+    height: 120px;
+    width: auto;
+    object-fit: contain;
 }
 
 /* Title */

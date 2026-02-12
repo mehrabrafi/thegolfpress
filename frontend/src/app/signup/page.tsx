@@ -7,7 +7,6 @@ import Link from 'next/link';
 
 export default function SignupPage() {
     const { signup } = useAuth();
-    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -16,7 +15,7 @@ export default function SignupPage() {
         e.preventDefault();
         setError('');
         try {
-            await signup({ name, email, password });
+            await signup({ email, password });
         } catch (err: any) {
             setError(err.message || 'Signup failed');
         }
@@ -33,8 +32,8 @@ export default function SignupPage() {
             <div className={styles.formSection}>
                 <div className={styles.formContent}>
                     {/* Brand Logo */}
-                    <Link href="/" className={styles.logo}>
-                        T<span className={styles.dot}>.</span>G<span className={styles.dot}>.</span>P
+                    <Link href="/" className={styles.logoLink}>
+                        <img src="/logo.png" alt="The Golf Press" className={styles.authLogo} />
                     </Link>
 
                     <h1 className={styles.title}>CREATE AN ACCOUNT</h1>
@@ -42,16 +41,7 @@ export default function SignupPage() {
                     {error && <div className={styles.error}>{error}</div>}
 
                     <form onSubmit={handleSubmit} className={styles.form}>
-                        <div className={styles.group}>
-                            <label>FULL NAME</label>
-                            <input
-                                type="text"
-                                value={name}
-                                onChange={e => setName(e.target.value)}
-                                required
-                                className={styles.input}
-                            />
-                        </div>
+
 
                         <div className={styles.group}>
                             <label>EMAIL</label>
@@ -77,14 +67,14 @@ export default function SignupPage() {
 
                         {/* Legal Text */}
                         <div style={{ fontSize: '0.7rem', color: '#666', lineHeight: '1.4', marginTop: '10px' }}>
-                            By creating an account, you agree to our <a href="#" style={{ textDecoration: 'underline' }}>Visitor Agreement</a> and acknowledge our <a href="#" style={{ textDecoration: 'underline' }}>Privacy Policy</a>.
+                            By creating an account, you acknowledge our <Link href="/privacy" style={{ textDecoration: 'underline' }}>Privacy Policy</Link>.
                         </div>
 
                         {/* Checkbox */}
                         <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', marginTop: '10px' }}>
                             <input type="checkbox" style={{ marginTop: '3px' }} />
                             <span style={{ fontSize: '0.7rem', color: '#666', lineHeight: '1.4' }}>
-                                The Golf Press and its affiliates may use your email address to send updates, news, ads, and offers. You can opt out or learn more about your rights via the <a href="#" style={{ textDecoration: 'underline' }}>Privacy Policy</a>.
+                                The Golf Press and its affiliates may use your email address to send updates, news, ads, and offers. You can opt out or learn more about your rights via the <Link href="/privacy" style={{ textDecoration: 'underline' }}>Privacy Policy</Link>.
                             </span>
                         </div>
 

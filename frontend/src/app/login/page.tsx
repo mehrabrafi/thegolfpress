@@ -31,8 +31,8 @@ export default function LoginPage() {
             <div className={styles.formSection}>
                 <div className={styles.formContent}>
                     {/* Brand Logo */}
-                    <Link href="/" className={styles.logo}>
-                        T<span className={styles.dot}>.</span>G<span className={styles.dot}>.</span>P
+                    <Link href="/" className={styles.logoLink}>
+                        <img src="/logo.png" alt="The Golf Press" className={styles.authLogo} />
                     </Link>
 
                     <h1 className={styles.title}>SIGN IN</h1>

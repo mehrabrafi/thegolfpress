@@ -17,7 +17,7 @@ async function main() {
         create: {
             id: 'michael',
             name: 'Michael Breed',
-            image: 'https://i.pravatar.cc/150?u=michael',
+            image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
         },
     });
 
@@ -27,7 +27,7 @@ async function main() {
         create: {
             id: 'sarah',
             name: 'Sarah Stirk',
-            image: 'https://i.pravatar.cc/150?u=sarah',
+            image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
         },
     });
 
@@ -37,7 +37,7 @@ async function main() {
         create: {
             id: 'staff',
             name: 'GolfWire Staff',
-            image: 'https://i.pravatar.cc/150?u=staff',
+            image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
         },
     });
 
@@ -47,7 +47,7 @@ async function main() {
         create: {
             id: 'david',
             name: 'David Leadbetter',
-            image: 'https://i.pravatar.cc/150?u=david',
+            image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
         },
     });
 
@@ -60,7 +60,7 @@ async function main() {
             title: "Scottie Scheffler's Historic Run Continues at The Masters",
             excerpt: "The world number one delivers a masterclass performance, pulling away from the field on a demanding Sunday afternoon at Augusta National.",
             time: '15 min ago',
-            image: 'https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?q=80&w=2070&auto=format&fit=crop',
+            image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
             content: "Scottie Scheffler confirmed his status as the best player in the world with a commanding four-shot victory at The Masters. The world number one displayed nerves of steel and unmatched precision on a gusty Sunday at Augusta National. Starting the day with a one-shot lead, Scheffler quickly established dominance with a flurry of birdies on the front nine. Even a minor setback on the 10th didn't shake his confidence as he recovered with a spectacular approach on the 13th to set up a crucial birdie. By the time he reached the 18th hole, the green jacket was essentially his, allowing for an emotional walk up the final fairway. This victory marks his second Masters title in three years, solidifying his place among golf's elite.",
             authorId: michael.id,
         },
@@ -72,7 +72,7 @@ async function main() {
             title: "The New TaylorMade Driver: Comprehensive Review & Testing Data",
             excerpt: "We put the latest innovation from TaylorMade to the test with trackman data to see if it lives up to the marketing hype.",
             time: '2 hours ago',
-            image: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?q=80&w=2070&auto=format&fit=crop',
+            image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
             content: "TaylorMade has once again pushed the boundaries of golf equipment with their latest driver release. Our testing center spent a week with the new model, putting it through rigorous sessions with players of various skill levels. The standout feature is the refined face technology, which TaylorMade claims significantly improves ball speeds on off-center hits. Our Trackman data confirmed these claims, showing a consistent 2-3 mph increase compared to last year's model. The sound and feel have also been noticeably improved, offering a more muted and 'tour-like' impact. While the price tag is premium, the performance gains and added forgiveness make it a serious contender for the best driver of the year.",
             authorId: michael.id,
         },
@@ -84,7 +84,7 @@ async function main() {
             title: "Ticket Demand Soars for U.S. Open at Pinehurst No. 2",
             excerpt: "With Tiger Woods confirming his participation, secondary market prices have hit record highs for the upcoming major championship.",
             time: '4 hours ago',
-            image: 'https://images.unsplash.com/photo-1623126742512-eb7e313783a3?q=80&w=2062&auto=format&fit=crop',
+            image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
             content: "The anticipation for the upcoming U.S. Open at the legendary Pinehurst No. 2 has reached fever pitch. Following the official announcement that Tiger Woods will be competing, ticket demand has surged beyond all previous records. Platforms like StubHub and SeatGeek reporting a 300% increase in search volume within hours of the news. Weekly badges that were originally priced at $500 are now trading for upwards of $2,000. Pinehurst officials have alerted fans to be wary of counterfeit tickets and to only purchase through official channels. The combination of interest in the 'ultimate test in golf' and the return of the game's greatest icon makes this the most anticipated major in recent memory.",
             authorId: sarah.id,
         },
@@ -96,7 +96,7 @@ async function main() {
             title: "Rahm's Team Legion XIII Adds New Sponsor in Multi-Year Deal",
             excerpt: "The defending Masters champion continues to build his franchise value with a significant partnership announcement ahead of the next event.",
             time: '6 hours ago',
-            image: 'https://images.unsplash.com/photo-1593111774240-d529f12cf4bb?q=80&w=2076&auto=format&fit=crop',
+            image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
             content: "Jon Rahm's Legion XIII has secured a landmark sponsorship deal with a major global financial services firm. The deal, rumored to be worth in the eight-figure range over several years, marks one of the most significant commercial milestones for any LIV Golf franchise to date. The partnership will include prominent branding on team apparel and equipment, as well as joint marketing initiatives focused on expanding the team's reach in the European market. Rahm spoke enthusiastically about the partnership during a press conference today, stating that 'this is a testament to the growth and potential of team golf.' As the league moves towards a more sustainable franchise model, expect more of these major brand alignments.",
             authorId: staff.id,
         },
@@ -146,7 +146,7 @@ async function main() {
         title: item.title,
         excerpt: `Discover the best techniques for ${item.title.toLowerCase()} to improve your game.`,
         time: `${i + 1} days ago`,
-        image: `https://images.unsplash.com/photo-${1535131749006 + (i * 100)}?q=80&w=800&auto=format&fit=crop`,
+        image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
         content: `Detailed guide on ${item.title}. This instruction will help you master the craft of golf with professional tips and drills.`,
         authorId: staff.id,
     }));
@@ -183,7 +183,7 @@ async function main() {
         title: item.title,
         excerpt: `A comprehensive review of ${item.title}, one of the top-rated courses in the world.`,
         time: `${i + 1} weeks ago`,
-        image: `https://images.unsplash.com/photo-${1587174486073 + (i * 100)}?q=80&w=800&auto=format&fit=crop`,
+        image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
         content: `${item.title} offers an unparalleled golfing experience with stunning views and challenging layouts.`,
         authorId: staff.id,
     }));

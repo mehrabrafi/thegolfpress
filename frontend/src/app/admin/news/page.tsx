@@ -1,11 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { fetchNews, createNews, updateNews, deleteNews, uploadImage } from '@/lib/api';
 import RichTextEditor from '@/components/RichTextEditor';
 import styles from './news.module.css';
 
-export default function AdminNewsPage() {
+import { Suspense } from 'react';
+
+function AdminNewsContent() {
     const [news, setNews] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
@@ -22,9 +25,14 @@ export default function AdminNewsPage() {
 
     const [uploading, setUploading] = useState(false);
 
+    const searchParams = useSearchParams();
+
     useEffect(() => {
         loadNews();
-    }, []);
+        if (searchParams.get('action') === 'new') {
+            setIsEditing(true);
+        }
+    }, [searchParams]);
 
     const loadNews = async () => {
         try {
@@ -37,25 +45,31 @@ export default function AdminNewsPage() {
         }
     };
 
+    const [selectedFileName, setSelectedFileName] = useState('');
+
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
+        setSelectedFileName(file.name);
         setUploading(true);
+        console.log('Starting image upload for:', file.name);
         try {
             const token = localStorage.getItem('token');
-            if (!token) return;
+            if (!token) {
+                alert('Authentication session expired. Please log in again.');
+                return;
+            }
             const data = await uploadImage(file, token);
+            console.log('Image upload successful:', data.url);
             setFormData({ ...formData, image: data.url });
         } catch (error) {
-            console.error('Error uploading image', error);
-            alert('Failed to upload image');
+            console.error('Error uploading image:', error);
+            alert('Failed to upload image. Check console for details.');
         } finally {
             setUploading(false);
         }
     };
-
-    // ... lines skipped
 
 
     const handleEdit = (article: any) => {
@@ -70,6 +84,7 @@ export default function AdminNewsPage() {
         });
         setEditId(article.id);
         setIsEditing(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleDelete = async (id: string) => {
@@ -159,6 +174,9 @@ export default function AdminNewsPage() {
                                     <option value="EQUIPMENT">Equipment</option>
                                     <option value="INSTRUCTION">Instruction</option>
                                     <option value="LIFESTYLE">Lifestyle</option>
+                                    <option value="BREAKING">Breaking</option>
+                                    <option value="COURSES">Courses</option>
+                                    <option value="HOW-TO">How-To</option>
                                 </select>
                             </div>
                             <div className={styles.formGroup}>
@@ -214,9 +232,15 @@ export default function AdminNewsPage() {
                                     {uploading ? 'Uploading...' : 'Upload File'}
                                 </label>
                             </div>
+                            {selectedFileName && (
+                                <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '5px' }}>
+                                    Selected: {selectedFileName} {uploading && '(Uploading...)'}
+                                </div>
+                            )}
                             {formData.image && (
                                 <div style={{ marginTop: '10px' }}>
                                     <img src={formData.image} alt="Preview" style={{ height: '100px', borderRadius: '4px' }} />
+                                    <div style={{ fontSize: '0.8rem', color: '#10b981', marginTop: '5px' }}>✓ Uploaded successfully</div>
                                 </div>
                             )}
                         </div>
@@ -279,5 +303,13 @@ export default function AdminNewsPage() {
                 </table>
             </div>
         </div>
+    );
+}
+
+export default function AdminNewsPage() {
+    return (
+        <Suspense fallback={<div>Loading Page...</div>}>
+            <AdminNewsContent />
+        </Suspense>
     );
 }

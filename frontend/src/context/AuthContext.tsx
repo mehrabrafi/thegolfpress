@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect } from 'react';
-import { login as apiLogin, register as apiRegister, getProfile } from '@/lib/api';
+import { login as apiLogin, register as apiRegister, logout as apiLogout, getProfile } from '@/lib/api';
 import { useRouter } from 'next/navigation';
 
 interface AuthContextType {
@@ -27,15 +27,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     useEffect(() => {
         async function loadUser() {
-            const token = localStorage.getItem('token');
-            if (token) {
-                try {
-                    const profile = await getProfile(token);
-                    setUser(profile);
-                } catch (err) {
-                    console.error('Failed to load user', err);
-                    localStorage.removeItem('token');
-                }
+            try {
+                const token = localStorage.getItem('token');
+                const profile = await getProfile(token || undefined);
+                setUser(profile);
+            } catch (err) {
+                // If profile fails, user is likely not logged in or cookie expired
+                setUser(null);
+                localStorage.removeItem('token');
             }
             setLoading(false);
         }
@@ -44,19 +43,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const login = async (credentials: any) => {
         const data = await apiLogin(credentials);
-        localStorage.setItem('token', data.access_token);
+        if (data.access_token) {
+            localStorage.setItem('token', data.access_token);
+        }
         setUser(data.user);
-        router.push('/');
+        if (data.user.role === 'ADMIN') {
+            router.push('/admin/dashboard');
+        } else {
+            router.push('/');
+        }
     };
 
     const signup = async (userData: any) => {
         const data = await apiRegister(userData);
-        localStorage.setItem('token', data.access_token);
+        if (data.access_token) {
+            localStorage.setItem('token', data.access_token);
+        }
         setUser(data.user);
-        router.push('/');
+        if (data.user.role === 'ADMIN') {
+            router.push('/admin/dashboard');
+        } else {
+            router.push('/');
+        }
     };
 
-    const logout = () => {
+    const logout = async () => {
+        try {
+            await apiLogout();
+        } catch (err) {
+            console.error('Logout failed', err);
+        }
         localStorage.removeItem('token');
         setUser(null);
         router.push('/login');

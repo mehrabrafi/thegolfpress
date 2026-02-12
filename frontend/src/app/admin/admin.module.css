@@ -39,6 +39,29 @@
     color: white;
 }
 
+.navDivider {
+    height: 1px;
+    background: #334155;
+    margin: 10px 0;
+}
+
+.logoutBtn {
+    padding: 10px;
+    border-radius: 6px;
+    color: #fca5a5;
+    background: transparent;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.logoutBtn:hover {
+    background: #450a0a;
+    color: #ef4444;
+}
+
 .content {
     flex: 1;
     padding: 30px;

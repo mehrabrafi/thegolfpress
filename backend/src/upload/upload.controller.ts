@@ -11,6 +11,7 @@ export class UploadController {
     @UseGuards(AuthGuard('jwt'))
     @UseInterceptors(FileInterceptor('file'))
     async uploadFile(@UploadedFile() file: Express.Multer.File) {
+        console.log('Received file upload request:', file?.originalname);
         const url = await this.uploadService.uploadFile(file);
         return { url };
     }

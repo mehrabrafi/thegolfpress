@@ -9,7 +9,10 @@ export default function Hero({ article }: HeroProps) {
     if (!article) return null;
 
     return (
-        <section className={styles.hero} style={{ backgroundImage: `url(${article.image})` }}>
+        <section className={styles.hero}>
+            <div className={styles.bgWrapper}>
+                <img src={article.image} alt={article.title} className={styles.heroImage} />
+            </div>
             <div className={styles.overlay}>
                 <div className={styles.content}>
                     <span className={styles.tag}><span className={styles.icon}>⛳</span> {article.categoryTag || article.category}</span>
