@@ -316,7 +316,7 @@ export class GolfService {
                     },
                     take: 3,
                     orderBy: { createdAt: 'desc' },
-                    include: { author: true }
+                    include: {}
                 });
             } catch (newsError) {
                 this.logger.warn(`Could not fetch related news for ${profile.displayName}: ${newsError.message}`);
@@ -359,9 +359,7 @@ export class GolfService {
     async getNews(category?: string) {
         return this.prisma.news.findMany({
             where: category ? { category } : {},
-            include: {
-                author: true
-            },
+
             orderBy: {
                 createdAt: 'desc'
             }
@@ -376,9 +374,7 @@ export class GolfService {
                     increment: 1
                 }
             },
-            include: {
-                author: true
-            }
+
         });
     }
 
@@ -388,9 +384,7 @@ export class GolfService {
                 viewCount: 'desc'
             },
             take: 5,
-            include: {
-                author: true
-            }
+
         });
     }
 
@@ -402,13 +396,15 @@ export class GolfService {
                 content: data.content,
                 image: data.image,
                 category: data.category,
-                // Default values or simple handling for now
                 type: data.type || 'REGULAR',
                 categoryTag: data.categoryTag || data.category,
-                time: new Date().toLocaleDateString(), // Simple date string for now
-                author: {
-                    connect: { id: data.authorId } // Assuming author exists
-                }
+                time: data.time || new Date().toLocaleDateString(),
+                status: data.status || 'PUBLISHED',
+                publishedAt: data.publishedAt ? new Date(data.publishedAt) : new Date(),
+
+                // Relations handling
+                categoryRef: data.categoryId ? { connect: { id: data.categoryId } } : undefined,
+                subTag: data.subTagId ? { connect: { id: data.subTagId } } : undefined
             }
         });
     }
@@ -424,13 +420,144 @@ export class GolfService {
                 category: data.category,
                 type: data.type,
                 categoryTag: data.categoryTag,
+                status: data.status,
+                publishedAt: data.publishedAt ? new Date(data.publishedAt) : undefined,
+                categoryId: data.categoryId || null,
+                categoryRef: data.categoryId ? { connect: { id: data.categoryId } } : undefined,
+                subTagId: data.subTagId || null,
+                subTag: data.subTagId ? { connect: { id: data.subTagId } } : undefined,
+
             }
+        });
+    }
+
+    // Category Management
+    async getCategories() {
+        return this.prisma.category.findMany({
+            orderBy: { name: 'asc' },
+            include: {
+                subTags: true,
+                _count: {
+                    select: { news: true }
+                }
+            }
+        });
+    }
+
+    async createCategory(data: any) {
+        const slug = data.name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+        return this.prisma.category.create({
+            data: {
+                name: data.name,
+                slug: data.slug || slug
+            }
+        });
+    }
+
+    async updateCategory(id: string, data: any) {
+        return this.prisma.category.update({
+            where: { id },
+            data: {
+                name: data.name,
+                slug: data.slug
+            }
+        });
+    }
+
+    async deleteCategory(id: string) {
+        return this.prisma.category.delete({
+            where: { id }
+        });
+    }
+
+    // Sub-Tag Management
+    async getSubTags(categoryId?: string) {
+        return this.prisma.subTag.findMany({
+            where: categoryId ? { categoryId } : {},
+            orderBy: { name: 'asc' },
+            include: {
+                _count: {
+                    select: { news: true }
+                }
+            }
+        });
+    }
+
+    async createSubTag(data: any) {
+        return this.prisma.subTag.create({
+            data: {
+                name: data.name,
+                categoryId: data.categoryId
+            }
+        });
+    }
+
+    async updateSubTag(id: string, data: any) {
+        return this.prisma.subTag.update({
+            where: { id },
+            data: {
+                name: data.name,
+                categoryId: data.categoryId
+            }
+        });
+    }
+
+    async deleteSubTag(id: string) {
+        return this.prisma.subTag.delete({
+            where: { id }
         });
     }
 
     async deleteNews(id: string) {
         return this.prisma.news.delete({
             where: { id }
+        });
+    }
+
+
+
+    async getStats() {
+        const [userCount, newsCount, publishedCount] = await Promise.all([
+            this.prisma.user.count(),
+            this.prisma.news.count(),
+            this.prisma.news.count({ where: { status: 'PUBLISHED' } })
+        ]);
+
+        return {
+            totalUsers: userCount,
+            totalPosts: newsCount,
+            publishedPosts: publishedCount,
+            draftPosts: newsCount - publishedCount
+        };
+    }
+
+    async getUsers() {
+        return this.prisma.user.findMany({
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                role: true,
+                createdAt: true
+            }
+        });
+    }
+
+    async updateUserRole(id: string, role: any) {
+        return this.prisma.user.update({
+            where: { id },
+            data: { role }
+        });
+    }
+
+    async getSettings() {
+        return this.prisma.setting.findMany();
+    }
+
+    async updateSetting(key: string, value: string) {
+        return this.prisma.setting.update({
+            where: { key },
+            data: { value }
         });
     }
 }

@@ -59,20 +59,8 @@ export default function NewsDetailPage() {
                     <h1 className={styles.title}>{article.title}</h1>
 
                     <div className={styles.authorRow}>
-                        <div className={styles.authorInfo}>
-                            <img
-                                src={article.author?.image || 'https://via.placeholder.com/150'}
-                                alt={article.author?.name || 'Author'}
-                                className={styles.authorAvatar}
-                            />
-                            <div className={styles.authorText}>
-                                <span className={styles.authorName}>{article.author?.name || 'GolfWire Staff'}</span>
-                                <span className={styles.authorRole}>Senior Golf Correspondent</span>
-                            </div>
-                        </div>
                         <div className={styles.publishInfo}>
                             {formatDate(article.createdAt || new Date().toISOString())} • {article.readTime || '5 min read'}
-                            {/* Assuming readTime exists or default */}
                         </div>
                     </div>
 

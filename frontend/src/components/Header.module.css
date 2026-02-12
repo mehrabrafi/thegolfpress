@@ -56,8 +56,11 @@
     align-items: center;
     justify-content: center;
     height: 100%;
+    width: 300px;
+    margin: 0 auto;
     position: relative;
     z-index: 1100;
+    pointer-events: auto;
 }
 
 .logoImage {
@@ -69,6 +72,7 @@
     transform: translateY(-50%);
     /* Centered vertically */
     filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
+    pointer-events: none;
 }
 
 .dot {
@@ -194,7 +198,6 @@
 
 /* --- Category Page Header (Single Row) --- */
 .categoryHeader {
-    height: 90px;
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -202,7 +205,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 100%;
+    height: 90px;
     position: relative;
     padding: 0 20px;
 }
@@ -296,4 +299,62 @@
     .logoImage {
         height: 130px;
     }
+}
+
+/* --- Sub-Navigation Row --- */
+.subNavBar {
+    background: #ffffff;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 2px solid #eee;
+}
+
+
+.subNavContent {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.subNav {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    padding: 12px 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.subNav::-webkit-scrollbar {
+    display: none;
+}
+
+.subNavLink {
+    font-family: var(--font-sans-condensed);
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: #888;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    white-space: nowrap;
+    transition: all 0.2s;
+    padding: 5px 0;
+}
+
+.subNavLink:hover {
+    color: var(--black);
+}
+
+.subNavLinkActive {
+    color: var(--black);
+    position: relative;
+}
+
+.subNavLinkActive::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--primary-red);
 }

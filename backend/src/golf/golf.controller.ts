@@ -58,12 +58,9 @@ export class GolfController {
 
     @UseGuards(AuthGuard('jwt'))
     @Post('news')
-    async createNews(@Body() body, @Request() req) {
-        // We might want to link it to the current user as author, but for now lets assume author details are managed separately or simplified
-        // The service expects authorId, so we might need a default author or create one for the user
-        // For simplicity, let's just pass body.authorId or a default
-        const authorId = 'staff'; // Default staff author for now
-        return this.golfService.createNews({ ...body, authorId });
+    async createNews(@Body() body) {
+        // Enforce a unified website author instead of individual authors
+        return this.golfService.createNews({ ...body });
     }
 
     @UseGuards(AuthGuard('jwt'))
@@ -76,5 +73,85 @@ export class GolfController {
     @Delete('news/:id')
     async deleteNews(@Param('id') id: string) {
         return this.golfService.deleteNews(id);
+    }
+
+
+
+    // Category Management
+    @Get('categories')
+    async getCategories() {
+        return this.golfService.getCategories();
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Post('categories')
+    async createCategory(@Body() body) {
+        return this.golfService.createCategory(body);
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Put('categories/:id')
+    async updateCategory(@Param('id') id: string, @Body() body) {
+        return this.golfService.updateCategory(id, body);
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Delete('categories/:id')
+    async deleteCategory(@Param('id') id: string) {
+        return this.golfService.deleteCategory(id);
+    }
+
+    // Sub-Tag Management
+    @Get('sub-tags')
+    async getSubTags(@Query('categoryId') categoryId?: string) {
+        return this.golfService.getSubTags(categoryId);
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Post('sub-tags')
+    async createSubTag(@Body() body) {
+        return this.golfService.createSubTag(body);
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Put('sub-tags/:id')
+    async updateSubTag(@Param('id') id: string, @Body() body) {
+        return this.golfService.updateSubTag(id, body);
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Delete('sub-tags/:id')
+    async deleteSubTag(@Param('id') id: string) {
+        return this.golfService.deleteSubTag(id);
+    }
+
+    // Admin Dashboard & User Management
+    @UseGuards(AuthGuard('jwt'))
+    @Get('admin/stats')
+    async getStats() {
+        return this.golfService.getStats();
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Get('admin/users')
+    async getUsers() {
+        return this.golfService.getUsers();
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Put('admin/users/:id/role')
+    async updateUserRole(@Param('id') id: string, @Body('role') role: string) {
+        return this.golfService.updateUserRole(id, role as any);
+    }
+
+    @Get('settings')
+    async getSettings() {
+        return this.golfService.getSettings();
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Put('settings/:key')
+    async updateSetting(@Param('key') key: string, @Body('value') value: string) {
+        return this.golfService.updateSetting(key, value);
     }
 }

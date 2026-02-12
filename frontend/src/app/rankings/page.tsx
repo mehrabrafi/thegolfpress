@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { fetchRankings } from '@/lib/api';
 import styles from './rankings.module.css';
+import Loading from '@/components/Loading';
 
 export default function RankingsPage() {
     const [categories, setCategories] = useState<any[]>([]);
@@ -29,7 +30,7 @@ export default function RankingsPage() {
     const activeCategory = categories.find(c => c.id === activeCategoryId);
 
     if (loading) {
-        return <div className={styles.loading}>Loading PGA Tour Rankings...</div>;
+        return <Loading />;
     }
 
     return (

@@ -315,8 +315,6 @@ export default function PlayerProfileClient({ id }: { id: string }) {
                                     <h3 className={styles.newsTitle}>{news.title}</h3>
                                     <p className={styles.newsExcerpt}>{news.excerpt}</p>
                                     <div className={styles.newsMeta}>
-                                        <span>BY {news.author?.name}</span>
-                                        <span>•</span>
                                         <span>{new Date(news.createdAt).toLocaleDateString()}</span>
                                     </div>
                                 </div>

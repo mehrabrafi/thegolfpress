@@ -1,0 +1,174 @@
+.container {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.header {
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 4px;
+}
+
+.header p {
+    color: #64748b;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    gap: 20px;
+}
+
+.searchWrapper {
+    flex: 1;
+    max-width: 400px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 0 15px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.searchWrapper input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    outline: none;
+    font-size: 0.95rem;
+}
+
+.searchWrapper svg {
+    color: #94a3b8;
+}
+
+.userCount {
+    font-size: 0.9rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.tableCard {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f1f5f9;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    text-align: left;
+    padding: 16px 24px;
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.table td {
+    padding: 16px 24px;
+    border-bottom: 1px solid #f8fafc;
+    vertical-align: middle;
+}
+
+.userName {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    background: #f1f5f9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: #475569;
+}
+
+.unnamed {
+    color: #94a3b8;
+    font-style: italic;
+    font-weight: 400;
+}
+
+.userEmail,
+.joinDate {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.roleSelect {
+    padding: 6px 12px;
+    border-radius: 99px;
+    border: 1px solid #e2e8f0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    outline: none;
+    transition: 0.2s;
+}
+
+.roleSelect.admin {
+    background: #fee2e2;
+    color: #ef4444;
+    border-color: #fecaca;
+}
+
+.roleSelect.editor {
+    background: #fef9c3;
+    color: #854d0e;
+    border-color: #fef08a;
+}
+
+.roleSelect.user {
+    background: #f1f5f9;
+    color: #475569;
+    border-color: #e2e8f0;
+}
+
+.actionBtn {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.actionBtn:hover {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.loading {
+    padding: 100px;
+    text-align: center;
+    color: #94a3b8;
+    font-weight: 600;
+}

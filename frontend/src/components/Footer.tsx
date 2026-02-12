@@ -1,20 +1,38 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './Footer.module.css';
 import { Instagram, Youtube, Facebook, Twitter, Mail } from 'lucide-react';
+import { fetchSettings } from '@/lib/api';
 
 export default function Footer() {
+    const [settings, setSettings] = useState<any[]>([]);
+
+    useEffect(() => {
+        async function load() {
+            try {
+                const data = await fetchSettings();
+                setSettings(data);
+            } catch (e) {
+                console.error('Footer settings load error', e);
+            }
+        }
+        load();
+    }, []);
+
+    const getVal = (key: string, fallback: string) => settings.find(s => s.key === key)?.value || fallback;
+
     return (
         <footer className={styles.footer}>
             <div className="container">
                 <div className={styles.topSection}>
                     <div className={styles.brandCol}>
                         <Link href="/" className={styles.footerLogo}>
-                            <img src="/logo.png" alt="The Golf Press" className={styles.logoImage} />
+                            <img src="/logo.png" alt={getVal('site_name', 'The Golf Press')} className={styles.logoImage} />
                         </Link>
                         <p className={styles.description}>
-                            The definitive voice in golf, delivering real-time scores, expert instruction, and premium news.
+                            {getVal('site_description', 'The definitive voice in golf, delivering real-time scores, expert instruction, and premium news.')}
                         </p>
                     </div>
 
@@ -36,19 +54,19 @@ export default function Footer() {
                         <div className={styles.socialSection}>
                             <h4>Connect</h4>
                             <div className={styles.socialIcons}>
-                                <Link href="#" className={styles.socialIconItem} aria-label="Instagram">
+                                <a href={getVal('social_instagram', '#')} className={styles.socialIconItem} target="_blank" rel="noopener noreferrer">
                                     <span className={styles.iconCircle}><Instagram size={14} /></span>
                                     <span className={styles.platformName}>Instagram</span>
-                                </Link>
-                                <Link href="#" className={styles.socialIconItem} aria-label="Twitter">
+                                </a>
+                                <a href={getVal('social_twitter', '#')} className={styles.socialIconItem} target="_blank" rel="noopener noreferrer">
                                     <span className={styles.iconCircle}><Twitter size={14} /></span>
                                     <span className={styles.platformName}>Twitter</span>
-                                </Link>
-                                <Link href="#" className={styles.socialIconItem} aria-label="Facebook">
+                                </a>
+                                <a href={getVal('social_facebook', '#')} className={styles.socialIconItem} target="_blank" rel="noopener noreferrer">
                                     <span className={styles.iconCircle}><Facebook size={14} /></span>
                                     <span className={styles.platformName}>Facebook</span>
-                                </Link>
-                                <Link href="#" className={styles.socialIconItem} aria-label="Youtube">
+                                </a>
+                                <Link href="#" className={styles.socialIconItem}>
                                     <span className={styles.iconCircle}><Youtube size={14} /></span>
                                     <span className={styles.platformName}>YouTube</span>
                                 </Link>
@@ -62,21 +80,14 @@ export default function Footer() {
                             <span className={styles.inquiryLabel}>EDITORIAL</span>
                             <div className={styles.emailWrapper}>
                                 <Mail size={14} className={styles.mailIcon} />
-                                <a href="mailto:editor@thegolfpress.com" className={styles.inquiryEmail}>editor@thegolfpress.com</a>
+                                <a href={`mailto:${getVal('contact_email_editorial', 'editor@thegolfpress.com')}`} className={styles.inquiryEmail}>{getVal('contact_email_editorial', 'editor@thegolfpress.com')}</a>
                             </div>
                         </div>
                         <div className={styles.inquiryItem}>
                             <span className={styles.inquiryLabel}>ADVERTISING</span>
                             <div className={styles.emailWrapper}>
                                 <Mail size={14} className={styles.mailIcon} />
-                                <a href="mailto:ads@thegolfpress.com" className={styles.inquiryEmail}>ads@thegolfpress.com</a>
-                            </div>
-                        </div>
-                        <div className={styles.inquiryItem}>
-                            <span className={styles.inquiryLabel}>PARTNERSHIPS</span>
-                            <div className={styles.emailWrapper}>
-                                <Mail size={14} className={styles.mailIcon} />
-                                <a href="mailto:partners@thegolfpress.com" className={styles.inquiryEmail}>partners@thegolfpress.com</a>
+                                <a href={`mailto:${getVal('contact_email_ads', 'ads@thegolfpress.com')}`} className={styles.inquiryEmail}>{getVal('contact_email_ads', 'ads@thegolfpress.com')}</a>
                             </div>
                         </div>
                     </div>
@@ -84,7 +95,7 @@ export default function Footer() {
 
                 <div className={styles.bottomSection}>
                     <div className={styles.copyright}>
-                        &copy; {new Date().getFullYear()} TheGolfPress. All rights reserved.
+                        &copy; {new Date().getFullYear()} {getVal('site_name', 'The Golf Press')}. All rights reserved.
                     </div>
                     <div className={styles.legalLinks}>
                         <Link href="/privacy">Privacy Policy</Link>

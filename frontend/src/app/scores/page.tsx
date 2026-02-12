@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { fetchLeaderboard } from '@/lib/api';
 import styles from './scores.module.css';
+import Loading from '@/components/Loading';
 
 export default function ScoresPage() {
     const [data, setData] = useState<any>(null);
@@ -22,7 +23,7 @@ export default function ScoresPage() {
         load();
     }, []);
 
-    if (loading) return <div className={styles.loading}>Loading Full Leaderboard...</div>;
+    if (loading) return <Loading />;
 
     return (
         <div className="container" style={{ marginTop: '40px', marginBottom: '80px' }}>

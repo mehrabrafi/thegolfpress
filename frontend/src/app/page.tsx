@@ -30,7 +30,14 @@ export default function Home() {
 
       // News
       fetchNews()
-        .then(data => setNews(data))
+        .then(data => {
+          // Filter out How-To and Courses from main news feed
+          const filteredNews = data.filter((item: any) => {
+            const cat = (item.category || '').toUpperCase();
+            return cat !== 'HOW-TO' && cat !== 'COURSES' && cat !== 'HOW TO' && cat !== 'COURSE';
+          });
+          setNews(filteredNews);
+        })
         .catch(err => console.error('Error loading news:', err));
 
       // How To

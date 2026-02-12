@@ -11,45 +11,7 @@ async function main() {
     console.log('Seeding data...');
 
     // Create Authors
-    const michael = await prisma.author.upsert({
-        where: { id: 'michael' },
-        update: {},
-        create: {
-            id: 'michael',
-            name: 'Michael Breed',
-            image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
-        },
-    });
 
-    const sarah = await prisma.author.upsert({
-        where: { id: 'sarah' },
-        update: {},
-        create: {
-            id: 'sarah',
-            name: 'Sarah Stirk',
-            image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
-        },
-    });
-
-    const staff = await prisma.author.upsert({
-        where: { id: 'staff' },
-        update: {},
-        create: {
-            id: 'staff',
-            name: 'GolfWire Staff',
-            image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
-        },
-    });
-
-    const david = await prisma.author.upsert({
-        where: { id: 'david' },
-        update: {},
-        create: {
-            id: 'david',
-            name: 'David Leadbetter',
-            image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
-        },
-    });
 
     // Create News
     const newsData = [
@@ -62,7 +24,7 @@ async function main() {
             time: '15 min ago',
             image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
             content: "Scottie Scheffler confirmed his status as the best player in the world with a commanding four-shot victory at The Masters. The world number one displayed nerves of steel and unmatched precision on a gusty Sunday at Augusta National. Starting the day with a one-shot lead, Scheffler quickly established dominance with a flurry of birdies on the front nine. Even a minor setback on the 10th didn't shake his confidence as he recovered with a spectacular approach on the 13th to set up a crucial birdie. By the time he reached the 18th hole, the green jacket was essentially his, allowing for an emotional walk up the final fairway. This victory marks his second Masters title in three years, solidifying his place among golf's elite.",
-            authorId: michael.id,
+
         },
         {
             id: '2',
@@ -74,7 +36,7 @@ async function main() {
             time: '2 hours ago',
             image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
             content: "TaylorMade has once again pushed the boundaries of golf equipment with their latest driver release. Our testing center spent a week with the new model, putting it through rigorous sessions with players of various skill levels. The standout feature is the refined face technology, which TaylorMade claims significantly improves ball speeds on off-center hits. Our Trackman data confirmed these claims, showing a consistent 2-3 mph increase compared to last year's model. The sound and feel have also been noticeably improved, offering a more muted and 'tour-like' impact. While the price tag is premium, the performance gains and added forgiveness make it a serious contender for the best driver of the year.",
-            authorId: michael.id,
+
         },
         {
             id: '3',
@@ -86,7 +48,7 @@ async function main() {
             time: '4 hours ago',
             image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
             content: "The anticipation for the upcoming U.S. Open at the legendary Pinehurst No. 2 has reached fever pitch. Following the official announcement that Tiger Woods will be competing, ticket demand has surged beyond all previous records. Platforms like StubHub and SeatGeek reporting a 300% increase in search volume within hours of the news. Weekly badges that were originally priced at $500 are now trading for upwards of $2,000. Pinehurst officials have alerted fans to be wary of counterfeit tickets and to only purchase through official channels. The combination of interest in the 'ultimate test in golf' and the return of the game's greatest icon makes this the most anticipated major in recent memory.",
-            authorId: sarah.id,
+
         },
         {
             id: '4',
@@ -98,7 +60,7 @@ async function main() {
             time: '6 hours ago',
             image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
             content: "Jon Rahm's Legion XIII has secured a landmark sponsorship deal with a major global financial services firm. The deal, rumored to be worth in the eight-figure range over several years, marks one of the most significant commercial milestones for any LIV Golf franchise to date. The partnership will include prominent branding on team apparel and equipment, as well as joint marketing initiatives focused on expanding the team's reach in the European market. Rahm spoke enthusiastically about the partnership during a press conference today, stating that 'this is a testament to the growth and potential of team golf.' As the league moves towards a more sustainable franchise model, expect more of these major brand alignments.",
-            authorId: staff.id,
+
         },
         {
             id: '5',
@@ -110,7 +72,7 @@ async function main() {
             time: 'Yesterday',
             image: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?q=80&w=2070&auto=format&fit=crop',
             content: "Phil Mickelson is widely regarded as having the best short game in the history of golf, and his flop shot is legendary. In an exclusive clinic, Phil shared three key secrets to executing this high-risk, high-reward shot. First, he emphasizes the importance of a wide stance and 'hinging' the wrists early in the backswing. Second, he reveals that the speed of the clubhead must remain constant through the impact zone - decelerating is the most common mistake amateurs make. Finally, Phil shows how the follow-through should mirror the backswing to ensure proper loft and spin. Practice these drills on a soft bunker before trying them on the fairway, and you'll soon be tackling those tight pins with confidence.",
-            authorId: david.id,
+
         },
     ];
 
@@ -148,7 +110,7 @@ async function main() {
         time: `${i + 1} days ago`,
         image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
         content: `Detailed guide on ${item.title}. This instruction will help you master the craft of golf with professional tips and drills.`,
-        authorId: staff.id,
+
     }));
 
     // Create Course Articles (20 entries)
@@ -185,7 +147,7 @@ async function main() {
         time: `${i + 1} weeks ago`,
         image: 'https://cdn.thegolfpress.com/610b5c76-4a0b-4f87-8f81-22fd898829a3.jpg',
         content: `${item.title} offers an unparalleled golfing experience with stunning views and challenging layouts.`,
-        authorId: staff.id,
+
     }));
 
     const allData = [...newsData, ...howToData, ...coursesData];
@@ -195,6 +157,25 @@ async function main() {
             where: { id: news.id },
             update: news,
             create: news,
+        });
+    }
+
+    // Default Site Settings
+    const settings = [
+        { key: 'site_name', value: 'The Golf Press', type: 'text' },
+        { key: 'site_description', value: 'The definitive voice in golf, delivering real-time scores, expert instruction, and premium news.', type: 'text' },
+        { key: 'contact_email_editorial', value: 'editor@thegolfpress.com', type: 'email' },
+        { key: 'contact_email_ads', value: 'ads@thegolfpress.com', type: 'email' },
+        { key: 'social_instagram', value: 'https://instagram.com/thegolfpress', type: 'url' },
+        { key: 'social_twitter', value: 'https://twitter.com/thegolfpress', type: 'url' },
+        { key: 'social_facebook', value: 'https://facebook.com/thegolfpress', type: 'url' },
+    ];
+
+    for (const setting of settings) {
+        await prisma.setting.upsert({
+            where: { key: setting.key },
+            update: {},
+            create: setting
         });
     }
 

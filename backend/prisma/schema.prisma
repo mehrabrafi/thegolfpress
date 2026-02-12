@@ -13,28 +13,49 @@ datasource db {
   provider = "postgresql"
 }
 
-model Author {
-  id    String @id @default(uuid())
-  name  String
-  image String
-  news  News[]
+
+
+enum NewsStatus {
+  DRAFT
+  PUBLISHED
+  SCHEDULED
+}
+
+model Category {
+  id      String   @id @default(uuid())
+  name    String   @unique
+  slug    String   @unique
+  news    News[]
+  subTags SubTag[]
+}
+
+model SubTag {
+  id         String   @id @default(uuid())
+  name       String
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  news       News[]
 }
 
 model News {
-  id          String   @id @default(uuid())
-  type        String   @default("REGULAR")
-  category    String
-  categoryTag String?
+  id          String     @id @default(uuid())
+  type        String     @default("REGULAR")
+  category    String     // Keeping for display/legacy
+  categoryId  String?
+  categoryRef Category?  @relation(fields: [categoryId], references: [id])
+  categoryTag String?    // Keeping for display/legacy
+  subTagId    String?
+  subTag      SubTag?    @relation(fields: [subTagId], references: [id])
   title       String
   excerpt     String
-  time        String
+  time        String     // Keeping for display string, but using publishedAt for logic
   image       String
-  content     String   @default("")
-  authorId    String
-  author      Author   @relation(fields: [authorId], references: [id])
-  viewCount   Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  content     String     @default("")
+  status      NewsStatus @default(PUBLISHED)
+  publishedAt DateTime   @default(now())
+  viewCount   Int        @default(0)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 model User {
@@ -52,3 +73,11 @@ enum Role {
   ADMIN
   EDITOR
 }
+
+model Setting {
+  id    String @id @default(uuid())
+  key   String @unique
+  value String
+  type  String @default("text") // text, image, email, etc.
+}
+

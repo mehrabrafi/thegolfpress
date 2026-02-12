@@ -6,12 +6,15 @@ import { usePathname } from 'next/navigation';
 import styles from './Header.module.css';
 import { useAuth } from '@/context/AuthContext';
 import Menu from './Menu';
+import { fetchCategories } from '@/lib/api';
 
 export default function Header() {
     const { user, logout } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
+    const [categories, setCategories] = useState<any[]>([]);
+    const [subTags, setSubTags] = useState<any[]>([]);
     const pathname = usePathname();
 
     const isHome = pathname === '/';
@@ -37,6 +40,34 @@ export default function Header() {
             };
         }
     }, [lastScrollY]);
+
+    useEffect(() => {
+        const loadCategories = async () => {
+            try {
+                const data = await fetchCategories();
+                setCategories(data);
+            } catch (error) {
+                console.error('Error loading header categories:', error);
+            }
+        };
+        loadCategories();
+    }, []);
+
+    useEffect(() => {
+        const parts = pathname.split('/');
+        const categorySlug = parts[1]; // e.g., 'how-to'
+
+        if (categorySlug) {
+            const matchedCat = categories.find(c => c.slug === categorySlug);
+            if (matchedCat && matchedCat.subTags) {
+                setSubTags(matchedCat.subTags);
+            } else {
+                setSubTags([]);
+            }
+        } else {
+            setSubTags([]);
+        }
+    }, [pathname, categories]);
 
     // Get current section name for sub-pages header
     const getSectionName = () => {
@@ -122,6 +153,36 @@ export default function Header() {
                         <div className={styles.searchItem}>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Sub-Navigation Row - Integrated into Header */}
+            {!isHome && subTags.length > 0 && (
+                <div className={styles.subNavBar}>
+                    <div className={`container ${styles.subNavContent}`}>
+                        <nav className={styles.subNav}>
+                            <Link
+                                href={`/${pathname.split('/')[1]}`}
+                                className={`${styles.subNavLink} ${pathname === `/${pathname.split('/')[1]}` ? styles.subNavLinkActive : ''}`}
+                            >
+                                ALL
+                            </Link>
+                            {subTags.map((tag: any) => {
+                                const tagSlug = tag.name.toLowerCase().replace(/ /g, '-');
+                                const parentSlug = pathname.split('/')[1];
+                                const fullPath = `/${parentSlug}/${tagSlug}`;
+                                return (
+                                    <Link
+                                        key={tag.id}
+                                        href={fullPath}
+                                        className={`${styles.subNavLink} ${pathname === fullPath ? styles.subNavLinkActive : ''}`}
+                                    >
+                                        {tag.name}
+                                    </Link>
+                                );
+                            })}
+                        </nav>
                     </div>
                 </div>
             )}

@@ -1,8 +1,8 @@
 .howToContainer {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 40px 20px 80px 20px;
-    padding-top: 40px;
+    padding: 60px 20px 80px 20px;
+    padding-top: 60px;
     font-family: var(--font-sans);
 }
 
@@ -10,11 +10,17 @@
 /* Category Navigation - Full Width Sticky Wrapper */
 .catNavWrapper {
     position: sticky;
-    top: 60px;
+    top: 0;
+    /* Default if header is hidden, but we'll control it via JS or class */
     background: #ffffff;
     z-index: 100;
     width: 100%;
     border-bottom: 2px solid #eee;
+    transition: transform 0.3s ease-in-out, top 0.3s ease-in-out;
+}
+
+.wrapperHidden {
+    transform: translateY(-100%);
 }
 
 .catNavContent {
@@ -330,6 +336,9 @@
 }
 
 .sectionTitle {
+    display: flex;
+    align-items: center;
+    gap: 15px;
     font-family: var(--font-sans-condensed);
     font-size: 1.8rem;
     font-weight: 800;
@@ -337,6 +346,14 @@
     color: #000;
     margin: 0;
     line-height: 1;
+}
+
+.sectionTitle::before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 32px;
+    background: #d91b2b;
 }
 
 .viewAllLink {
@@ -394,4 +411,24 @@
     .sectionGrid {
         grid-template-columns: 1fr;
     }
+}
+
+.categoryHeader {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.categoryHeader h2 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.noArticles {
+    text-align: center;
+    padding: 100px 20px;
+    font-size: 1.2rem;
+    color: #64748b;
+    border: 2px dashed #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
 }

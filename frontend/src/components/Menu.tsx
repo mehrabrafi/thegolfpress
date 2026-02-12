@@ -60,7 +60,7 @@ export default function Menu({ isOpen, toggleMenu }: MenuProps) {
                 </div>
 
                 <div className={styles.authSection}>
-                    <p className={styles.authTitle}>My The Golf Press Account</p>
+                    <p className={styles.authTitle}>My Account</p>
                     {user ? (
                         <div className={styles.authButtons}>
                             <button onClick={logout} className={`${styles.loginBtn}`} style={{ width: '100%' }}>LOG OUT</button>

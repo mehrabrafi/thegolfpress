@@ -2,10 +2,11 @@
 
 import NewsManagement from '@/components/admin/NewsManagement';
 
-export default function AdminNewsPage() {
+export default function AdminCoursesPage() {
     return (
         <NewsManagement
-            title="General News Management"
+            fixedCategory="COURSES"
+            title="Course Gallery Management"
         />
     );
 }

@@ -3,17 +3,8 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from './HowTo.module.css';
-import { fetchNews } from '@/lib/api';
+import { fetchNews, fetchCategories } from '@/lib/api';
 
-const CATEGORIES = [
-    'Swing Sequence',
-    'Putting',
-    'Short Game',
-    'Driving',
-    'Beginners',
-    'Mental Game',
-    'Fitness'
-];
 
 const Section = ({ title, items, categoryTag }: { title: string, items: any[], categoryTag: string }) => (
     <section className={styles.categorySection}>
@@ -29,7 +20,7 @@ const Section = ({ title, items, categoryTag }: { title: string, items: any[], c
                     <img src={item.image} alt={item.title} className={styles.articleImage} />
                     <span className={styles.articleTag}>{item.categoryTag}</span>
                     <h4 className={styles.articleTitle}>{item.title}</h4>
-                    <div className={styles.articleAuthor}>BY {item.author?.name || 'GolfWire Staff'}</div>
+
                 </Link>
             ))}
         </div>
@@ -37,14 +28,31 @@ const Section = ({ title, items, categoryTag }: { title: string, items: any[], c
 );
 
 export default function HowToPage() {
+
     const [howToArticles, setHowToArticles] = useState<any[]>([]);
+    const [subTags, setSubTags] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const loadData = async () => {
             try {
-                const data = await fetchNews('HOW-TO');
-                setHowToArticles(data);
+                const [newsData, catData] = await Promise.all([
+                    fetchNews(),
+                    fetchCategories()
+                ]);
+
+                // Filter for any variation of "How-To"
+                const howToData = newsData.filter((item: any) => {
+                    const cat = (item.category || '').toUpperCase();
+                    return cat === 'HOW-TO' || cat === 'HOW TO';
+                });
+
+                setHowToArticles(howToData);
+
+                const howToCat = catData.find((c: any) => c.slug === 'how-to' || c.name.toLowerCase() === 'how-to');
+                if (howToCat && howToCat.subTags) {
+                    setSubTags(howToCat.subTags);
+                }
             } catch (error) {
                 console.error('Error fetching how-to articles:', error);
             } finally {
@@ -53,6 +61,7 @@ export default function HowToPage() {
         };
         loadData();
     }, []);
+
 
     if (loading) return <div className={styles.loading}>Loading articles...</div>;
 
@@ -65,18 +74,6 @@ export default function HowToPage() {
 
     return (
         <div className={styles.pageWrapper}>
-            <div className={styles.catNavWrapper}>
-                <div className={styles.catNavContent}>
-                    <nav className={styles.catNav}>
-                        <Link href="/how-to" className={`${styles.catLink} ${styles.catLinkActive}`}>All</Link>
-                        {CATEGORIES.map(cat => (
-                            <Link key={cat} href={`/how-to/${cat.toLowerCase().replace(/ /g, '-')}`} className={styles.catLink}>
-                                {cat}
-                            </Link>
-                        ))}
-                    </nav>
-                </div>
-            </div>
 
             <div className={styles.howToContainer}>
                 {/* Hybrid Hero Section */}
@@ -87,10 +84,7 @@ export default function HowToPage() {
                             <div className={styles.heroOverlay}>
                                 <span className={styles.heroTag}>{featured.categoryTag}</span>
                                 <h2 className={styles.heroTitle}>{featured.title}</h2>
-                                <div className={styles.heroAuthor}>
-                                    {featured.author?.image && <img src={featured.author.image} alt={featured.author.name} className={styles.heroThumb} />}
-                                    BY {featured.author?.name || 'GolfWire Staff'}
-                                </div>
+
                             </div>
                         </Link>
                     )}
@@ -106,14 +100,19 @@ export default function HowToPage() {
                     </div>
                 </section>
 
-                {/* New Sections */}
-                <Section title="Swing Sequence" categoryTag="Swing Sequence" items={getArticlesByCategory('Swing Sequence')} />
-                <Section title="Putting" categoryTag="Putting" items={getArticlesByCategory('Putting')} />
-                <Section title="Short Game" categoryTag="Short Game" items={getArticlesByCategory('Short Game')} />
-                <Section title="Driving" categoryTag="Driving" items={getArticlesByCategory('Driving')} />
-                <Section title="Beginners" categoryTag="Beginners" items={getArticlesByCategory('Beginners')} />
-                <Section title="Fitness" categoryTag="Fitness" items={getArticlesByCategory('Fitness')} />
-                <Section title="Mental Game" categoryTag="Mental Game" items={getArticlesByCategory('Mental Game')} />
+                {/* Dynamic Sections */}
+                {subTags.map(tag => {
+                    const articles = getArticlesByCategory(tag.name);
+                    if (articles.length === 0) return null;
+                    return (
+                        <Section
+                            key={tag.id}
+                            title={tag.name}
+                            categoryTag={tag.name}
+                            items={articles}
+                        />
+                    );
+                })}
             </div>
         </div>
     );

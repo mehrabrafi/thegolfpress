@@ -168,3 +168,154 @@ export async function uploadImage(file: File, token: string) {
     if (!res.ok) throw new Error('Failed to upload image');
     return res.json();
 }
+
+
+
+export async function fetchAdminStats(token: string) {
+    const res = await fetch(`${API_BASE_URL}/admin/stats`, {
+        headers: { Authorization: `Bearer ${token}` },
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to fetch stats');
+    return res.json();
+}
+
+export async function fetchUsers(token: string) {
+    const res = await fetch(`${API_BASE_URL}/admin/users`, {
+        headers: { Authorization: `Bearer ${token}` },
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to fetch users');
+    return res.json();
+}
+
+export async function updateUserRole(id: string, role: string, token: string) {
+    const res = await fetch(`${API_BASE_URL}/admin/users/${id}/role`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ role }),
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to update user role');
+    return res.json();
+}
+
+export async function fetchSettings() {
+    const res = await fetch(`${API_BASE_URL}/settings`);
+    if (!res.ok) throw new Error('Failed to fetch settings');
+    return res.json();
+}
+
+export async function updateSetting(key: string, value: string, token: string) {
+    const res = await fetch(`${API_BASE_URL}/settings/${key}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ value }),
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to update setting');
+    return res.json();
+}
+
+// Category functions
+export async function fetchCategories() {
+    const res = await fetch(`${API_BASE_URL}/categories`);
+    if (!res.ok) throw new Error('Failed to fetch categories');
+    return res.json();
+}
+
+export async function createCategory(data: any, token: string) {
+    const res = await fetch(`${API_BASE_URL}/categories`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token && { Authorization: `Bearer ${token}` })
+        },
+        body: JSON.stringify(data),
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to create category');
+    return res.json();
+}
+
+export async function updateCategory(id: string, data: any, token: string) {
+    const res = await fetch(`${API_BASE_URL}/categories/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token && { Authorization: `Bearer ${token}` })
+        },
+        body: JSON.stringify(data),
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to update category');
+    return res.json();
+}
+
+export async function deleteCategory(id: string, token: string) {
+    const res = await fetch(`${API_BASE_URL}/categories/${id}`, {
+        method: 'DELETE',
+        headers: {
+            ...(token && { Authorization: `Bearer ${token}` })
+        },
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to delete category');
+    return res.json();
+}
+
+// Sub-Tag functions
+export async function fetchSubTags(categoryId?: string) {
+    const url = new URL(`${API_BASE_URL}/sub-tags`);
+    if (categoryId) url.searchParams.append('categoryId', categoryId);
+
+    const res = await fetch(url.toString());
+    if (!res.ok) throw new Error('Failed to fetch sub-tags');
+    return res.json();
+}
+
+export async function createSubTag(data: any, token: string) {
+    const res = await fetch(`${API_BASE_URL}/sub-tags`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token && { Authorization: `Bearer ${token}` })
+        },
+        body: JSON.stringify(data),
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to create sub-tag');
+    return res.json();
+}
+
+export async function updateSubTag(id: string, data: any, token: string) {
+    const res = await fetch(`${API_BASE_URL}/sub-tags/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token && { Authorization: `Bearer ${token}` })
+        },
+        body: JSON.stringify(data),
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to update sub-tag');
+    return res.json();
+}
+
+export async function deleteSubTag(id: string, token: string) {
+    const res = await fetch(`${API_BASE_URL}/sub-tags/${id}`, {
+        method: 'DELETE',
+        headers: {
+            ...(token && { Authorization: `Bearer ${token}` })
+        },
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to delete sub-tag');
+    return res.json();
+}

@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 async function main() {
     const news = await prisma.news.findMany({
-        include: { author: true }
+        include: {}
     });
     console.log(JSON.stringify(news, null, 2));
 }

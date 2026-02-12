@@ -13,7 +13,11 @@ export default function NewsPage() {
         async function load() {
             try {
                 const data = await fetchNews();
-                setArticles(data);
+                const filteredData = data.filter((a: any) => {
+                    const cat = (a.category || '').toUpperCase();
+                    return cat !== 'HOW-TO' && cat !== 'COURSES' && cat !== 'HOW TO' && cat !== 'COURSE';
+                });
+                setArticles(filteredData);
             } catch (err) {
                 console.error('Error loading news:', err);
             } finally {
@@ -71,10 +75,7 @@ export default function NewsPage() {
                                     </div>
                                     <h3 className={styles.articleTitle}>{article.title}</h3>
                                     <p className={styles.articleExcerpt}>{article.excerpt}</p>
-                                    <div className={styles.author}>
-                                        <img src={article.author?.image} alt={article.author?.name} className={styles.authorImg} />
-                                        <span className={styles.authorName}>By {article.author?.name}</span>
-                                    </div>
+
                                 </div>
                             </Link>
                         ))}
