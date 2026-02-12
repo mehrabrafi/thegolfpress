@@ -48,9 +48,18 @@ export async function fetchNews(category?: string) {
 }
 
 export async function fetchNewsById(id: string) {
-    const res = await fetch(`${API_BASE_URL}/news/${id}`, { next: { revalidate: 60 } });
-    if (!res.ok) throw new Error('Failed to fetch news detail');
-    return res.json();
+    const url = `${API_BASE_URL}/news/${id}`;
+    try {
+        const res = await fetch(url, { next: { revalidate: 60 } });
+        if (!res.ok) {
+            console.error(`Failed to fetch news detail from ${url}. Status: ${res.status}`);
+            throw new Error('Failed to fetch news detail');
+        }
+        return res.json();
+    } catch (error) {
+        console.error(`Error in fetchNewsById for ID ${id}:`, error);
+        throw error;
+    }
 }
 
 export async function fetchTrendingNews() {

@@ -1,22 +1,33 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { fetchNews } from '@/lib/api';
 import styles from './news.module.css';
 
-export default function NewsPage() {
+function NewsPageContent() {
     const [articles, setArticles] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const searchParams = useSearchParams();
+    const tag = searchParams.get('tag');
 
     useEffect(() => {
         async function load() {
+            setLoading(true);
             try {
                 const data = await fetchNews();
-                const filteredData = data.filter((a: any) => {
+                let filteredData = data.filter((a: any) => {
                     const cat = (a.category || '').toUpperCase();
                     return cat !== 'HOW-TO' && cat !== 'COURSES' && cat !== 'HOW TO' && cat !== 'COURSE';
                 });
+
+                if (tag) {
+                    filteredData = filteredData.filter((a: any) =>
+                        (a.categoryTag || '').toLowerCase().replace(/ /g, '-') === tag.toLowerCase()
+                    );
+                }
+
                 setArticles(filteredData);
             } catch (err) {
                 console.error('Error loading news:', err);
@@ -25,7 +36,7 @@ export default function NewsPage() {
             }
         }
         load();
-    }, []);
+    }, [tag]);
 
     const featured = articles.find(a => a.type === 'FEATURED');
     const regular = articles.filter(a => a.type !== 'FEATURED');
@@ -35,6 +46,11 @@ export default function NewsPage() {
     return (
         <div className={`container ${styles.container}`}>
 
+            <div className={styles.headerRow}>
+                <h1 className={styles.pageTitle}>
+                    {tag ? `News: ${tag.replace(/-/g, ' ').toUpperCase()}` : 'News Archive'}
+                </h1>
+            </div>
 
             {featured && (
                 <Link href={`/news/${featured.id}`} className={styles.featuredStory}>
@@ -54,6 +70,12 @@ export default function NewsPage() {
                         </div>
                     </div>
                 </Link>
+            )}
+
+            {!featured && regular.length === 0 && (
+                <div className={styles.noArticles}>
+                    No articles found in this section.
+                </div>
             )}
 
             <div className={styles.mainGrid}>
@@ -118,5 +140,13 @@ export default function NewsPage() {
                 </aside>
             </div>
         </div>
+    );
+}
+
+export default function NewsPage() {
+    return (
+        <Suspense fallback={null}>
+            <NewsPageContent />
+        </Suspense>
     );
 }

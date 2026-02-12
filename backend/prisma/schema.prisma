@@ -1,24 +1,10 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
   provider = "postgresql"
-}
-
-
-
-enum NewsStatus {
-  DRAFT
-  PUBLISHED
-  SCHEDULED
 }
 
 model Category {
@@ -33,29 +19,29 @@ model SubTag {
   id         String   @id @default(uuid())
   name       String
   categoryId String
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   news       News[]
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 }
 
 model News {
   id          String     @id @default(uuid())
   type        String     @default("REGULAR")
-  category    String     // Keeping for display/legacy
-  categoryId  String?
-  categoryRef Category?  @relation(fields: [categoryId], references: [id])
-  categoryTag String?    // Keeping for display/legacy
-  subTagId    String?
-  subTag      SubTag?    @relation(fields: [subTagId], references: [id])
+  category    String
+  categoryTag String?
   title       String
   excerpt     String
-  time        String     // Keeping for display string, but using publishedAt for logic
+  time        String
   image       String
-  content     String     @default("")
-  status      NewsStatus @default(PUBLISHED)
-  publishedAt DateTime   @default(now())
-  viewCount   Int        @default(0)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+  content     String     @default("")
+  viewCount   Int        @default(0)
+  publishedAt DateTime   @default(now())
+  status      NewsStatus @default(PUBLISHED)
+  categoryId  String?
+  subTagId    String?
+  categoryRef Category?  @relation(fields: [categoryId], references: [id])
+  subTag      SubTag?    @relation(fields: [subTagId], references: [id])
 }
 
 model User {
@@ -68,16 +54,21 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
+model Setting {
+  id    String @id @default(uuid())
+  key   String @unique
+  value String
+  type  String @default("text")
+}
+
+enum NewsStatus {
+  DRAFT
+  PUBLISHED
+  SCHEDULED
+}
+
 enum Role {
   USER
   ADMIN
   EDITOR
 }
-
-model Setting {
-  id    String @id @default(uuid())
-  key   String @unique
-  value String
-  type  String @default("text") // text, image, email, etc.
-}
-

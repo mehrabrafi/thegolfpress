@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 
 @Injectable()
@@ -367,15 +367,22 @@ export class GolfService {
     }
 
     async getNewsById(id: string) {
-        return this.prisma.news.update({
-            where: { id },
-            data: {
-                viewCount: {
-                    increment: 1
-                }
-            },
-
-        });
+        try {
+            const article = await this.prisma.news.update({
+                where: { id },
+                data: {
+                    viewCount: {
+                        increment: 1
+                    }
+                },
+            });
+            return article;
+        } catch (error) {
+            if (error.code === 'P2025') {
+                throw new NotFoundException('News article not found');
+            }
+            throw error;
+        }
     }
 
     async getTrendingNews() {

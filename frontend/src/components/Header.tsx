@@ -1,14 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import styles from './Header.module.css';
 import { useAuth } from '@/context/AuthContext';
 import Menu from './Menu';
 import { fetchCategories } from '@/lib/api';
 
-export default function Header() {
+function HeaderContent() {
     const { user, logout } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
@@ -16,6 +16,7 @@ export default function Header() {
     const [categories, setCategories] = useState<any[]>([]);
     const [subTags, setSubTags] = useState<any[]>([]);
     const pathname = usePathname();
+    const searchParams = useSearchParams();
 
     const isHome = pathname === '/';
 
@@ -164,19 +165,28 @@ export default function Header() {
                         <nav className={styles.subNav}>
                             <Link
                                 href={`/${pathname.split('/')[1]}`}
-                                className={`${styles.subNavLink} ${pathname === `/${pathname.split('/')[1]}` ? styles.subNavLinkActive : ''}`}
+                                className={`${styles.subNavLink} ${pathname === `/${pathname.split('/')[1]}` && !searchParams.get('tag') ? styles.subNavLinkActive : ''}`}
                             >
                                 ALL
                             </Link>
                             {subTags.map((tag: any) => {
                                 const tagSlug = tag.name.toLowerCase().replace(/ /g, '-');
                                 const parentSlug = pathname.split('/')[1];
-                                const fullPath = `/${parentSlug}/${tagSlug}`;
+
+                                // News section uses query params to avoid conflict with /news/[id] article route
+                                const fullPath = parentSlug === 'news'
+                                    ? `/news?tag=${tagSlug}`
+                                    : `/${parentSlug}/${tagSlug}`;
+
+                                const isActive = parentSlug === 'news'
+                                    ? pathname === '/news' && searchParams.get('tag') === tagSlug
+                                    : pathname === fullPath;
+
                                 return (
                                     <Link
                                         key={tag.id}
                                         href={fullPath}
-                                        className={`${styles.subNavLink} ${pathname === fullPath ? styles.subNavLinkActive : ''}`}
+                                        className={`${styles.subNavLink} ${isActive ? styles.subNavLinkActive : ''}`}
                                     >
                                         {tag.name}
                                     </Link>
@@ -187,5 +197,13 @@ export default function Header() {
                 </div>
             )}
         </header>
+    );
+}
+
+export default function Header() {
+    return (
+        <Suspense fallback={null}>
+            <HeaderContent />
+        </Suspense>
     );
 }

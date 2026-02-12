@@ -4,6 +4,28 @@
     margin: 0 auto;
 }
 
+.headerRow {
+    margin-bottom: 40px;
+    border-bottom: 4px solid #000;
+    padding-bottom: 10px;
+}
+
+.pageTitle {
+    font-size: 2.5rem;
+    font-family: var(--font-sans-condensed);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+}
+
+.noArticles {
+    padding: 100px 0;
+    text-align: center;
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    color: #888;
+}
+
 /* Header */
 
 /* Main Layout */
