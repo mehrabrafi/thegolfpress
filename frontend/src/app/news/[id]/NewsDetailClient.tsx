@@ -79,7 +79,7 @@ export default function NewsDetailClient({
                     <div className={styles.heroImageContainer}>
                         <img src={article.image} alt={article.title} className={styles.heroImage} />
                     </div>
-                    <p className={styles.imageCaption}>{article.title} - Photo by GolfWire Pro</p>
+                    <p className={styles.imageCaption}>{article.title} - Photo by The Golf Press</p>
 
                     <div className={styles.articleBody}>
                         {article.content.trim().startsWith('<') ? (
