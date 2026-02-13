@@ -22,11 +22,10 @@ export class UploadController {
                 'image/png',
                 'image/gif',
                 'image/webp',
-                'image/svg+xml',
             ];
             if (!allowedMimes.includes(file.mimetype)) {
                 return callback(
-                    new BadRequestException('Only image files (JPEG, PNG, GIF, WebP, SVG) are allowed'),
+                    new BadRequestException('Only image files (JPEG, PNG, GIF, WebP) are allowed'),
                     false,
                 );
             }
