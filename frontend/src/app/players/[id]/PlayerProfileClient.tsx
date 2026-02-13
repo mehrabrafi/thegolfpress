@@ -12,8 +12,6 @@ export default function PlayerProfileClient({ id }: { id: string }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        console.log('PlayerProfileClient mounted with ID:', id);
-
         if (!id || id === 'undefined') {
             setLoading(false);
             return;
@@ -22,12 +20,10 @@ export default function PlayerProfileClient({ id }: { id: string }) {
         async function load() {
             setLoading(true);
             try {
-                console.log('Calling fetchPlayerProfile for:', id);
                 const data = await fetchPlayerProfile(id);
-                console.log('Successfully fetched player data:', data);
                 setPlayer(data);
-            } catch (err) {
-                console.error('Failed to load athlete profile:', err);
+            } catch {
+                // Player profile failed to load — handled by null state below
             } finally {
                 setLoading(false);
             }

@@ -102,9 +102,7 @@ export default function NewsManagement({
 
         setUploading(true);
         try {
-            const token = localStorage.getItem('token');
-            if (!token) return;
-            const data = await uploadImage(file, token);
+            const data = await uploadImage(file);
             setFormData((prev: any) => ({ ...prev, image: data.url }));
         } catch (error) {
             console.error('Error uploading image:', error);
@@ -163,9 +161,7 @@ export default function NewsManagement({
     const handleDelete = async (id: string) => {
         if (!confirm('Are you sure you want to delete this article?')) return;
         try {
-            const token = localStorage.getItem('token');
-            if (!token) return;
-            await deleteNews(id, token);
+            await deleteNews(id);
             loadData();
         } catch (error) {
             console.error('Error deleting news', error);
@@ -175,13 +171,10 @@ export default function NewsManagement({
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const token = localStorage.getItem('token');
-            if (!token) return;
-
             if (editId) {
-                await updateNews(editId, formData, token);
+                await updateNews(editId, formData);
             } else {
-                await createNews(formData, token);
+                await createNews(formData);
             }
 
             setIsEditing(false);

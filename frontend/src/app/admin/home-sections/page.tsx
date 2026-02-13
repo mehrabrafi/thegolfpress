@@ -1,12 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/context/AuthContext';
 import { fetchAllHomeSections, createHomeSection, updateHomeSection, deleteHomeSection, fetchCategories } from '@/lib/api';
 import styles from './home-sections.module.css';
 
 export default function HomeSectionsPage() {
-    const { token } = useAuth();
     const [sections, setSections] = useState<any[]>([]);
     const [categories, setCategories] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -22,15 +20,13 @@ export default function HomeSectionsPage() {
     });
 
     useEffect(() => {
-        if (token) {
-            loadData();
-        }
-    }, [token]);
+        loadData();
+    }, []);
 
     const loadData = async () => {
         try {
             const [sects, cats] = await Promise.all([
-                fetchAllHomeSections(token!),
+                fetchAllHomeSections(),
                 fetchCategories()
             ]);
             setSections(sects);
@@ -72,9 +68,9 @@ export default function HomeSectionsPage() {
         e.preventDefault();
         try {
             if (editingSection) {
-                await updateHomeSection(editingSection.id, formData, token!);
+                await updateHomeSection(editingSection.id, formData);
             } else {
-                await createHomeSection(formData, token!);
+                await createHomeSection(formData);
             }
             handleCancel();
             loadData();
@@ -86,7 +82,7 @@ export default function HomeSectionsPage() {
     const handleDelete = async (id: string) => {
         if (confirm('Are you sure you want to delete this section?')) {
             try {
-                await deleteHomeSection(id, token!);
+                await deleteHomeSection(id);
                 loadData();
             } catch (error) {
                 console.error('Error deleting home section:', error);

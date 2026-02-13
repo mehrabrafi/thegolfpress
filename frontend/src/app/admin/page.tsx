@@ -15,9 +15,7 @@ export default function AdminPage() {
     useEffect(() => {
         const loadStats = async () => {
             try {
-                const token = localStorage.getItem('token');
-                if (!token) return;
-                const data = await fetchAdminStats(token);
+                const data = await fetchAdminStats();
                 setStats(data);
             } catch (error) {
                 console.error('Error loading stats', error);

@@ -45,9 +45,7 @@ export default function CategoryManagement() {
         if (!name) return;
 
         try {
-            const token = localStorage.getItem('token');
-            if (!token) return;
-            await createSubTag({ name, categoryId }, token);
+            await createSubTag({ name, categoryId });
             setNewSubTagName(prev => ({ ...prev, [categoryId]: '' }));
             loadData();
         } catch (error) {
@@ -58,9 +56,7 @@ export default function CategoryManagement() {
     const handleDeleteSubTag = async (id: string) => {
         if (!confirm('Are you sure you want to delete this sub-tag?')) return;
         try {
-            const token = localStorage.getItem('token');
-            if (!token) return;
-            await deleteSubTag(id, token);
+            await deleteSubTag(id);
             loadData();
         } catch (error) {
             console.error('Error deleting sub-tag', error);
@@ -84,9 +80,7 @@ export default function CategoryManagement() {
     const handleDelete = async (id: string) => {
         if (!confirm('Are you sure you want to delete this category? Articles under this category may become uncategorized.')) return;
         try {
-            const token = localStorage.getItem('token');
-            if (!token) return;
-            await deleteCategory(id, token);
+            await deleteCategory(id);
             loadData();
         } catch (error) {
             console.error('Error deleting category', error);
@@ -96,13 +90,10 @@ export default function CategoryManagement() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const token = localStorage.getItem('token');
-            if (!token) return;
-
             if (editId) {
-                await updateCategory(editId, formData, token);
+                await updateCategory(editId, formData);
             } else {
-                await createCategory(formData, token);
+                await createCategory(formData);
             }
 
             setIsEditing(false);

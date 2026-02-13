@@ -26,12 +26,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
             const file = event.target.files?.[0];
             if (file) {
                 try {
-                    const token = localStorage.getItem('token');
-                    if (!token) {
-                        alert('You must be logged in to upload images.');
-                        return;
-                    }
-                    const data = await uploadImage(file, token);
+                    const data = await uploadImage(file);
                     if (data && data.url) {
                         editor.chain().focus().setImage({ src: data.url }).run();
                     }

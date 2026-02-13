@@ -34,6 +34,12 @@ export class AuthService {
     }
 
     async register(data: RegisterDto) {
+        // In production, disable open registration unless explicitly enabled
+        const allowRegistration = process.env.ALLOW_REGISTRATION !== 'false';
+        if (!allowRegistration) {
+            throw new UnauthorizedException('Registration is currently disabled. Contact an administrator.');
+        }
+
         const hashedPassword = await bcrypt.hash(data.password, 12);
         try {
             const user = await this.prisma.user.create({

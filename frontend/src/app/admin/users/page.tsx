@@ -16,9 +16,7 @@ export default function UsersPage() {
 
     const loadUsers = async () => {
         try {
-            const token = localStorage.getItem('token');
-            if (!token) return;
-            const data = await fetchUsers(token);
+            const data = await fetchUsers();
             setUsers(data);
         } catch (error) {
             console.error('Error loading users', error);
@@ -29,9 +27,7 @@ export default function UsersPage() {
 
     const handleRoleChange = async (userId: string, newRole: string) => {
         try {
-            const token = localStorage.getItem('token');
-            if (!token) return;
-            await updateUserRole(userId, newRole, token);
+            await updateUserRole(userId, newRole);
             loadUsers();
         } catch (error) {
             console.error('Error updating role', error);

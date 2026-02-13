@@ -29,9 +29,7 @@ export default function SettingsPage() {
     const handleUpdate = async (key: string, value: string) => {
         setSaving(key);
         try {
-            const token = localStorage.getItem('token');
-            if (!token) return;
-            await updateSetting(key, value, token);
+            await updateSetting(key, value);
             setSuccess(key);
             setTimeout(() => setSuccess(null), 3000);
 

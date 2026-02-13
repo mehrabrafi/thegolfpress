@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { fetchNewsById, fetchNews, fetchTrendingNews } from '@/lib/api';
 import Link from 'next/link';
+import DOMPurify from 'dompurify';
 import JsonLd, { createArticleJsonLd } from '@/components/JsonLd';
 import styles from './NewsDetail.module.css';
 
@@ -82,7 +83,12 @@ export default function NewsDetailClient({
 
                     <div className={styles.articleBody}>
                         {article.content.trim().startsWith('<') ? (
-                            <div dangerouslySetInnerHTML={{ __html: article.content }} />
+                            <div dangerouslySetInnerHTML={{
+                                __html: DOMPurify.sanitize(article.content, {
+                                    ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'b', 'i', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'img', 'blockquote', 'span', 'div', 'table', 'thead', 'tbody', 'tr', 'th', 'td'],
+                                    ALLOWED_ATTR: ['href', 'src', 'alt', 'class', 'target', 'rel', 'width', 'height'],
+                                })
+                            }} />
                         ) : (
                             <>
                                 <p>AUGUSTA, Ga. — {article.excerpt}</p>
