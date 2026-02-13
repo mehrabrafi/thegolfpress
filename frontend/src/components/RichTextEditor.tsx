@@ -2,8 +2,10 @@
 
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { Bold, Italic, List, ListOrdered, Quote, Heading1, Heading2, MessageSquareQuote } from 'lucide-react';
-import { useEffect } from 'react';
+import Image from '@tiptap/extension-image';
+import { Bold, Italic, List, ListOrdered, Quote, Heading1, Heading2, MessageSquareQuote, Image as ImageIcon } from 'lucide-react';
+import { useEffect, useCallback } from 'react';
+import { uploadImage } from '@/lib/api';
 import styles from './RichTextEditor.module.css';
 
 interface RichTextEditorProps {
@@ -16,6 +18,32 @@ const MenuBar = ({ editor }: { editor: any }) => {
         return null;
     }
 
+    const addImage = useCallback(() => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.onchange = async (event: any) => {
+            const file = event.target.files?.[0];
+            if (file) {
+                try {
+                    const token = localStorage.getItem('token');
+                    if (!token) {
+                        alert('You must be logged in to upload images.');
+                        return;
+                    }
+                    const data = await uploadImage(file, token);
+                    if (data && data.url) {
+                        editor.chain().focus().setImage({ src: data.url }).run();
+                    }
+                } catch (error) {
+                    console.error('Error uploading image:', error);
+                    alert('Failed to upload image. Please try again.');
+                }
+            }
+        };
+        input.click();
+    }, [editor]);
+
     return (
         <div className={styles.toolbar}>
             <button
@@ -23,7 +51,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
                 disabled={!editor.can().chain().focus().toggleBold().run()}
                 className={`${styles.toolbarBtn} ${editor.isActive('bold') ? styles.isActive : ''}`}
                 title="Bold"
-                type="button" // important to prevent form submission
+                type="button"
             >
                 <Bold size={18} />
             </button>
@@ -78,6 +106,15 @@ const MenuBar = ({ editor }: { editor: any }) => {
             >
                 <MessageSquareQuote size={18} />
             </button>
+            <div style={{ width: '1px', background: '#ccc', margin: '0 5px' }} />
+            <button
+                onClick={addImage}
+                className={styles.toolbarBtn}
+                title="Insert Image"
+                type="button"
+            >
+                <ImageIcon size={18} />
+            </button>
         </div>
     );
 };
@@ -86,6 +123,7 @@ const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
     const editor = useEditor({
         extensions: [
             StarterKit,
+            Image,
         ],
         content: value,
         onUpdate: ({ editor }) => {
@@ -99,16 +137,8 @@ const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
         immediatelyRender: false,
     });
 
-    // Sync external value changes if needed (but care to avoid loops)
-    // This is optional and tricky with rich text.
-    // Generally, for controlled inputs, we update if value changes externally *drastically* on init mainly.
-    // For now, assume value prop is initial value or we handle fully controlled carefully.
-
-    // A simple effect to keep content in sync if the prop changes from outside (like reset form)
-    // but only if it's different to prevent cursor jumps
     useEffect(() => {
         if (editor && value !== editor.getHTML()) {
-            // Check if it's empty to handle form resets gracefully
             if (value === '' && editor.getText() !== '') {
                 editor.commands.setContent('');
             }

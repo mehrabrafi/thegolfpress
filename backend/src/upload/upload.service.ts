@@ -24,7 +24,7 @@ export class UploadService {
             const fileName = `${uuidv4()}.${fileExtension}`;
             const bucketName = process.env.R2_BUCKET_NAME;
 
-            console.log(`Uploading ${fileName} to bucket ${bucketName}...`);
+            this.logger.log(`Uploading file: ${fileName}`);
             await this.s3Client.send(
                 new PutObjectCommand({
                     Bucket: bucketName,
@@ -38,10 +38,9 @@ export class UploadService {
                 ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${fileName}`
                 : `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com/${bucketName}/${fileName}`;
 
-            console.log(`File uploaded successfully: ${publicUrl}`);
+            this.logger.log(`File uploaded successfully: ${fileName}`);
             return publicUrl;
         } catch (error) {
-            console.error('Error uploading file to R2:', error);
             this.logger.error('Error uploading file to R2', error);
             throw error;
         }

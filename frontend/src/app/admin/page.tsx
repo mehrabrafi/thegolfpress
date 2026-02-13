@@ -85,8 +85,8 @@ export default function AdminPage() {
                         <p>Coordinate general news and breaking updates.</p>
                         <ArrowUpRight size={18} />
                     </Link>
-                    <Link href="/admin/how-to" className={styles.actionCard}>
-                        <h3>Instructional Vault</h3>
+                    <Link href="/admin/guides-and-tips" className={styles.actionCard}>
+                        <h3>Guides & Tips</h3>
                         <p>Refine tutorials and pedagogical content.</p>
                         <ArrowUpRight size={18} />
                     </Link>

@@ -21,23 +21,29 @@ export default function SidebarNews({ articles }: SidebarNewsProps) {
     return (
         <div className={styles.sidebar}>
             <div className={styles.header}>
-                <h3>LATEST</h3>
+                <h3>TRENDING</h3>
             </div>
             <div className={styles.list}>
-                {articles.map((article, idx) => (
-                    <Link key={idx} href={`/news/${article.id}`} className={styles.item}>
-                        {article.image && (
-                            <div className={styles.imageWrapper}>
-                                <img src={article.image} alt={article.title} />
+                {articles.map((article, idx) => {
+                    const isCourse = (article.category && article.category.toUpperCase() === 'COURSES') ||
+                        (article.categoryTag && article.categoryTag?.toUpperCase() === 'COURSES');
+                    const href = isCourse ? `/courses/${article.id}` : `/news/${article.id}`;
+
+                    return (
+                        <Link key={idx} href={href} className={styles.item}>
+                            {article.image && (
+                                <div className={styles.imageWrapper}>
+                                    <img src={article.image} alt={article.title} />
+                                </div>
+                            )}
+                            <div className={styles.content}>
+                                <span className={styles.category}>{article.categoryTag || article.category || 'NEWS'}</span>
+                                <h4 className={styles.title}>{article.title}</h4>
+                                <span className={styles.time}>{article.time || new Date(article.createdAt).toLocaleDateString()}</span>
                             </div>
-                        )}
-                        <div className={styles.content}>
-                            <span className={styles.category}>{article.categoryTag || article.category || 'NEWS'}</span>
-                            <h4 className={styles.title}>{article.title}</h4>
-                            <span className={styles.time}>{article.time || new Date(article.createdAt).toLocaleDateString()}</span>
-                        </div>
-                    </Link>
-                ))}
+                        </Link>
+                    )
+                })}
             </div>
         </div>
     );

@@ -10,7 +10,7 @@ const Section = ({ title, items, categoryTag }: { title: string, items: any[], c
     <section className={styles.categorySection}>
         <div className={styles.sectionHeaderRow}>
             <h3 className={styles.sectionTitle}>{title}</h3>
-            <Link href={`/how-to/${categoryTag.toLowerCase().replace(' ', '-')}`} className={styles.viewAllLink}>
+            <Link href={`/guides-and-tips/${categoryTag.toLowerCase().replace(' ', '-')}`} className={styles.viewAllLink}>
                 View All
             </Link>
         </div>

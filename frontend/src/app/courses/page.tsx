@@ -5,16 +5,15 @@ import styles from './courses.module.css';
 import { fetchNews } from '@/lib/api';
 import Link from 'next/link';
 
-const COUNTRIES = ['Scotland', 'England', 'Portugal', 'Spain', 'United Kingdom'];
-const STATES = ['Florida', 'California', 'New York', 'Texas'];
-
 export default function CoursesPage() {
     const [courses, setCourses] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         const loadData = async () => {
             try {
+                // Fetch all news items categorized as COURSES
                 const data = await fetchNews('COURSES');
                 setCourses(data);
             } catch (error) {
@@ -26,8 +25,25 @@ export default function CoursesPage() {
         loadData();
     }, []);
 
-    const byCountry = courses.filter(c => COUNTRIES.includes(c.categoryTag));
-    const byState = courses.filter(c => STATES.includes(c.categoryTag));
+    // Filter by search term if active
+    const filteredCourses = searchTerm
+        ? courses.filter(c =>
+            c.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (c.categoryTag && c.categoryTag.toLowerCase().includes(searchTerm.toLowerCase()))
+        )
+        : courses;
+
+    // Group courses by location (categoryTag)
+    // If no tag is present, fallback to 'Other Locations'
+    const groupedCourses = filteredCourses.reduce((acc, course) => {
+        const tag = course.categoryTag ? course.categoryTag.trim().toUpperCase() : 'OTHER LOCATIONS';
+        if (!acc[tag]) acc[tag] = [];
+        acc[tag].push(course);
+        return acc;
+    }, {} as Record<string, any[]>);
+
+    // Get sorted list of tags
+    const sortedTags = Object.keys(groupedCourses).sort((a, b) => a.localeCompare(b));
 
     if (loading) return <div className={styles.loading}>Loading courses...</div>;
 
@@ -46,7 +62,9 @@ export default function CoursesPage() {
                         <input
                             type="text"
                             className={styles.searchInput}
-                            placeholder="Search by location or course"
+                            placeholder="Search by location or course name..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
                 </div>
@@ -54,52 +72,83 @@ export default function CoursesPage() {
 
             {/* Content Sections */}
             <div className={styles.contentSections}>
-                {/* Search By Country */}
-                <section className={styles.section}>
-                    <div className={styles.sectionHeader}>
-                        <div className={styles.redBar}></div>
-                        <h2 className={styles.sectionTitle}>SEARCH BY COUNTRY</h2>
-                    </div>
-                    <div className={styles.sliderContainer}>
-                        {byCountry.map((item) => (
-                            <Link href={`/news/${item.id}`} key={item.id} className={styles.categoryCard}>
-                                <div className={styles.cardImageWrapper}>
-                                    <img src={item.image} alt={item.title} className={styles.cardImage} />
-                                </div>
-                                <div className={styles.cardContent}>
-                                    <div className={styles.cardBrand}>
-                                        TGP<span className={styles.brandPlus}>+</span>
+                {searchTerm ? (
+                    <section className={styles.section}>
+                        <div className={styles.sectionHeader}>
+                            <div className={styles.sectionLeft}>
+                                <div className={styles.redBar}></div>
+                                <h2 className={styles.sectionTitle}>SEARCH RESULTS</h2>
+                            </div>
+                        </div>
+                        {filteredCourses.length > 0 ? (
+                            <div className={styles.cardsGrid}>
+                                {filteredCourses.map((item) => (
+                                    <CourseCard key={item.id} item={item} />
+                                ))}
+                            </div>
+                        ) : (
+                            <div style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
+                                No courses found for "{searchTerm}"
+                            </div>
+                        )}
+                    </section>
+                ) : (
+                    <>
+                        {/* Dynamic Sections Based on Available Tags */}
+                        {sortedTags.map((tag) => (
+                            <section key={tag} className={styles.section}>
+                                <div className={styles.sectionHeader}>
+                                    <div className={styles.sectionLeft}>
+                                        <div className={styles.redBar}></div>
+                                        {/* Link to category page using slug (e.g. /courses/florida) */}
+                                        <Link href={`/courses/${tag.toLowerCase()}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                            <h2 className={styles.sectionTitle} style={{ cursor: 'pointer' }}>COURSES IN {tag}</h2>
+                                        </Link>
                                     </div>
-                                    <h3 className={styles.cardTitle}>{item.title}</h3>
+                                    <Link href={`/courses/${tag.toLowerCase()}`} className={styles.viewAllLink}>
+                                        View All
+                                    </Link>
                                 </div>
-                            </Link>
-                        ))}
-                    </div>
-                </section>
 
-                {/* Search By State */}
-                <section className={styles.section} style={{ backgroundColor: '#f9f9f9' }}>
-                    <div className={styles.sectionHeader}>
-                        <div className={styles.redBar}></div>
-                        <h2 className={styles.sectionTitle}>SEARCH BY STATE</h2>
-                    </div>
-                    <div className={styles.sliderContainer}>
-                        {byState.map((item) => (
-                            <Link href={`/news/${item.id}`} key={item.id} className={styles.categoryCard}>
-                                <div className={styles.cardImageWrapper}>
-                                    <img src={item.image} alt={item.title} className={styles.cardImage} />
+                                {/* Horizontal Slider for courses in this tag */}
+                                <div className={styles.sliderContainer}>
+                                    {groupedCourses[tag].map((item: any) => (
+                                        <CourseCard key={item.id} item={item} />
+                                    ))}
                                 </div>
-                                <div className={styles.cardContent}>
-                                    <div className={styles.cardBrand}>
-                                        TGP<span className={styles.brandPlus}>+</span>
-                                    </div>
-                                    <h3 className={styles.cardTitle}>{item.title}</h3>
-                                </div>
-                            </Link>
+                            </section>
                         ))}
-                    </div>
-                </section>
+
+                        {!loading && courses.length === 0 && (
+                            <div style={{ textAlign: 'center', padding: '60px' }}>
+                                <p>No courses available right now.</p>
+                            </div>
+                        )}
+                    </>
+                )}
             </div>
         </div>
     );
 }
+
+const CourseCard = ({ item }: { item: any }) => (
+    <Link href={`/courses/${item.id}`} className={styles.categoryCard}>
+        <div className={styles.cardImageWrapper}>
+            <img src={item.image} alt={item.title} className={styles.cardImage} />
+        </div>
+        <div className={styles.cardContent}>
+            <span style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: "0.65rem",
+                color: "#ed3e49",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                marginBottom: "4px",
+                display: "block"
+            }}>
+                {item.categoryTag || 'COURSE'}
+            </span>
+            <h3 className={styles.cardTitle}>{item.title}</h3>
+        </div>
+    </Link>
+);

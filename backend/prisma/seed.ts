@@ -103,7 +103,7 @@ async function main() {
     const howToData = howToTitles.map((item, i) => ({
         id: `ht-${i + 1}`,
         type: 'REGULAR',
-        category: 'HOW-TO',
+        category: 'GUIDES-TIPS',
         categoryTag: item.tag,
         title: item.title,
         excerpt: `Discover the best techniques for ${item.title.toLowerCase()} to improve your game.`,

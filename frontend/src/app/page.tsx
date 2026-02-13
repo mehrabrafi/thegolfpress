@@ -7,48 +7,61 @@ import Hero from '@/components/Hero';
 import SubNews from '@/components/SubNews';
 import SidebarNews from '@/components/SidebarNews';
 import Leaderboard from '@/components/Leaderboard';
-import HowToSection from '@/components/HowToSection';
-import CoursesSection from '@/components/CoursesSection';
-import { fetchLeaderboard, fetchNews } from '@/lib/api';
+import DynamicSection from '@/components/DynamicSection';
+import { fetchLeaderboard, fetchNews, fetchHomeSections, fetchTrendingNews } from '@/lib/api';
 import styles from './page.module.css';
 
 export default function Home() {
   const [lbData, setLbData] = useState<any>(null);
-
   const [news, setNews] = useState<any[] | null>(null);
-  const [howTo, setHowTo] = useState<any[] | null>(null);
-  const [courses, setCourses] = useState<any[] | null>(null);
+  const [trendingNews, setTrendingNews] = useState<any[] | null>(null);
+  const [homeSections, setHomeSections] = useState<any[]>([]);
+  const [sectionArticles, setSectionArticles] = useState<{ [key: string]: any[] }>({});
 
   useEffect(() => {
-    // Fetch data in parallel without blocking each other
     async function loadData() {
       // Leaderboard
       fetchLeaderboard()
         .then(data => setLbData(data))
         .catch(err => console.error('Error loading leaderboard:', err));
 
+      // Home Sections (Dynamic)
+      fetchHomeSections()
+        .then(async (sections) => {
+          setHomeSections(sections);
+
+          // Fetch articles for each section
+          const articlesMap: { [key: string]: any[] } = {};
+          await Promise.all(sections.map(async (section: any) => {
+            try {
+              const articles = await fetchNews(section.category);
+              articlesMap[section.id] = articles.slice(0, section.maxItems);
+            } catch (err) {
+              console.error(`Error loading articles for section ${section.id}:`, err);
+            }
+          }));
+          setSectionArticles(articlesMap);
+        })
+        .catch(err => console.error('Error loading home sections:', err));
 
       // News
       fetchNews()
         .then(data => {
-          // Filter out How-To and Courses from main news feed
+          // Filter out categories that are used in home sections to avoid duplication
+          // (optional, but keep it for now as a general rule)
           const filteredNews = data.filter((item: any) => {
             const cat = (item.category || '').toUpperCase();
+            // We'll hardcode the exclusions for now or make it dynamic later
             return cat !== 'HOW-TO' && cat !== 'COURSES' && cat !== 'HOW TO' && cat !== 'COURSE';
           });
           setNews(filteredNews);
         })
         .catch(err => console.error('Error loading news:', err));
 
-      // How To
-      fetchNews('HOW-TO')
-        .then(data => setHowTo(data))
-        .catch(err => console.error('Error loading how-to:', err));
-
-      // Courses
-      fetchNews('COURSES')
-        .then(data => setCourses(data))
-        .catch(err => console.error('Error loading courses:', err));
+      // Trending News
+      fetchTrendingNews()
+        .then(data => setTrendingNews(data))
+        .catch(err => console.error('Error loading trending news:', err));
     }
     loadData();
   }, []);
@@ -58,10 +71,8 @@ export default function Home() {
 
   // Distribute news if available
   const heroArticle = news && news.length > 0 ? news[0] : null;
-  // Get next 6 articles for sub-news grid (bottom left) - fills two rows of 3
   const subArticles = news && news.length > 1 ? news.slice(1, 7) : [];
-  // Get next 5 articles for sidebar news (right column) - shifted after subArticles
-  const sidebarArticles = news && news.length > 7 ? news.slice(7, 12) : [];
+  const sidebarArticles = trendingNews || [];
 
   return (
     <main>
@@ -104,9 +115,16 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Dedicated Sections */}
-        <HowToSection articles={howTo || []} />
-        <CoursesSection courses={courses || []} />
+        {/* Dynamic Sections */}
+        {homeSections.map((section) => (
+          <DynamicSection
+            key={section.id}
+            title={section.title}
+            articles={sectionArticles[section.id] || []}
+            link={section.link}
+            linkText={section.linkText}
+          />
+        ))}
       </div>
     </main >
   );

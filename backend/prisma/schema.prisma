@@ -72,3 +72,16 @@ enum Role {
   ADMIN
   EDITOR
 }
+
+model HomeSection {
+  id        String   @id @default(uuid())
+  title     String
+  category  String
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  link      String?
+  linkText  String?
+  maxItems  Int      @default(4)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

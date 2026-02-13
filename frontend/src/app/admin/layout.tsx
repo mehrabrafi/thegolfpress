@@ -28,8 +28,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <Link href="/admin" className={styles.navItem}>Dashboard</Link>
                     <Link href="/admin/news" className={styles.navItem}>Manage News</Link>
                     <Link href="/admin/categories" className={styles.navItem}>Manage Categories</Link>
-                    <Link href="/admin/how-to" className={styles.navItem}>Manage How-To</Link>
+                    <Link href="/admin/guides-and-tips" className={styles.navItem}>Manage Guides & Tips</Link>
                     <Link href="/admin/courses" className={styles.navItem}>Manage Courses</Link>
+                    <Link href="/admin/home-sections" className={styles.navItem}>Home Sections</Link>
                     <Link href="/admin/users" className={styles.navItem}>Users</Link>
                     <Link href="/admin/settings" className={styles.navItem}>Site Settings</Link>
                     <div className={styles.navDivider}></div>

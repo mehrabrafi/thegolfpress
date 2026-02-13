@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { RegisterDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -32,16 +33,19 @@ export class AuthService {
         };
     }
 
-    async register(data: any) {
-        const hashedPassword = await bcrypt.hash(data.password, 10);
+    async register(data: RegisterDto) {
+        const hashedPassword = await bcrypt.hash(data.password, 12);
         try {
             const user = await this.prisma.user.create({
                 data: {
-                    ...data,
+                    email: data.email,
                     password: hashedPassword,
+                    name: data.name,
+                    // role is NOT included — defaults to USER in the schema
                 },
             });
-            return this.login(user);
+            const { password, ...safeUser } = user;
+            return this.login(safeUser);
         } catch (e) {
             throw new UnauthorizedException('User already exists');
         }

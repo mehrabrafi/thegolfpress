@@ -1,10 +1,21 @@
 import { Controller, Get, Param, Post, Put, Delete, Body, UseGuards, Request, Query } from '@nestjs/common';
 import { GolfService } from './golf.service';
 import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
+import {
+    CreateNewsDto, UpdateNewsDto,
+    CreateCategoryDto, UpdateCategoryDto,
+    CreateSubTagDto, UpdateSubTagDto,
+    UpdateUserRoleDto, UpdateSettingDto,
+    CreateHomeSectionDto, UpdateHomeSectionDto,
+} from './dto/golf.dto';
 
 @Controller('golf')
 export class GolfController {
     constructor(private readonly golfService: GolfService) { }
+
+    // ── Public Endpoints ────────────────────────────────────────
 
     @Get('leaderboard')
     async getLeaderboard() {
@@ -41,9 +52,14 @@ export class GolfController {
         return this.golfService.getPlayerProfile(id);
     }
 
+    @Get('search')
+    async search(@Query('q') query: string) {
+        return this.golfService.search(query);
+    }
+
     @Get('news')
-    async getNews(@Query('category') category?: string) {
-        return this.golfService.getNews(category);
+    async getNews(@Query('category') category?: string, @Query('tag') tag?: string) {
+        return this.golfService.getNews(category, tag);
     }
 
     @Get('news/trending')
@@ -56,92 +72,14 @@ export class GolfController {
         return this.golfService.getNewsById(id);
     }
 
-    @UseGuards(AuthGuard('jwt'))
-    @Post('news')
-    async createNews(@Body() body) {
-        // Enforce a unified website author instead of individual authors
-        return this.golfService.createNews({ ...body });
-    }
-
-    @UseGuards(AuthGuard('jwt'))
-    @Put('news/:id')
-    async updateNews(@Param('id') id: string, @Body() body) {
-        return this.golfService.updateNews(id, body);
-    }
-
-    @UseGuards(AuthGuard('jwt'))
-    @Delete('news/:id')
-    async deleteNews(@Param('id') id: string) {
-        return this.golfService.deleteNews(id);
-    }
-
-
-
-    // Category Management
     @Get('categories')
     async getCategories() {
         return this.golfService.getCategories();
     }
 
-    @UseGuards(AuthGuard('jwt'))
-    @Post('categories')
-    async createCategory(@Body() body) {
-        return this.golfService.createCategory(body);
-    }
-
-    @UseGuards(AuthGuard('jwt'))
-    @Put('categories/:id')
-    async updateCategory(@Param('id') id: string, @Body() body) {
-        return this.golfService.updateCategory(id, body);
-    }
-
-    @UseGuards(AuthGuard('jwt'))
-    @Delete('categories/:id')
-    async deleteCategory(@Param('id') id: string) {
-        return this.golfService.deleteCategory(id);
-    }
-
-    // Sub-Tag Management
     @Get('sub-tags')
     async getSubTags(@Query('categoryId') categoryId?: string) {
         return this.golfService.getSubTags(categoryId);
-    }
-
-    @UseGuards(AuthGuard('jwt'))
-    @Post('sub-tags')
-    async createSubTag(@Body() body) {
-        return this.golfService.createSubTag(body);
-    }
-
-    @UseGuards(AuthGuard('jwt'))
-    @Put('sub-tags/:id')
-    async updateSubTag(@Param('id') id: string, @Body() body) {
-        return this.golfService.updateSubTag(id, body);
-    }
-
-    @UseGuards(AuthGuard('jwt'))
-    @Delete('sub-tags/:id')
-    async deleteSubTag(@Param('id') id: string) {
-        return this.golfService.deleteSubTag(id);
-    }
-
-    // Admin Dashboard & User Management
-    @UseGuards(AuthGuard('jwt'))
-    @Get('admin/stats')
-    async getStats() {
-        return this.golfService.getStats();
-    }
-
-    @UseGuards(AuthGuard('jwt'))
-    @Get('admin/users')
-    async getUsers() {
-        return this.golfService.getUsers();
-    }
-
-    @UseGuards(AuthGuard('jwt'))
-    @Put('admin/users/:id/role')
-    async updateUserRole(@Param('id') id: string, @Body('role') role: string) {
-        return this.golfService.updateUserRole(id, role as any);
     }
 
     @Get('settings')
@@ -149,9 +87,137 @@ export class GolfController {
         return this.golfService.getSettings();
     }
 
-    @UseGuards(AuthGuard('jwt'))
+    @Get('home-sections')
+    async getHomeSections() {
+        return this.golfService.getHomeSections();
+    }
+
+    // ── Protected Endpoints (Authenticated + ADMIN/EDITOR role) ──
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN', 'EDITOR')
+    @Post('news')
+    async createNews(@Body() body: CreateNewsDto) {
+        return this.golfService.createNews({ ...body });
+    }
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN', 'EDITOR')
+    @Put('news/:id')
+    async updateNews(@Param('id') id: string, @Body() body: UpdateNewsDto) {
+        return this.golfService.updateNews(id, body);
+    }
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN', 'EDITOR')
+    @Delete('news/:id')
+    async deleteNews(@Param('id') id: string) {
+        return this.golfService.deleteNews(id);
+    }
+
+    // ── Category Management (ADMIN only) ────────────────────────
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
+    @Post('categories')
+    async createCategory(@Body() body: CreateCategoryDto) {
+        return this.golfService.createCategory(body);
+    }
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
+    @Put('categories/:id')
+    async updateCategory(@Param('id') id: string, @Body() body: UpdateCategoryDto) {
+        return this.golfService.updateCategory(id, body);
+    }
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
+    @Delete('categories/:id')
+    async deleteCategory(@Param('id') id: string) {
+        return this.golfService.deleteCategory(id);
+    }
+
+    // ── Sub-Tag Management (ADMIN only) ──────────────────────────
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
+    @Post('sub-tags')
+    async createSubTag(@Body() body: CreateSubTagDto) {
+        return this.golfService.createSubTag(body);
+    }
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
+    @Put('sub-tags/:id')
+    async updateSubTag(@Param('id') id: string, @Body() body: UpdateSubTagDto) {
+        return this.golfService.updateSubTag(id, body);
+    }
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
+    @Delete('sub-tags/:id')
+    async deleteSubTag(@Param('id') id: string) {
+        return this.golfService.deleteSubTag(id);
+    }
+
+    // ── Admin Dashboard & User Management (ADMIN only) ──────────
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
+    @Get('admin/stats')
+    async getStats() {
+        return this.golfService.getStats();
+    }
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
+    @Get('admin/users')
+    async getUsers() {
+        return this.golfService.getUsers();
+    }
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
+    @Put('admin/users/:id/role')
+    async updateUserRole(@Param('id') id: string, @Body() body: UpdateUserRoleDto) {
+        return this.golfService.updateUserRole(id, body.role as any);
+    }
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
     @Put('settings/:key')
-    async updateSetting(@Param('key') key: string, @Body('value') value: string) {
-        return this.golfService.updateSetting(key, value);
+    async updateSetting(@Param('key') key: string, @Body() body: UpdateSettingDto) {
+        return this.golfService.updateSetting(key, body.value);
+    }
+
+    // ── Home Section Management ──────────────────────────────────
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
+    @Get('admin/home-sections')
+    async getAllHomeSections() {
+        return this.golfService.getAllHomeSections();
+    }
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
+    @Post('admin/home-sections')
+    async createHomeSection(@Body() body: CreateHomeSectionDto) {
+        return this.golfService.createHomeSection(body);
+    }
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
+    @Put('admin/home-sections/:id')
+    async updateHomeSection(@Param('id') id: string, @Body() body: UpdateHomeSectionDto) {
+        return this.golfService.updateHomeSection(id, body);
+    }
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
+    @Delete('admin/home-sections/:id')
+    async deleteHomeSection(@Param('id') id: string) {
+        return this.golfService.deleteHomeSection(id);
     }
 }

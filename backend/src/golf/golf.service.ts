@@ -44,7 +44,7 @@ export class GolfService {
                 tournamentName: event.name,
                 players: competitors.map((c: any) => {
                     const linescores = c.linescores || [];
-                    const todayScore = linescores.find((l: any) => l.period === event.competitions[0].status.period);
+                    const todayScore = linescores.find((l: any) => l.period === event.competitions?.[0]?.status?.period);
 
                     return {
                         id: c.athlete?.id,
@@ -356,10 +356,14 @@ export class GolfService {
         }
     }
 
-    async getNews(category?: string) {
-        return this.prisma.news.findMany({
-            where: category ? { category } : {},
+    async getNews(category?: string, tag?: string) {
+        this.logger.log(`Fetching news for category: ${category || 'ALL'} tag: ${tag || 'ALL'}`);
+        const where: any = {};
+        if (category) where.category = { equals: category, mode: 'insensitive' };
+        if (tag) where.categoryTag = { equals: tag, mode: 'insensitive' };
 
+        return this.prisma.news.findMany({
+            where,
             orderBy: {
                 createdAt: 'desc'
             }
@@ -566,5 +570,122 @@ export class GolfService {
             where: { key },
             data: { value }
         });
+    }
+
+    // Home Section Management
+    async getHomeSections() {
+        return this.prisma.homeSection.findMany({
+            where: { active: true },
+            orderBy: { order: 'asc' }
+        });
+    }
+
+    async getAllHomeSections() {
+        return this.prisma.homeSection.findMany({
+            orderBy: { order: 'asc' }
+        });
+    }
+
+    async createHomeSection(data: any) {
+        return this.prisma.homeSection.create({
+            data: {
+                title: data.title,
+                category: data.category,
+                order: data.order || 0,
+                active: data.active !== undefined ? data.active : true,
+                link: data.link,
+                linkText: data.linkText,
+                maxItems: data.maxItems || 4
+            }
+        });
+    }
+
+    async updateHomeSection(id: string, data: any) {
+        return this.prisma.homeSection.update({
+            where: { id },
+            data: {
+                title: data.title,
+                category: data.category,
+                order: data.order,
+                active: data.active,
+                link: data.link,
+                linkText: data.linkText,
+                maxItems: data.maxItems
+            }
+        });
+    }
+
+    async deleteHomeSection(id: string) {
+        return this.prisma.homeSection.delete({
+            where: { id }
+        });
+    }
+
+    async search(query: string) {
+        if (!query || query.trim().length < 2) {
+            return { news: [], categories: [], players: [] };
+        }
+
+        const searchTerm = query.trim();
+
+        // Search news articles
+        const newsResults = await this.prisma.news.findMany({
+            where: {
+                OR: [
+                    { title: { contains: searchTerm, mode: 'insensitive' } },
+                    { excerpt: { contains: searchTerm, mode: 'insensitive' } },
+                ],
+                status: 'PUBLISHED',
+            },
+            orderBy: { createdAt: 'desc' },
+            take: 10,
+        });
+
+        // Search categories
+        const categoryResults = await this.prisma.category.findMany({
+            where: {
+                OR: [
+                    { name: { contains: searchTerm, mode: 'insensitive' } },
+                    { slug: { contains: searchTerm, mode: 'insensitive' } },
+                ],
+            },
+            include: {
+                subTags: true,
+                _count: { select: { news: true } },
+            },
+            take: 5,
+        });
+
+        // Search players via ESPN API
+        let playerResults: any[] = [];
+        try {
+            const espnSearchUrl = `https://site.web.api.espn.com/apis/common/v3/search?query=${encodeURIComponent(searchTerm)}&limit=5&type=player&sport=golf`;
+            const espnData = await this.fetchJson(espnSearchUrl, false);
+            const items = espnData?.items || espnData?.results || [];
+
+            // Handle different response structures
+            if (Array.isArray(items)) {
+                playerResults = items
+                    .filter((item: any) => item?.type === 'player' || item?.athlete)
+                    .slice(0, 5)
+                    .map((item: any) => {
+                        const athlete = item.athlete || item;
+                        return {
+                            id: athlete.id || item.id,
+                            name: athlete.displayName || athlete.fullName || item.displayName || item.name,
+                            image: athlete.headshot?.href || athlete.headshot || item.image || '',
+                            country: athlete.flag?.alt || '',
+                        };
+                    });
+            }
+        } catch (err) {
+            this.logger.warn(`ESPN player search failed for "${searchTerm}": ${err.message}`);
+        }
+
+        return {
+            news: newsResults,
+            categories: categoryResults,
+            players: playerResults,
+        };
     }
 }

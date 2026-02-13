@@ -340,7 +340,7 @@
     align-items: center;
     gap: 15px;
     font-family: var(--font-sans-condensed);
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 800;
     text-transform: uppercase;
     color: #000;
@@ -352,7 +352,7 @@
     content: '';
     display: block;
     width: 6px;
-    height: 32px;
+    height: 24px;
     background: #d91b2b;
 }
 
@@ -414,21 +414,21 @@
 }
 
 .categoryHeader {
-    text-align: center;
-    margin-bottom: 50px;
+    text-align: left;
+    margin-bottom: 40px;
 }
 
 .categoryHeader h2 {
-    font-size: 3rem;
-    margin-bottom: 10px;
+    font-size: 1.8rem;
+    margin-bottom: 0px;
 }
 
 .noArticles {
     text-align: center;
-    padding: 100px 20px;
-    font-size: 1.2rem;
+    padding: 80px 20px;
+    font-size: 1.1rem;
     color: #64748b;
-    border: 2px dashed #e2e8f0;
+    border: 1px dashed #e2e8f0;
     border-radius: 8px;
     background: #f8fafc;
 }

@@ -41,8 +41,8 @@ export default function Menu({ isOpen, toggleMenu }: MenuProps) {
                         News
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
                     </Link>
-                    <Link href="/how-to" className={styles.navItem} onClick={toggleMenu}>
-                        How To
+                    <Link href="/guides-and-tips" className={styles.navItem} onClick={toggleMenu}>
+                        Guides & Tips
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
                     </Link>
                     <Link href="/courses" className={styles.navItem} onClick={toggleMenu}>

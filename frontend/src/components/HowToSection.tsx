@@ -8,7 +8,7 @@ export default function HowToSection({ articles }: { articles: any[] }) {
         <section className={styles.section}>
             <div className={styles.header}>
                 <h2 className={styles.title}>Improve Your Game</h2>
-                <Link href="/how-to" className={styles.link}>VIEW ALL TIPS →</Link>
+                <Link href="/guides-and-tips" className={styles.link}>VIEW ALL TIPS →</Link>
             </div>
             <div className={styles.grid}>
                 {articles.slice(0, 4).map((item, idx) => (

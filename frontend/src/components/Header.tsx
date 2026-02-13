@@ -1,16 +1,18 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import styles from './Header.module.css';
 import { useAuth } from '@/context/AuthContext';
 import Menu from './Menu';
+import SearchOverlay from './SearchOverlay';
 import { fetchCategories } from '@/lib/api';
 
 function HeaderContent() {
     const { user, logout } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
     const [categories, setCategories] = useState<any[]>([]);
@@ -52,6 +54,22 @@ function HeaderContent() {
             }
         };
         loadCategories();
+    }, []);
+
+    // Global keyboard shortcut: Cmd/Ctrl+K to open search
+    useEffect(() => {
+        const handleGlobalKeyDown = (e: KeyboardEvent) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                setIsSearchOpen(true);
+            }
+        };
+        window.addEventListener('keydown', handleGlobalKeyDown);
+        return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+    }, []);
+
+    const handleSearchClose = useCallback(() => {
+        setIsSearchOpen(false);
     }, []);
 
     useEffect(() => {
@@ -116,14 +134,14 @@ function HeaderContent() {
 
                             <nav className={styles.nav}>
                                 <Link href="/news">NEWS</Link>
-                                <Link href="/how-to">HOW TO</Link>
+                                <Link href="/guides-and-tips">GUIDES & TIPS</Link>
                                 <Link href="/courses">COURSES</Link>
                                 <Link href="/scores">SCORES</Link>
 
                                 <Link href="/rankings">RANKINGS</Link>
                             </nav>
 
-                            <div className={styles.searchItem}>
+                            <div className={styles.searchItem} onClick={() => setIsSearchOpen(true)}>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
                             </div>
                         </div>
@@ -151,7 +169,7 @@ function HeaderContent() {
                         {user?.role === 'ADMIN' && (
                             <Link href="/admin" className={styles.adminPanelLinkSmall}>ADMIN PANEL</Link>
                         )}
-                        <div className={styles.searchItem}>
+                        <div className={styles.searchItem} onClick={() => setIsSearchOpen(true)}>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
                         </div>
                     </div>
@@ -196,6 +214,9 @@ function HeaderContent() {
                     </div>
                 </div>
             )}
+
+            {/* Search Overlay */}
+            <SearchOverlay isOpen={isSearchOpen} onClose={handleSearchClose} />
         </header>
     );
 }

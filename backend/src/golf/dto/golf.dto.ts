@@ -1,0 +1,194 @@
+import { IsString, IsOptional, IsEnum, IsUUID } from 'class-validator';
+
+export class CreateNewsDto {
+    @IsString()
+    title: string;
+
+    @IsString()
+    excerpt: string;
+
+    @IsString()
+    content: string;
+
+    @IsString()
+    image: string;
+
+    @IsString()
+    category: string;
+
+    @IsOptional()
+    @IsString()
+    type?: string;
+
+    @IsOptional()
+    @IsString()
+    categoryTag?: string;
+
+    @IsOptional()
+    @IsString()
+    time?: string;
+
+    @IsOptional()
+    @IsString()
+    status?: string;
+
+    @IsOptional()
+    @IsString()
+    publishedAt?: string;
+
+    @IsOptional()
+    @IsUUID()
+    categoryId?: string;
+
+    @IsOptional()
+    @IsUUID()
+    subTagId?: string;
+}
+
+export class UpdateNewsDto {
+    @IsOptional()
+    @IsString()
+    title?: string;
+
+    @IsOptional()
+    @IsString()
+    excerpt?: string;
+
+    @IsOptional()
+    @IsString()
+    content?: string;
+
+    @IsOptional()
+    @IsString()
+    image?: string;
+
+    @IsOptional()
+    @IsString()
+    category?: string;
+
+    @IsOptional()
+    @IsString()
+    type?: string;
+
+    @IsOptional()
+    @IsString()
+    categoryTag?: string;
+
+    @IsOptional()
+    @IsString()
+    time?: string;
+
+    @IsOptional()
+    @IsString()
+    status?: string;
+
+    @IsOptional()
+    @IsString()
+    publishedAt?: string;
+
+    @IsOptional()
+    @IsUUID()
+    categoryId?: string;
+
+    @IsOptional()
+    @IsUUID()
+    subTagId?: string;
+}
+
+export class CreateCategoryDto {
+    @IsString()
+    name: string;
+
+    @IsString()
+    slug: string;
+}
+
+export class UpdateCategoryDto {
+    @IsOptional()
+    @IsString()
+    name?: string;
+
+    @IsOptional()
+    @IsString()
+    slug?: string;
+}
+
+export class CreateSubTagDto {
+    @IsString()
+    name: string;
+
+    @IsUUID()
+    categoryId: string;
+}
+
+export class UpdateSubTagDto {
+    @IsOptional()
+    @IsString()
+    name?: string;
+
+    @IsOptional()
+    @IsUUID()
+    categoryId?: string;
+}
+
+export class UpdateUserRoleDto {
+    @IsEnum(['USER', 'ADMIN', 'EDITOR'], { message: 'Role must be USER, ADMIN, or EDITOR' })
+    role: string;
+}
+
+export class UpdateSettingDto {
+    @IsString()
+    value: string;
+}
+
+export class CreateHomeSectionDto {
+    @IsString()
+    title: string;
+
+    @IsString()
+    category: string;
+
+    @IsOptional()
+    order?: number;
+
+    @IsOptional()
+    active?: boolean;
+
+    @IsOptional()
+    @IsString()
+    link?: string;
+
+    @IsOptional()
+    @IsString()
+    linkText?: string;
+
+    @IsOptional()
+    maxItems?: number;
+}
+
+export class UpdateHomeSectionDto {
+    @IsOptional()
+    @IsString()
+    title?: string;
+
+    @IsOptional()
+    @IsString()
+    category?: string;
+
+    @IsOptional()
+    order?: number;
+
+    @IsOptional()
+    active?: boolean;
+
+    @IsOptional()
+    @IsString()
+    link?: string;
+
+    @IsOptional()
+    @IsString()
+    linkText?: string;
+
+    @IsOptional()
+    maxItems?: number;
+}
