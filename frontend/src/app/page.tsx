@@ -12,11 +12,11 @@ export default async function Home() {
 
   const leaderboard = leaderboardData.status === 'fulfilled' ? leaderboardData.value : null;
 
-  // Filter out HOW-TO and COURSES from general news
+  // Filter out Guides & Tips and Courses from general news
   const rawNews = allNews.status === 'fulfilled' ? allNews.value : [];
   const filteredNews = rawNews.filter((item: any) => {
     const cat = (item.category || '').toUpperCase();
-    return cat !== 'HOW-TO' && cat !== 'COURSES' && cat !== 'HOW TO' && cat !== 'COURSE';
+    return cat !== 'GUIDES-TIPS' && cat !== 'COURSES' && cat !== 'COURSE';
   });
 
   const trending = trendingData.status === 'fulfilled' ? trendingData.value : [];

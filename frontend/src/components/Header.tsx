@@ -74,7 +74,7 @@ function HeaderContent() {
 
     useEffect(() => {
         const parts = pathname.split('/');
-        const categorySlug = parts[1]; // e.g., 'how-to'
+        const categorySlug = parts[1]; // e.g., 'guides-and-tips'
 
         if (categorySlug) {
             const matchedCat = categories.find(c => c.slug === categorySlug);

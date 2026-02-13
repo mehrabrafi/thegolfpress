@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import styles from './HowToSection.module.css';
+import styles from './GuidesSection.module.css';
 
-export default function HowToSection({ articles }: { articles: any[] }) {
+export default function GuidesSection({ articles }: { articles: any[] }) {
     if (!articles || articles.length === 0) return null;
 
     return (

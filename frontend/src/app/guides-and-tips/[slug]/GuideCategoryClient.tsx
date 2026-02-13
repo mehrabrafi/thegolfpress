@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import styles from '../HowTo.module.css';
+import styles from '../Guides.module.css';
 
 interface GuideCategoryClientProps {
     articles: any[];
@@ -11,7 +11,7 @@ interface GuideCategoryClientProps {
 export default function GuideCategoryClient({ articles, currentTagName }: GuideCategoryClientProps) {
     return (
         <div className={styles.pageWrapper}>
-            <div className={styles.howToContainer} style={{ paddingTop: '40px' }}>
+            <div className={styles.guidesContainer} style={{ paddingTop: '40px' }}>
                 <div className={styles.categoryHeader}>
                     <h2 className={styles.sectionTitle}>{currentTagName}</h2>
                 </div>

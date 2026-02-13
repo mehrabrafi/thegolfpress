@@ -14,7 +14,8 @@ import {
     Users,
     Settings,
     Wrench,
-    LogOut
+    LogOut,
+    BarChart3,
 } from 'lucide-react';
 import styles from './admin.module.css';
 
@@ -39,6 +40,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <nav className={styles.nav}>
                     <Link href="/tgpadmin" className={styles.navItem}>
                         <LayoutDashboard size={18} /> Dashboard
+                    </Link>
+                    <Link href="/tgpadmin/analytics" className={styles.navItem}>
+                        <BarChart3 size={18} /> Content Analytics
                     </Link>
                     <Link href="/tgpadmin/news" className={styles.navItem}>
                         <Newspaper size={18} /> Manage News

@@ -76,13 +76,13 @@ async function main() {
         },
     ];
 
-    // Create How-To Articles (20 entries)
-    const howToTitles = [
+    // Create Guides & Tips Articles (20 entries)
+    const guideTitles = [
         { title: "The Perfect Backswing: Loading for Power", tag: "Swing Sequence" },
         { title: "Hinge and Hold: The Secret to Chipping", tag: "Short Game" },
         { title: "3 Drills for Better Distance Control", tag: "Putting" },
         { title: "Finding Your Natural Tempo", tag: "Swing Sequence" },
-        { title: "How to Hit a Power Draw", tag: "Driving" },
+        { title: "Guide to Hitting a Power Draw", tag: "Driving" },
         { title: "5 Essential Stretches for Every Golfer", tag: "Fitness" },
         { title: "Staying Calm Under Pressure", tag: "Mental Game" },
         { title: "Bunker Basics: Splashing it Out", tag: "Short Game" },
@@ -100,7 +100,7 @@ async function main() {
         { title: "First Tee Jitters: Overcome Them", tag: "Beginners" }
     ];
 
-    const howToData = howToTitles.map((item, i) => ({
+    const guideData = guideTitles.map((item, i) => ({
         id: `ht-${i + 1}`,
         type: 'REGULAR',
         category: 'GUIDES-TIPS',
@@ -150,7 +150,7 @@ async function main() {
 
     }));
 
-    const allData = [...newsData, ...howToData, ...coursesData];
+    const allData = [...newsData, ...guideData, ...coursesData];
 
     for (const news of allData) {
         await prisma.news.upsert({

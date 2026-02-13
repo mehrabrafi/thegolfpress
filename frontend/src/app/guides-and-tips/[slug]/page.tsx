@@ -12,10 +12,10 @@ export async function generateMetadata({ params }: { params: any }): Promise<Met
     };
 }
 
-export default async function HowToCategoryPage({ params }: { params: any }) {
+export default async function GuideCategoryPage({ params }: { params: any }) {
     const { slug } = await params;
     let articles: any[] = [];
-    let currentTagName = 'All How-To';
+    let currentTagName = 'All Guides & Tips';
 
     try {
         const [newsData, catData] = await Promise.all([
@@ -23,29 +23,29 @@ export default async function HowToCategoryPage({ params }: { params: any }) {
             fetchCategories(),
         ]);
 
-        // Filter for How-To articles
-        const howToArticles = newsData.filter((a: any) => {
+        // Filter for Guides & Tips articles
+        const guideArticles = newsData.filter((a: any) => {
             const c = (a.category || '').toUpperCase();
-            return c === 'HOW-TO' || c === 'HOW TO';
+            return c === 'GUIDES-TIPS';
         });
 
-        const howToCat = catData.find((c: any) => c.slug === 'how-to' || c.name.toLowerCase() === 'how-to');
-        if (howToCat && howToCat.subTags) {
-            const matchedTag = howToCat.subTags.find((t: any) =>
+        const guidesCat = catData.find((c: any) => c.slug === 'guides-tips' || c.name.toLowerCase() === 'guides & tips' || c.name.toLowerCase() === 'guides-tips');
+        if (guidesCat && guidesCat.subTags) {
+            const matchedTag = guidesCat.subTags.find((t: any) =>
                 t.name.toLowerCase().replace(/ /g, '-') === slug.toLowerCase()
             );
 
             if (matchedTag) {
                 currentTagName = matchedTag.name;
-                articles = howToArticles.filter((a: any) =>
+                articles = guideArticles.filter((a: any) =>
                     (a.categoryTag || '').toUpperCase() === matchedTag.name.toUpperCase()
                 );
             } else {
-                articles = howToArticles;
+                articles = guideArticles;
             }
         }
     } catch (error) {
-        console.error('Error fetching how-to category data:', error);
+        console.error('Error fetching guides & tips category data:', error);
     }
 
     return <GuideCategoryClient articles={articles} currentTagName={currentTagName} />;

@@ -2,7 +2,7 @@ import { fetchNews, fetchCategories } from '@/lib/api';
 import GuidesClient from './GuidesClient';
 
 export default async function GuidesAndTipsPage() {
-    let howToArticles: any[] = [];
+    let guideArticles: any[] = [];
     let subTags: any[] = [];
 
     try {
@@ -11,19 +11,19 @@ export default async function GuidesAndTipsPage() {
             fetchCategories(),
         ]);
 
-        // Filter for How-To articles
-        howToArticles = newsData.filter((item: any) => {
+        // Filter for Guides & Tips articles
+        guideArticles = newsData.filter((item: any) => {
             const cat = (item.category || '').toUpperCase();
-            return cat === 'HOW-TO' || cat === 'HOW TO';
+            return cat === 'GUIDES-TIPS';
         });
 
-        const howToCat = catData.find((c: any) => c.slug === 'how-to' || c.name.toLowerCase() === 'how-to');
-        if (howToCat && howToCat.subTags) {
-            subTags = howToCat.subTags;
+        const guidesCat = catData.find((c: any) => c.slug === 'guides-tips' || c.name.toLowerCase() === 'guides & tips' || c.name.toLowerCase() === 'guides-tips');
+        if (guidesCat && guidesCat.subTags) {
+            subTags = guidesCat.subTags;
         }
     } catch (error) {
         console.error('Error fetching guides data:', error);
     }
 
-    return <GuidesClient howToArticles={howToArticles} subTags={subTags} />;
+    return <GuidesClient guideArticles={guideArticles} subTags={subTags} />;
 }

@@ -121,7 +121,7 @@ export default function HomeSectionsPage() {
                                 {categories.map(cat => (
                                     <option key={cat.id} value={cat.name.toUpperCase()}>{cat.name}</option>
                                 ))}
-                                <option value="HOW-TO">HOW-TO (Legacy)</option>
+                                <option value="GUIDES-TIPS">GUIDES-TIPS (Legacy)</option>
                                 <option value="COURSES">COURSES (Legacy)</option>
                             </select>
                         </div>

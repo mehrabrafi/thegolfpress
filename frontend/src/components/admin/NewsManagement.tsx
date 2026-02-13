@@ -49,7 +49,7 @@ export default function NewsManagement({
         setLoading(true);
         try {
             const [newsData, catData] = await Promise.all([
-                fetchNews(fixedCategory),
+                fetchNews(fixedCategory, undefined, 'ALL'),
                 fetchCategories()
             ]);
             setNews(newsData);

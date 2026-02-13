@@ -54,10 +54,10 @@ export default async function GuideDetailPage({ params }: { params: any }) {
 
         const allNews = allNewsResult.status === 'fulfilled' ? allNewsResult.value : [];
 
-        // Get related How-To articles (same category)
+        // Get related Guides & Tips articles (same category)
         const relatedGuides = allNews.filter((n: any) => {
             const cat = (n.category || '').toUpperCase();
-            return (cat === 'HOW-TO' || cat === 'HOW TO') && n.id !== id;
+            return (cat === 'GUIDES-TIPS') && n.id !== id;
         });
 
         return (

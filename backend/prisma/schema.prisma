@@ -85,3 +85,20 @@ model HomeSection {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Analytics {
+  id        String   @id @default(uuid())
+  date      DateTime @unique @default(now())
+  dau       Int      @default(0) // Daily Active Users (Authenticated)
+  visitors  Int      @default(0) // Daily Unique Visitors (Anonymous + Auth)
+  pageViews Int      @default(0) 
+}
+
+model DailyActivity {
+  id        String   @id @default(uuid())
+  userId    String?  // Null for anonymous
+  visitorId String   // Unique ID from cookie/localStorage
+  date      DateTime @default(now())
+  
+  @@unique([visitorId, date])
+}

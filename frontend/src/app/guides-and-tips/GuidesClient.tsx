@@ -1,10 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import styles from './HowTo.module.css';
+import styles from './Guides.module.css';
 
 interface GuidesClientProps {
-    howToArticles: any[];
+    guideArticles: any[];
     subTags: any[];
 }
 
@@ -28,17 +28,17 @@ const Section = ({ title, items, categoryTag }: { title: string, items: any[], c
     </section>
 );
 
-export default function GuidesClient({ howToArticles, subTags }: GuidesClientProps) {
-    const featured = howToArticles[0];
-    const heroGridItems = howToArticles.slice(1, 5);
+export default function GuidesClient({ guideArticles, subTags }: GuidesClientProps) {
+    const featured = guideArticles[0];
+    const heroGridItems = guideArticles.slice(1, 5);
 
     const getArticlesByCategory = (tag: string) => {
-        return howToArticles.filter(a => a.categoryTag === tag).slice(0, 5);
+        return guideArticles.filter(a => a.categoryTag === tag).slice(0, 5);
     };
 
     return (
         <div className={styles.pageWrapper}>
-            <div className={styles.howToContainer}>
+            <div className={styles.guidesContainer}>
                 {/* Hybrid Hero Section */}
                 <section className={styles.heroSection}>
                     {featured && (

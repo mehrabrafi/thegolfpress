@@ -58,8 +58,8 @@ export class GolfController {
     }
 
     @Get('news')
-    async getNews(@Query('category') category?: string, @Query('tag') tag?: string) {
-        return this.golfService.getNews(category, tag);
+    async getNews(@Query('category') category?: string, @Query('tag') tag?: string, @Query('status') status?: string) {
+        return this.golfService.getNews(category, tag, status);
     }
 
     @Get('news/trending')
@@ -95,6 +95,11 @@ export class GolfController {
     @Get('home-sections')
     async getHomeSections() {
         return this.golfService.getHomeSections();
+    }
+
+    @Post('track-activity')
+    async trackActivity(@Body() body: { visitorId: string, userId?: string }) {
+        return this.golfService.trackActivity(body.visitorId, body.userId);
     }
 
     // ── Protected Endpoints (Authenticated + ADMIN/EDITOR role) ──
@@ -173,6 +178,20 @@ export class GolfController {
     @Get('admin/stats')
     async getStats() {
         return this.golfService.getStats();
+    }
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
+    @Get('admin/health')
+    async getSystemHealth() {
+        return this.golfService.getSystemHealth();
+    }
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
+    @Get('admin/analytics')
+    async getContentAnalytics() {
+        return this.golfService.getContentAnalytics();
     }
 
     @UseGuards(AuthGuard('jwt'), RolesGuard)

@@ -1,4 +1,5 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+const IS_SERVER = typeof window === 'undefined';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || (IS_SERVER ? 'http://localhost:5001' : '/api');
 export const API_BASE_URL = `${BASE_URL}/golf`;
 export const AUTH_BASE_URL = `${BASE_URL}/auth`;
 export const UPLOAD_URL = `${BASE_URL}/upload`;
@@ -42,12 +43,22 @@ export async function fetchPlayerProfile(id: string) {
     return res.json();
 }
 
-export async function fetchNews(category?: string, tag?: string) {
-    const url = new URL(`${API_BASE_URL}/news`);
-    if (category) url.searchParams.append('category', category);
-    if (tag) url.searchParams.append('tag', tag);
+export async function fetchNews(category?: string, tag?: string, status?: string) {
+    // Use a dummy base for relative URLs to support URL API
+    const baseUrl = API_BASE_URL.startsWith('http') ? API_BASE_URL : 'http://localhost';
+    const url = new URL(`${baseUrl.replace('http://localhost', '')}/news`, baseUrl);
 
-    const res = await fetch(url.toString(), { next: { revalidate: 60 } });
+    // Fix: if API_BASE_URL is relative, we can't just pass it to new URL as base if it's not absolute.
+    // Simpler approach:
+    const queryParams = new URLSearchParams();
+    if (category) queryParams.append('category', category);
+    if (tag) queryParams.append('tag', tag);
+    if (status) queryParams.append('status', status);
+
+    const queryString = queryParams.toString();
+    const finalUrl = `${API_BASE_URL}/news${queryString ? `?${queryString}` : ''}`;
+
+    const res = await fetch(finalUrl, { next: { revalidate: 60 } });
     if (!res.ok) throw new Error('Failed to fetch news');
     return res.json();
 }
@@ -81,6 +92,18 @@ export async function fetchMaintenanceStatus() {
     const res = await fetch(`${API_BASE_URL}/maintenance-status`, { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to fetch maintenance status');
     return res.json();
+}
+
+export async function trackActivity(visitorId: string, userId?: string) {
+    try {
+        await fetch(`${API_BASE_URL}/track-activity`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ visitorId, userId }),
+        });
+    } catch (e) {
+        // Silently fail for tracking
+    }
 }
 
 // ── Auth Endpoints (cookie-based, no token in response) ─────────
@@ -196,6 +219,22 @@ export async function fetchAdminStats(_token?: string) {
     return res.json();
 }
 
+export async function fetchSystemHealth(_token?: string) {
+    const res = await fetch(`${API_BASE_URL}/admin/health`, {
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to fetch system health');
+    return res.json();
+}
+
+export async function fetchContentAnalytics(_token?: string) {
+    const res = await fetch(`${API_BASE_URL}/admin/analytics`, {
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to fetch analytics');
+    return res.json();
+}
+
 export async function fetchUsers(_token?: string) {
     const res = await fetch(`${API_BASE_URL}/admin/users`, {
         credentials: 'include',
@@ -274,10 +313,13 @@ export async function deleteCategory(id: string, _token?: string) {
 // ── Sub-Tag Endpoints ───────────────────────────────────────────
 
 export async function fetchSubTags(categoryId?: string) {
-    const url = new URL(`${API_BASE_URL}/sub-tags`);
-    if (categoryId) url.searchParams.append('categoryId', categoryId);
+    const queryParams = new URLSearchParams();
+    if (categoryId) queryParams.append('categoryId', categoryId);
 
-    const res = await fetch(url.toString());
+    const queryString = queryParams.toString();
+    const finalUrl = `${API_BASE_URL}/sub-tags${queryString ? `?${queryString}` : ''}`;
+
+    const res = await fetch(finalUrl);
     if (!res.ok) throw new Error('Failed to fetch sub-tags');
     return res.json();
 }

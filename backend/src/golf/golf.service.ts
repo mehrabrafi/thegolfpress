@@ -1,4 +1,5 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { PrismaService } from '../prisma.service';
 
 @Injectable()
@@ -356,11 +357,21 @@ export class GolfService {
         }
     }
 
-    async getNews(category?: string, tag?: string) {
-        this.logger.log(`Fetching news for category: ${category || 'ALL'} tag: ${tag || 'ALL'}`);
+    async getNews(category?: string, tag?: string, status?: string) {
+        this.logger.log(`Fetching news for category: ${category || 'ALL'} tag: ${tag || 'ALL'} status: ${status || 'PUBLISHED (default)'}`);
         const where: any = {};
         if (category) where.category = { equals: category, mode: 'insensitive' };
         if (tag) where.categoryTag = { equals: tag, mode: 'insensitive' };
+
+        // Handle status filtering
+        if (status === 'ALL') {
+            // No status filter - return everything
+        } else if (status) {
+            where.status = status;
+        } else {
+            // Default: Only show PUBLISHED
+            where.status = 'PUBLISHED';
+        }
 
         return this.prisma.news.findMany({
             where,
@@ -368,6 +379,35 @@ export class GolfService {
                 createdAt: 'desc'
             }
         });
+    }
+
+    @Cron(CronExpression.EVERY_MINUTE)
+    async handleScheduledNews() {
+        try {
+            const now = new Date();
+            const scheduledNews = await this.prisma.news.findMany({
+                where: {
+                    status: 'SCHEDULED',
+                    publishedAt: {
+                        lte: now
+                    }
+                }
+            });
+
+            if (scheduledNews.length > 0) {
+                this.logger.log(`Found ${scheduledNews.length} scheduled news articles to publish.`);
+
+                for (const news of scheduledNews) {
+                    await this.prisma.news.update({
+                        where: { id: news.id },
+                        data: { status: 'PUBLISHED' }
+                    });
+                    this.logger.log(`Auto-published news article: ${news.title} (ID: ${news.id})`);
+                }
+            }
+        } catch (error) {
+            this.logger.error('Error processing scheduled news', error);
+        }
     }
 
     async getNewsById(id: string) {
@@ -391,11 +431,11 @@ export class GolfService {
 
     async getTrendingNews() {
         return this.prisma.news.findMany({
+            where: { status: 'PUBLISHED' },
             orderBy: {
                 viewCount: 'desc'
             },
             take: 5,
-
         });
     }
 
@@ -525,18 +565,174 @@ export class GolfService {
 
 
     async getStats() {
-        const [userCount, newsCount, publishedCount] = await Promise.all([
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const [userCount, newsCount, publishedCount, todayActivity] = await Promise.all([
             this.prisma.user.count(),
             this.prisma.news.count(),
-            this.prisma.news.count({ where: { status: 'PUBLISHED' } })
+            this.prisma.news.count({ where: { status: 'PUBLISHED' } }),
+            this.prisma.dailyActivity.count({
+                where: {
+                    date: {
+                        gte: today
+                    }
+                }
+            })
         ]);
+
+        // Get 7-day activity graph data
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
+        sevenDaysAgo.setHours(0, 0, 0, 0);
+
+        const activityLog = await this.prisma.dailyActivity.findMany({
+            where: {
+                date: {
+                    gte: sevenDaysAgo
+                }
+            },
+            select: {
+                date: true,
+                visitorId: true
+            }
+        });
+
+        // Group by day
+        const graphData: { date: string, count: number }[] = [];
+        for (let i = 0; i < 7; i++) {
+            const d = new Date();
+            d.setDate(d.getDate() - (6 - i));
+            const dateStr = d.toISOString().split('T')[0];
+
+            const count = new Set(
+                activityLog
+                    .filter(a => a.date.toISOString().split('T')[0] === dateStr)
+                    .map(a => a.visitorId)
+            ).size;
+
+            graphData.push({
+                date: d.toLocaleDateString('en-US', { weekday: 'short' }),
+                count: count
+            });
+        }
 
         return {
             totalUsers: userCount,
             totalPosts: newsCount,
             publishedPosts: publishedCount,
-            draftPosts: newsCount - publishedCount
+            draftPosts: newsCount - publishedCount,
+            dau: todayActivity,
+            activityGraph: graphData
         };
+    }
+
+    async getSystemHealth() {
+        const services: { name: string; status: 'operational' | 'degraded' | 'down'; responseTime?: number; details?: string }[] = [];
+
+        // 1. Check Database
+        const dbStart = Date.now();
+        try {
+            await this.prisma.$queryRaw`SELECT 1`;
+            services.push({
+                name: 'Database',
+                status: 'operational',
+                responseTime: Date.now() - dbStart,
+                details: 'PostgreSQL connected'
+            });
+        } catch (e) {
+            services.push({
+                name: 'Database',
+                status: 'down',
+                responseTime: Date.now() - dbStart,
+                details: 'Connection failed'
+            });
+        }
+
+        // 2. Check API Server (self — if we're responding, it's up)
+        services.push({
+            name: 'API Server',
+            status: 'operational',
+            responseTime: 0,
+            details: 'NestJS running'
+        });
+
+        // 3. Check ESPN External API
+        const espnStart = Date.now();
+        try {
+            const res = await fetch('https://site.web.api.espn.com/apis/site/v2/sports/golf/leaderboard?league=pga', {
+                signal: AbortSignal.timeout(5000),
+                headers: {
+                    'User-Agent': 'Mozilla/5.0'
+                }
+            });
+            services.push({
+                name: 'ESPN Data Feed',
+                status: res.ok ? 'operational' : 'degraded',
+                responseTime: Date.now() - espnStart,
+                details: res.ok ? 'Live data available' : `HTTP ${res.status}`
+            });
+        } catch (e) {
+            services.push({
+                name: 'ESPN Data Feed',
+                status: 'degraded',
+                responseTime: Date.now() - espnStart,
+                details: 'External API timeout'
+            });
+        }
+
+        // 4. Memory usage
+        const mem = process.memoryUsage();
+        const memUsedMB = Math.round(mem.heapUsed / 1024 / 1024);
+        services.push({
+            name: 'Memory',
+            status: memUsedMB < 512 ? 'operational' : memUsedMB < 900 ? 'degraded' : 'down',
+            details: `${memUsedMB} MB used`
+        });
+
+        // 5. Uptime
+        const uptimeSec = Math.floor(process.uptime());
+        const uptimeHours = Math.floor(uptimeSec / 3600);
+        const uptimeMinutes = Math.floor((uptimeSec % 3600) / 60);
+
+        const allOperational = services.every(s => s.status === 'operational');
+        const anyDown = services.some(s => s.status === 'down');
+
+        return {
+            overall: anyDown ? 'down' : allOperational ? 'operational' : 'degraded',
+            uptime: `${uptimeHours}h ${uptimeMinutes}m`,
+            checkedAt: new Date().toISOString(),
+            services
+        };
+    }
+
+    async trackActivity(visitorId: string, userId?: string) {
+        if (!visitorId) return;
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        try {
+            await this.prisma.dailyActivity.upsert({
+                where: {
+                    visitorId_date: {
+                        visitorId,
+                        date: today
+                    }
+                },
+                update: {
+                    userId: userId || undefined
+                },
+                create: {
+                    visitorId,
+                    userId,
+                    date: today
+                }
+            });
+        } catch (error) {
+            // Ignore errors (e.g. concurrent upserts)
+            this.logger.warn(`Error tracking activity: ${error.message}`);
+        }
     }
 
     async getUsers() {
@@ -636,6 +832,114 @@ export class GolfService {
         return this.prisma.homeSection.delete({
             where: { id }
         });
+    }
+
+    // ── Content Analytics ─────────────────────────────────────────
+
+    async getContentAnalytics() {
+        // 1. Views by Category (aggregated from the `category` field)
+        const allNews = await this.prisma.news.findMany({
+            where: { status: 'PUBLISHED' },
+            select: {
+                id: true,
+                title: true,
+                category: true,
+                categoryTag: true,
+                type: true,
+                viewCount: true,
+                createdAt: true,
+                image: true,
+            }
+        });
+
+        // Aggregate views by category
+        const categoryMap = new Map<string, { views: number, articles: number }>();
+        for (const article of allNews) {
+            const cat = article.category || 'Uncategorized';
+            const existing = categoryMap.get(cat) || { views: 0, articles: 0 };
+            existing.views += article.viewCount;
+            existing.articles += 1;
+            categoryMap.set(cat, existing);
+        }
+        const viewsByCategory = Array.from(categoryMap.entries())
+            .map(([name, data]) => ({ name, views: data.views, articles: data.articles }))
+            .sort((a, b) => b.views - a.views);
+
+        // 2. Views by CategoryTag (sub-tag level breakdown)
+        const tagMap = new Map<string, { views: number, articles: number }>();
+        for (const article of allNews) {
+            const tag = article.categoryTag || 'Untagged';
+            const existing = tagMap.get(tag) || { views: 0, articles: 0 };
+            existing.views += article.viewCount;
+            existing.articles += 1;
+            tagMap.set(tag, existing);
+        }
+        const viewsByTag = Array.from(tagMap.entries())
+            .map(([name, data]) => ({ name, views: data.views, articles: data.articles }))
+            .sort((a, b) => b.views - a.views)
+            .slice(0, 15);
+
+        // 3. Top 10 articles by views
+        const topArticles = [...allNews]
+            .sort((a, b) => b.viewCount - a.viewCount)
+            .slice(0, 10)
+            .map(a => ({
+                id: a.id,
+                title: a.title,
+                category: a.category,
+                views: a.viewCount,
+                image: a.image,
+            }));
+
+        // 4. Type distribution (REGULAR, GUIDE, COURSE, etc.)
+        const typeMap = new Map<string, { views: number, articles: number }>();
+        for (const article of allNews) {
+            const type = article.type || 'REGULAR';
+            const existing = typeMap.get(type) || { views: 0, articles: 0 };
+            existing.views += article.viewCount;
+            existing.articles += 1;
+            typeMap.set(type, existing);
+        }
+        const viewsByType = Array.from(typeMap.entries())
+            .map(([name, data]) => ({ name, views: data.views, articles: data.articles }));
+
+        // 5. Total metrics
+        const totalViews = allNews.reduce((sum, n) => sum + n.viewCount, 0);
+        const totalArticles = allNews.length;
+        const avgViewsPerArticle = totalArticles > 0 ? Math.round(totalViews / totalArticles) : 0;
+
+        // 6. Publishing trend (articles published per day, last 30 days)
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 29);
+        thirtyDaysAgo.setHours(0, 0, 0, 0);
+
+        const publishTrend: { date: string; count: number; views: number }[] = [];
+        for (let i = 0; i < 30; i++) {
+            const d = new Date();
+            d.setDate(d.getDate() - (29 - i));
+            const dateStr = d.toISOString().split('T')[0];
+
+            const dayArticles = allNews.filter(
+                a => a.createdAt.toISOString().split('T')[0] === dateStr
+            );
+
+            publishTrend.push({
+                date: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+                count: dayArticles.length,
+                views: dayArticles.reduce((s, a) => s + a.viewCount, 0),
+            });
+        }
+
+        return {
+            totalViews,
+            totalArticles,
+            avgViewsPerArticle,
+            viewsByCategory,
+            viewsByTag,
+            topArticles,
+            viewsByType,
+            publishTrend,
+        };
     }
 
     async search(query: string) {
