@@ -1,0 +1,363 @@
+.container {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.header {
+    margin-bottom: 40px;
+}
+
+.header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 8px;
+}
+
+.header p {
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+/* ── Maintenance Mode Card ────────────────────────────────── */
+
+.maintenanceCard {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 28px 32px;
+    margin-bottom: 36px;
+    background: white;
+    border-radius: 20px;
+    border: 2px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: all 0.4s ease;
+}
+
+.maintenanceTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.maintenanceEndTime {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #f1f5f9;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.endTimeHint {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.78rem;
+    color: #94a3b8;
+    font-style: italic;
+}
+
+.maintenanceCard.maintenanceActive {
+    border-color: #d91b2b;
+    background: linear-gradient(135deg, #fffbfb 0%, #fff5f5 100%);
+    box-shadow: 0 4px 24px -4px rgba(217, 27, 43, 0.15);
+}
+
+.maintenanceLeft {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.maintenanceIcon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0fdf4;
+    color: #16a34a;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.maintenanceIcon.maintenanceIconActive {
+    background: #fef2f2;
+    color: #d91b2b;
+    animation: iconPulse 2s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+.maintenanceTitle {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 4px 0;
+}
+
+.maintenanceDesc {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.maintenanceRight {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.maintenanceSaved {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #16a34a;
+    animation: savedFadeIn 0.3s ease-out;
+}
+
+@keyframes savedFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Toggle button */
+.toggleBtn {
+    position: relative;
+    width: 80px;
+    height: 40px;
+    border-radius: 24px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    padding: 4px;
+}
+
+.toggleBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.toggleBtn.toggleOff {
+    background: #cbd5e1;
+}
+
+.toggleBtn.toggleOn {
+    background: linear-gradient(135deg, #d91b2b, #ef4444);
+    box-shadow: 0 4px 12px rgba(217, 27, 43, 0.35);
+}
+
+.toggleKnob {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toggleOff .toggleKnob {
+    left: 4px;
+}
+
+.toggleOn .toggleKnob {
+    left: calc(100% - 36px);
+}
+
+.toggleLabel {
+    position: absolute;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: white;
+    transition: all 0.35s ease;
+}
+
+.toggleOff .toggleLabel {
+    right: 12px;
+    color: #64748b;
+}
+
+.toggleOn .toggleLabel {
+    left: 12px;
+}
+
+/* ── Settings Grid ────────────────────────────────────────── */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 30px;
+}
+
+.sectionCard {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f1f5f9;
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    color: #d91b2b;
+}
+
+.sectionHeader h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+
+.formGroup {
+    margin-bottom: 20px;
+}
+
+.formGroup:last-child {
+    margin-bottom: 0;
+}
+
+.formGroup label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #64748b;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.inputWrapper {
+    display: flex;
+    gap: 10px;
+}
+
+.inputWrapper input,
+.inputWrapper textarea {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    outline: none;
+    font-size: 0.95rem;
+    color: #0f172a;
+    transition: 0.2s;
+    background: #f8fafc;
+}
+
+.inputWrapper input:focus,
+.inputWrapper textarea:focus {
+    border-color: #d91b2b;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(217, 27, 43, 0.05);
+}
+
+.inputWrapper button {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    border: none;
+    background: #0f172a;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.inputWrapper button:hover {
+    background: #d91b2b;
+}
+
+.inputWrapper button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.infoFooter {
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f1f5f9;
+    padding: 16px 24px;
+    border-radius: 12px;
+    color: #475569;
+    font-size: 0.9rem;
+}
+
+.infoFooter p {
+    margin: 0;
+}
+
+.loading {
+    padding: 100px;
+    text-align: center;
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .maintenanceCard {
+        padding: 20px;
+    }
+
+    .maintenanceLeft {
+        gap: 14px;
+    }
+
+    .maintenanceIcon {
+        width: 44px;
+        height: 44px;
+    }
+
+    .maintenanceTitle {
+        font-size: 1.1rem;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}

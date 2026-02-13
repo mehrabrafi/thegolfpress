@@ -565,6 +565,26 @@ export class GolfService {
         return this.prisma.setting.findMany();
     }
 
+    // Maintenance Mode
+    async getMaintenanceStatus() {
+        const [modeSetting, endTimeSetting] = await Promise.all([
+            this.prisma.setting.upsert({
+                where: { key: 'maintenance_mode' },
+                update: {},
+                create: { key: 'maintenance_mode', value: 'false', type: 'boolean' },
+            }),
+            this.prisma.setting.upsert({
+                where: { key: 'maintenance_end_time' },
+                update: {},
+                create: { key: 'maintenance_end_time', value: '', type: 'string' },
+            }),
+        ]);
+        return {
+            enabled: modeSetting.value === 'true',
+            endTime: endTimeSetting.value || null,
+        };
+    }
+
     async updateSetting(key: string, value: string) {
         return this.prisma.setting.update({
             where: { key },

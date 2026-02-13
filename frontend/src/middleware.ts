@@ -4,7 +4,7 @@ import type { NextRequest } from 'next/server';
 /**
  * Next.js Middleware — runs BEFORE page rendering.
  * 
- * Security: Protects /admin/* routes by checking for an auth cookie.
+ * Security: Protects /tgpadmin/* routes by checking for an auth cookie.
  * If no token cookie is present, redirects to login page.
  * 
  * Note: This is a first-line defense. The backend API still validates
@@ -14,8 +14,8 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
-    // ── Protect /admin/* routes ──────────────────────────────────
-    if (pathname.startsWith('/admin')) {
+    // ── Protect /tgpadmin/* routes ──────────────────────────────────
+    if (pathname.startsWith('/tgpadmin')) {
         const token = request.cookies.get('token')?.value;
 
         if (!token) {
@@ -79,7 +79,7 @@ export function middleware(request: NextRequest) {
 export const config = {
     matcher: [
         // Admin routes
-        '/admin/:path*',
+        '/tgpadmin/:path*',
         // Main public pages (for security headers)
         '/',
         '/news/:path*',

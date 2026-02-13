@@ -78,22 +78,22 @@ export default function AdminPage() {
             <div className={styles.quickActions}>
                 <h2 className={styles.sectionTitle}>Content Hub Priorities</h2>
                 <div className={styles.actionGrid}>
-                    <Link href="/admin/news" className={styles.actionCard}>
+                    <Link href="/tgpadmin/news" className={styles.actionCard}>
                         <h3>News Matrix</h3>
                         <p>Coordinate general news and breaking updates.</p>
                         <ArrowUpRight size={18} />
                     </Link>
-                    <Link href="/admin/guides-and-tips" className={styles.actionCard}>
+                    <Link href="/tgpadmin/guides-and-tips" className={styles.actionCard}>
                         <h3>Guides & Tips</h3>
                         <p>Refine tutorials and pedagogical content.</p>
                         <ArrowUpRight size={18} />
                     </Link>
-                    <Link href="/admin/courses" className={styles.actionCard}>
+                    <Link href="/tgpadmin/courses" className={styles.actionCard}>
                         <h3>Course Gallery</h3>
                         <p>Curate global golf course profiles and reviews.</p>
                         <ArrowUpRight size={18} />
                     </Link>
-                    <Link href="/admin/users" className={styles.actionCard}>
+                    <Link href="/tgpadmin/users" className={styles.actionCard}>
                         <h3>User Governance</h3>
                         <p>Manage community roles and access levels.</p>
                         <ArrowUpRight size={18} />

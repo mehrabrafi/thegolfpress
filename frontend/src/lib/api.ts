@@ -77,6 +77,12 @@ export async function fetchSearch(query: string) {
     return res.json();
 }
 
+export async function fetchMaintenanceStatus() {
+    const res = await fetch(`${API_BASE_URL}/maintenance-status`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch maintenance status');
+    return res.json();
+}
+
 // ── Auth Endpoints (cookie-based, no token in response) ─────────
 
 export async function login(credentials: any) {

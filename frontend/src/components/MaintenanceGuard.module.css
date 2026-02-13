@@ -1,0 +1,236 @@
+/* ───────────────────────────────────────────────────────────── */
+/*  Maintenance Guard — Editorial Light Theme                   */
+/* ───────────────────────────────────────────────────────────── */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--white);
+    color: var(--black);
+}
+
+.authBackground {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, #e5e5e5 1px, transparent 0);
+    background-size: 40px 40px;
+    opacity: 0.4;
+    z-index: -1;
+}
+
+.content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 60px 40px;
+    max-width: 600px;
+    width: 100%;
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Logo area */
+.logoWrapper {
+    margin-bottom: 40px;
+}
+
+.logoImage {
+    height: 50px;
+    width: auto;
+    display: inline-block;
+}
+
+/* Typography */
+.title {
+    font-family: var(--font-serif, 'Playfair Display', serif);
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--black);
+    line-height: 1.1;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+}
+
+.message {
+    font-family: var(--font-sans, 'Roboto', sans-serif);
+    font-size: 1.15rem;
+    color: var(--medium-gray);
+    line-height: 1.6;
+    margin-bottom: 40px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Countdown Timer */
+.countdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 48px;
+}
+
+.countdownUnit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 72px;
+}
+
+.countdownNumber {
+    font-family: var(--font-sans-condensed, 'Oswald', sans-serif);
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--black);
+    line-height: 1;
+    letter-spacing: 0.02em;
+}
+
+.countdownLabel {
+    font-family: var(--font-sans, 'Roboto', sans-serif);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--medium-gray);
+    margin-top: 6px;
+}
+
+.countdownSep {
+    font-family: var(--font-sans-condensed, 'Oswald', sans-serif);
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--primary-red);
+    line-height: 1;
+    margin-bottom: 18px;
+    /* Align with number baseline */
+}
+
+/* Progress Bar */
+.progressTrack {
+    width: 240px;
+    height: 4px;
+    background: #f0f0f0;
+    margin: 0 auto 40px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progressBar {
+    width: 30%;
+    height: 100%;
+    background: var(--primary-red);
+    border-radius: 2px;
+    animation: progressSlide 2s ease-in-out infinite;
+}
+
+@keyframes progressSlide {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    50% {
+        transform: translateX(250%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* Footer info */
+.footer {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 24px;
+    margin-top: 24px;
+}
+
+.brand {
+    font-family: var(--font-sans-condensed, 'Oswald', sans-serif);
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--black);
+    font-weight: 600;
+}
+
+/* Admin Notification Banner */
+.adminBanner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 20px;
+    background-color: var(--primary-red);
+    color: #ffffff;
+    font-family: var(--font-sans-condensed);
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 12px rgba(237, 62, 73, 0.2);
+    animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+.adminBanner strong {
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .title {
+        font-size: 2.5rem;
+    }
+
+    .message {
+        font-size: 1rem;
+        padding: 0 20px;
+    }
+
+    .logoImage {
+        height: 40px;
+    }
+
+    .countdownNumber {
+        font-size: 2rem;
+    }
+
+    .countdownUnit {
+        min-width: 52px;
+    }
+
+    .countdownSep {
+        font-size: 1.8rem;
+    }
+}

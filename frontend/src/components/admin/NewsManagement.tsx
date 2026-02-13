@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { fetchNews, createNews, updateNews, deleteNews, uploadImage, fetchCategories, fetchSubTags } from '@/lib/api';
 import RichTextEditor from '@/components/RichTextEditor';
-import styles from '@/app/admin/news/news.module.css';
+import styles from '@/app/tgpadmin/news/news.module.css';
 import { Search, Plus, Filter, Edit, Trash2, Calendar, User, Tag, Image as ImageIcon, Check, X, Clock } from 'lucide-react';
 
 interface NewsManagementProps {

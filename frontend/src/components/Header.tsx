@@ -115,7 +115,7 @@ function HeaderContent() {
 
                         <div className={styles.authRight}>
                             {user?.role === 'ADMIN' && (
-                                <Link href="/admin" className={styles.adminPanelLink}>ADMIN PANEL</Link>
+                                <Link href="/tgpadmin" className={styles.adminPanelLink}>ADMIN PANEL</Link>
                             )}
                         </div>
                     </div>
@@ -167,7 +167,7 @@ function HeaderContent() {
 
                     <div className={styles.catHeaderRight}>
                         {user?.role === 'ADMIN' && (
-                            <Link href="/admin" className={styles.adminPanelLinkSmall}>ADMIN PANEL</Link>
+                            <Link href="/tgpadmin" className={styles.adminPanelLinkSmall}>ADMIN PANEL</Link>
                         )}
                         <div className={styles.searchItem} onClick={() => setIsSearchOpen(true)}>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>

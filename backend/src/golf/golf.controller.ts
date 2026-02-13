@@ -87,6 +87,11 @@ export class GolfController {
         return this.golfService.getSettings();
     }
 
+    @Get('maintenance-status')
+    async getMaintenanceStatus() {
+        return this.golfService.getMaintenanceStatus();
+    }
+
     @Get('home-sections')
     async getHomeSections() {
         return this.golfService.getHomeSections();

@@ -1,5 +1,6 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import MaintenanceGuard from '@/components/MaintenanceGuard';
 import { Providers } from '@/components/Providers';
 import './globals.css';
 import { Playfair_Display, Oswald, Roboto } from 'next/font/google';
@@ -75,11 +76,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${playfair.variable} ${oswald.variable} ${roboto.variable}`}>
         <Providers>
-          <Header />
-          <main style={{ minHeight: '80vh' }}>
-            {children}
-          </main>
-          <Footer />
+          <MaintenanceGuard>
+            <Header />
+            <main style={{ minHeight: '80vh' }}>
+              {children}
+            </main>
+            <Footer />
+          </MaintenanceGuard>
         </Providers>
       </body>
     </html>

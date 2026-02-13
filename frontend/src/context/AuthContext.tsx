@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Token is now set as httpOnly cookie by the server — no need to store it
         setUser(data.user);
         if (data.user.role === 'ADMIN') {
-            router.push('/admin/dashboard');
+            router.push('/tgpadmin/dashboard');
         } else {
             router.push('/');
         }
@@ -55,7 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const data = await apiRegister(userData);
         setUser(data.user);
         if (data.user.role === 'ADMIN') {
-            router.push('/admin/dashboard');
+            router.push('/tgpadmin/dashboard');
         } else {
             router.push('/');
         }

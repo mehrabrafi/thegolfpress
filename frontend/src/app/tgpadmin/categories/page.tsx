@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { fetchCategories, createCategory, updateCategory, deleteCategory, fetchSubTags, createSubTag, deleteSubTag } from '@/lib/api';
-import styles from '@/app/admin/news/news.module.css';
+import styles from '@/app/tgpadmin/news/news.module.css';
 import { Search, Plus, Edit, Trash2, Tag, X, Check, ChevronDown, ChevronRight } from 'lucide-react';
 
 export default function CategoryManagement() {

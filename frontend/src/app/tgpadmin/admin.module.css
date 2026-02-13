@@ -39,6 +39,20 @@
     color: white;
 }
 
+.navItemMaintenance {
+    padding: 10px;
+    border-radius: 6px;
+    color: #fbbf24;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.navItemMaintenance:hover {
+    background: #422006;
+    color: #fbbf24;
+}
+
 .navDivider {
     height: 1px;
     background: #334155;
