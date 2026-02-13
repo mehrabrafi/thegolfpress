@@ -212,7 +212,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                                         >
                                             <div className={styles.newsThumb}>
                                                 {article.image && (
-                                                    <img src={article.image} alt="" loading="lazy" />
+                                                    <img src={article.image} alt={article.title} loading="lazy" />
                                                 )}
                                             </div>
                                             <div className={styles.newsInfo}>

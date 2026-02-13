@@ -76,8 +76,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Dynamic: Fetch news articles for individual URLs
     let newsRoutes: MetadataRoute.Sitemap = [];
     try {
-        const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-        const res = await fetch(`${API_BASE}/news`, { next: { revalidate: 3600 } });
+        const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+        const res = await fetch(`${API_BASE}/golf/news`, { next: { revalidate: 3600 } });
         if (res.ok) {
             const articles = await res.json();
             newsRoutes = articles.map((article: { id: string; category?: string; updatedAt?: string; createdAt?: string }) => {

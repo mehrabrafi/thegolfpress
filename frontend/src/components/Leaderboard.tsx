@@ -41,7 +41,7 @@ export default function Leaderboard({ players }: { players: Player[] }) {
                                     <div>
                                         <div className={styles.playerName}>{p.name}</div>
                                         <div className={styles.playerCountry}>
-                                            <img src={p.country} alt="" className={styles.miniFlag} />
+                                            <img src={p.country} alt={`${p.name} country flag`} className={styles.miniFlag} />
                                         </div>
                                     </div>
                                 </Link>
