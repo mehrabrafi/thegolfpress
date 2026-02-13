@@ -11,13 +11,18 @@ export default async function GuidesAndTipsPage() {
             fetchCategories(),
         ]);
 
-        // Filter for Guides & Tips articles
+        // Filter for Guides & Tips articles (matches both old "How-To" and new "Guides-Tips" names)
         guideArticles = newsData.filter((item: any) => {
             const cat = (item.category || '').toUpperCase();
-            return cat === 'GUIDES-TIPS';
+            return cat === 'HOW-TO' || cat === 'GUIDES-TIPS' || cat === 'GUIDES & TIPS';
         });
 
-        const guidesCat = catData.find((c: any) => c.slug === 'guides-tips' || c.name.toLowerCase() === 'guides & tips' || c.name.toLowerCase() === 'guides-tips');
+        const guidesCat = catData.find((c: any) =>
+            c.slug === 'how-to' || c.slug === 'guides-tips' ||
+            c.name.toLowerCase() === 'how-to' ||
+            c.name.toLowerCase() === 'guides & tips' ||
+            c.name.toLowerCase() === 'guides-tips'
+        );
         if (guidesCat && guidesCat.subTags) {
             subTags = guidesCat.subTags;
         }
