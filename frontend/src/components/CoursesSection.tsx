@@ -1,7 +1,14 @@
 import Link from 'next/link';
 import styles from './CoursesSection.module.css';
 
-export default function CoursesSection({ courses }: { courses: any[] }) {
+interface Course {
+    id: string;
+    title: string;
+    image: string;
+    categoryTag?: string;
+}
+
+export default function CoursesSection({ courses }: { courses: Course[] }) {
     if (!courses || courses.length === 0) return null;
 
     return (
@@ -12,10 +19,10 @@ export default function CoursesSection({ courses }: { courses: any[] }) {
             </div>
             <div className={styles.grid}>
                 {courses.slice(0, 3).map((item, idx) => (
-                    <Link key={idx} href={`/news/${item.id}`} className={styles.card}>
+                    <Link key={idx} href={`/courses/${item.id}`} className={styles.card}>
                         <div className={styles.imageWrapper}>
                             <img src={item.image} alt={item.title} className={styles.image} />
-                            <span className={styles.tag}>{item.categoryTag}</span>
+                            <span className={styles.tag}>{item.categoryTag || 'COURSE'}</span>
                         </div>
                         <h3 className={styles.cardTitle}>{item.title}</h3>
                     </Link>

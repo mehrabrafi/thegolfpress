@@ -1,131 +1,47 @@
-'use client';
-
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import LiveFeed from '@/components/LiveFeed';
-import Hero from '@/components/Hero';
-import SubNews from '@/components/SubNews';
-import SidebarNews from '@/components/SidebarNews';
-import Leaderboard from '@/components/Leaderboard';
-import DynamicSection from '@/components/DynamicSection';
 import { fetchLeaderboard, fetchNews, fetchHomeSections, fetchTrendingNews } from '@/lib/api';
-import styles from './page.module.css';
+import HomeClient from './HomeClient';
 
-export default function Home() {
-  const [lbData, setLbData] = useState<any>(null);
-  const [news, setNews] = useState<any[] | null>(null);
-  const [trendingNews, setTrendingNews] = useState<any[] | null>(null);
-  const [homeSections, setHomeSections] = useState<any[]>([]);
-  const [sectionArticles, setSectionArticles] = useState<{ [key: string]: any[] }>({});
+export default async function Home() {
+  // Fetch all data server-side in parallel
+  const [leaderboardData, allNews, trendingData, sections] = await Promise.allSettled([
+    fetchLeaderboard(),
+    fetchNews(),
+    fetchTrendingNews(),
+    fetchHomeSections(),
+  ]);
 
-  useEffect(() => {
-    async function loadData() {
-      // Leaderboard
-      fetchLeaderboard()
-        .then(data => setLbData(data))
-        .catch(err => console.error('Error loading leaderboard:', err));
+  const leaderboard = leaderboardData.status === 'fulfilled' ? leaderboardData.value : null;
 
-      // Home Sections (Dynamic)
-      fetchHomeSections()
-        .then(async (sections) => {
-          setHomeSections(sections);
+  // Filter out HOW-TO and COURSES from general news
+  const rawNews = allNews.status === 'fulfilled' ? allNews.value : [];
+  const filteredNews = rawNews.filter((item: any) => {
+    const cat = (item.category || '').toUpperCase();
+    return cat !== 'HOW-TO' && cat !== 'COURSES' && cat !== 'HOW TO' && cat !== 'COURSE';
+  });
 
-          // Fetch articles for each section
-          const articlesMap: { [key: string]: any[] } = {};
-          await Promise.all(sections.map(async (section: any) => {
-            try {
-              const articles = await fetchNews(section.category);
-              articlesMap[section.id] = articles.slice(0, section.maxItems);
-            } catch (err) {
-              console.error(`Error loading articles for section ${section.id}:`, err);
-            }
-          }));
-          setSectionArticles(articlesMap);
-        })
-        .catch(err => console.error('Error loading home sections:', err));
+  const trending = trendingData.status === 'fulfilled' ? trendingData.value : [];
+  const homeSections = sections.status === 'fulfilled' ? sections.value : [];
 
-      // News
-      fetchNews()
-        .then(data => {
-          // Filter out categories that are used in home sections to avoid duplication
-          // (optional, but keep it for now as a general rule)
-          const filteredNews = data.filter((item: any) => {
-            const cat = (item.category || '').toUpperCase();
-            // We'll hardcode the exclusions for now or make it dynamic later
-            return cat !== 'HOW-TO' && cat !== 'COURSES' && cat !== 'HOW TO' && cat !== 'COURSE';
-          });
-          setNews(filteredNews);
-        })
-        .catch(err => console.error('Error loading news:', err));
-
-      // Trending News
-      fetchTrendingNews()
-        .then(data => setTrendingNews(data))
-        .catch(err => console.error('Error loading trending news:', err));
-    }
-    loadData();
-  }, []);
-
-  const feedPlayers = lbData?.players?.slice(0, 10) || [];
-  const leaderboardPlayers = lbData?.players?.slice(0, 7) || [];
-
-  // Distribute news if available
-  const heroArticle = news && news.length > 0 ? news[0] : null;
-  const subArticles = news && news.length > 1 ? news.slice(1, 7) : [];
-  const sidebarArticles = trendingNews || [];
+  // Fetch articles for each dynamic section
+  const sectionArticles: { [key: string]: any[] } = {};
+  await Promise.all(
+    homeSections.map(async (section: any) => {
+      try {
+        const articles = await fetchNews(section.category);
+        sectionArticles[section.id] = articles.slice(0, section.maxItems);
+      } catch (err) {
+        console.error(`Error loading articles for section ${section.id}:`, err);
+      }
+    })
+  );
 
   return (
-    <main>
-      {/* Live Feed Loading State */}
-      {lbData ? (
-        <LiveFeed players={feedPlayers} />
-      ) : (
-        <div className={styles.skeleton} style={{ padding: '20px' }}>Loading Live Feed...</div>
-      )}
-
-      <div className="container">
-        <div className={styles.mainGrid}>
-          <div className={styles.leftCol}>
-            {/* Hero & SubNews Loading State */}
-            {news ? (
-              <>
-                {heroArticle && <Hero article={heroArticle} />}
-                {subArticles.length > 0 && <SubNews articles={subArticles} />}
-              </>
-            ) : (
-              <div className={styles.skeleton} style={{ height: '400px' }}>
-                Loading News...
-              </div>
-            )}
-          </div>
-
-          <div className={styles.rightCol}>
-            {/* Leaderboard Loading State */}
-            {lbData ? (
-              <Leaderboard players={leaderboardPlayers} />
-            ) : (
-              <div className={styles.skeleton} style={{ height: '300px' }}>
-                Loading Leaderboard...
-              </div>
-            )}
-
-            {/* Sidebar News */}
-            {sidebarArticles.length > 0 && <SidebarNews articles={sidebarArticles} />
-            }
-          </div>
-        </div>
-
-        {/* Dynamic Sections */}
-        {homeSections.map((section) => (
-          <DynamicSection
-            key={section.id}
-            title={section.title}
-            articles={sectionArticles[section.id] || []}
-            link={section.link}
-            linkText={section.linkText}
-          />
-        ))}
-      </div>
-    </main >
+    <HomeClient
+      initialNews={filteredNews.length > 0 ? filteredNews : null}
+      initialTrending={trending.length > 0 ? trending : null}
+      initialLeaderboard={leaderboard}
+      initialSections={homeSections}
+      initialSectionArticles={sectionArticles}
+    />
   );
 }
