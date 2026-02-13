@@ -23,7 +23,8 @@ export default function DynamicSection({ title, articles, link, linkText }: Dyna
                 {articles.map((item, idx) => {
                     const isCourse = (item.category && item.category.toUpperCase() === 'COURSES') ||
                         (item.categoryTag && item.categoryTag.toUpperCase() === 'COURSES');
-                    const linkHref = isCourse ? `/courses/${item.id}` : `/news/${item.id}`;
+                    const isHowTo = (item.category && (item.category.toUpperCase() === 'HOW-TO' || item.category.toUpperCase() === 'HOW TO'));
+                    const linkHref = isCourse ? `/courses/${item.id}` : isHowTo ? `/guides-and-tips/post/${item.id}` : `/news/${item.id}`;
 
                     return (
                         <Link key={idx} href={linkHref} className={styles.card}>

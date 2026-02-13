@@ -434,10 +434,7 @@ export class GolfService {
                 status: data.status,
                 publishedAt: data.publishedAt ? new Date(data.publishedAt) : undefined,
                 categoryId: data.categoryId || null,
-                categoryRef: data.categoryId ? { connect: { id: data.categoryId } } : undefined,
                 subTagId: data.subTagId || null,
-                subTag: data.subTagId ? { connect: { id: data.subTagId } } : undefined,
-
             }
         });
     }

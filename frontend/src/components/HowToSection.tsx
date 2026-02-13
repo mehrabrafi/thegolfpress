@@ -12,7 +12,7 @@ export default function HowToSection({ articles }: { articles: any[] }) {
             </div>
             <div className={styles.grid}>
                 {articles.slice(0, 4).map((item, idx) => (
-                    <Link key={idx} href={`/news/${item.id}`} className={styles.card}>
+                    <Link key={idx} href={`/guides-and-tips/post/${item.id}`} className={styles.card}>
                         <div className={styles.imageWrapper}>
                             <img src={item.image} alt={item.title} className={styles.image} />
                         </div>

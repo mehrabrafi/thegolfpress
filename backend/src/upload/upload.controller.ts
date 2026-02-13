@@ -14,7 +14,7 @@ export class UploadController {
     @Roles('ADMIN', 'EDITOR')
     @UseInterceptors(FileInterceptor('file', {
         limits: {
-            fileSize: 5 * 1024 * 1024, // 5MB max
+            fileSize: 15 * 1024 * 1024, // 15MB max
         },
         fileFilter: (_req, file, callback) => {
             const allowedMimes = [

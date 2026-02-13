@@ -19,7 +19,7 @@ export default function GuideCategoryClient({ articles, currentTagName }: GuideC
                 {articles.length > 0 ? (
                     <div className={styles.sectionGrid} style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
                         {articles.map((item: any) => (
-                            <Link href={`/news/${item.id}`} key={item.id} className={styles.articleCard}>
+                            <Link href={`/guides-and-tips/post/${item.id}`} key={item.id} className={styles.articleCard}>
                                 <img src={item.image} alt={item.title} className={styles.articleImage} />
                                 <span className={styles.articleTag}>{item.categoryTag}</span>
                                 <h4 className={styles.articleTitle}>{item.title}</h4>

@@ -171,10 +171,17 @@ export default function NewsManagement({
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
+            // Clean up formData to match DTO expectations
+            const payload = {
+                ...formData,
+                categoryId: formData.categoryId || undefined,
+                subTagId: formData.subTagId || undefined
+            };
+
             if (editId) {
-                await updateNews(editId, formData);
+                await updateNews(editId, payload);
             } else {
-                await createNews(formData);
+                await createNews(payload);
             }
 
             setIsEditing(false);
@@ -182,6 +189,7 @@ export default function NewsManagement({
             loadData();
         } catch (error) {
             console.error('Error saving news', error);
+            alert('Failed to save news. Please check console for details.');
         }
     };
 
@@ -220,7 +228,7 @@ export default function NewsManagement({
                         }
                     }}
                 >
-                    {isEditing ? <><X size={18} /> Cancel</> : <><Plus size={18} /> New Entry</>}
+                    {isEditing ? <><X size={18} /> Cancel</> : <Plus size={18} />}
                 </button>
             </div>
 

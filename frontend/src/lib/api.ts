@@ -173,7 +173,16 @@ export async function uploadImage(file: File, _token?: string) {
         credentials: 'include',
     });
 
-    if (!res.ok) throw new Error('Failed to upload image');
+    if (!res.ok) {
+        let errorMsg = `Upload failed (${res.status})`;
+        try {
+            const errorBody = await res.json();
+            errorMsg = errorBody.message || errorMsg;
+        } catch {
+            // response might not be JSON
+        }
+        throw new Error(errorMsg);
+    }
     return res.json();
 }
 

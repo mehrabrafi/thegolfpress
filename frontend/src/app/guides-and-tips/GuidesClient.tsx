@@ -18,7 +18,7 @@ const Section = ({ title, items, categoryTag }: { title: string, items: any[], c
         </div>
         <div className={styles.sectionGrid}>
             {items.map(item => (
-                <Link href={`/news/${item.id}`} key={item.id} className={styles.articleCard}>
+                <Link href={`/guides-and-tips/post/${item.id}`} key={item.id} className={styles.articleCard}>
                     <img src={item.image} alt={item.title} className={styles.articleImage} />
                     <span className={styles.articleTag}>{item.categoryTag}</span>
                     <h4 className={styles.articleTitle}>{item.title}</h4>
@@ -42,7 +42,7 @@ export default function GuidesClient({ howToArticles, subTags }: GuidesClientPro
                 {/* Hybrid Hero Section */}
                 <section className={styles.heroSection}>
                     {featured && (
-                        <Link href={`/news/${featured.id}`} className={styles.heroMain}>
+                        <Link href={`/guides-and-tips/post/${featured.id}`} className={styles.heroMain}>
                             <img src={featured.image} alt={featured.title} className={styles.heroImage} />
                             <div className={styles.heroOverlay}>
                                 <span className={styles.heroTag}>{featured.categoryTag}</span>
@@ -53,7 +53,7 @@ export default function GuidesClient({ howToArticles, subTags }: GuidesClientPro
 
                     <div className={styles.heroGrid}>
                         {heroGridItems.map(item => (
-                            <Link key={item.id} href={`/news/${item.id}`} className={styles.heroGridCard}>
+                            <Link key={item.id} href={`/guides-and-tips/post/${item.id}`} className={styles.heroGridCard}>
                                 <img src={item.image} alt={item.title} className={styles.heroGridImage} />
                                 <span className={styles.heroGridTag}>{item.categoryTag}</span>
                                 <h3 className={styles.heroGridTitle}>{item.title}</h3>

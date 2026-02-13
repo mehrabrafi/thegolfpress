@@ -88,6 +88,8 @@
     border: 1px solid #e2e8f0;
     border-radius: 6px;
     font-size: 0.95rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .formGroup input:focus,

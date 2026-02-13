@@ -4,6 +4,18 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import {
+    LayoutDashboard,
+    Newspaper,
+    Tags,
+    BookOpen,
+    Flag,
+    LayoutTemplate,
+    Users,
+    Settings,
+    Wrench,
+    LogOut
+} from 'lucide-react';
 import styles from './admin.module.css';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -25,17 +37,37 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <aside className={styles.sidebar}>
                 <div className={styles.brand}>Admin Panel</div>
                 <nav className={styles.nav}>
-                    <Link href="/tgpadmin" className={styles.navItem}>Dashboard</Link>
-                    <Link href="/tgpadmin/news" className={styles.navItem}>Manage News</Link>
-                    <Link href="/tgpadmin/categories" className={styles.navItem}>Manage Categories</Link>
-                    <Link href="/tgpadmin/guides-and-tips" className={styles.navItem}>Manage Guides & Tips</Link>
-                    <Link href="/tgpadmin/courses" className={styles.navItem}>Manage Courses</Link>
-                    <Link href="/tgpadmin/home-sections" className={styles.navItem}>Home Sections</Link>
-                    <Link href="/tgpadmin/users" className={styles.navItem}>Users</Link>
-                    <Link href="/tgpadmin/settings" className={styles.navItem}>Site Settings</Link>
-                    <Link href="/tgpadmin/settings" className={styles.navItemMaintenance}>⚙ Maintenance Mode</Link>
+                    <Link href="/tgpadmin" className={styles.navItem}>
+                        <LayoutDashboard size={18} /> Dashboard
+                    </Link>
+                    <Link href="/tgpadmin/news" className={styles.navItem}>
+                        <Newspaper size={18} /> Manage News
+                    </Link>
+                    <Link href="/tgpadmin/categories" className={styles.navItem}>
+                        <Tags size={18} /> Manage Categories
+                    </Link>
+                    <Link href="/tgpadmin/guides-and-tips" className={styles.navItem}>
+                        <BookOpen size={18} /> Manage Guides & Tips
+                    </Link>
+                    <Link href="/tgpadmin/courses" className={styles.navItem}>
+                        <Flag size={18} /> Manage Courses
+                    </Link>
+                    <Link href="/tgpadmin/home-sections" className={styles.navItem}>
+                        <LayoutTemplate size={18} /> Home Sections
+                    </Link>
+                    <Link href="/tgpadmin/users" className={styles.navItem}>
+                        <Users size={18} /> Users
+                    </Link>
+                    <Link href="/tgpadmin/settings" className={styles.navItem}>
+                        <Settings size={18} /> Site Settings
+                    </Link>
+                    <Link href="/tgpadmin/settings" className={styles.navItemMaintenance}>
+                        <Wrench size={18} /> Maintenance Mode
+                    </Link>
                     <div className={styles.navDivider}></div>
-                    <button onClick={logout} className={styles.logoutBtn}>Logout</button>
+                    <button onClick={logout} className={styles.logoutBtn}>
+                        <LogOut size={18} /> Logout
+                    </button>
                 </nav>
             </aside>
             <main className={styles.content}>
