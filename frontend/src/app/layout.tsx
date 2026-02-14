@@ -2,6 +2,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MaintenanceGuard from '@/components/MaintenanceGuard';
 import { Providers } from '@/components/Providers';
+import JsonLd, { createOrganizationJsonLd } from '@/components/JsonLd';
 import './globals.css';
 import { Playfair_Display, Oswald, Roboto } from 'next/font/google';
 import type { Metadata } from 'next';
@@ -61,9 +62,7 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
   },
   verification: {
-    // Add these when you have them
-    // google: 'your-google-verification-code',
-    // yandex: 'your-yandex-verification-code',
+    google: 'vFgizSX3RSEiKyLxB0jCItnhbEMwViH-mfa4SXfN94A',
   },
 };
 
@@ -75,6 +74,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${playfair.variable} ${oswald.variable} ${roboto.variable}`}>
+        <JsonLd data={createOrganizationJsonLd()} />
         <Providers>
           <MaintenanceGuard>
             <Header />

@@ -1,0 +1,85 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+    padding: 40px 20px;
+    background: var(--light-gray);
+}
+
+.content {
+    text-align: center;
+    max-width: 520px;
+}
+
+.errorCode {
+    display: block;
+    font-family: var(--font-sans-condensed);
+    font-size: 8rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--primary-red);
+    letter-spacing: -0.04em;
+    margin-bottom: 8px;
+}
+
+.title {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 12px;
+}
+
+.description {
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    color: var(--medium-gray);
+    line-height: 1.6;
+    margin-bottom: 32px;
+}
+
+.links {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.primaryLink {
+    display: inline-block;
+    padding: 12px 28px;
+    background: var(--primary-red);
+    color: var(--white);
+    font-family: var(--font-sans-condensed);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+.primaryLink:hover {
+    background: #c92b36;
+}
+
+.secondaryLink {
+    display: inline-block;
+    padding: 12px 28px;
+    background: transparent;
+    color: var(--dark-gray);
+    font-family: var(--font-sans-condensed);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.secondaryLink:hover {
+    border-color: var(--dark-gray);
+    color: var(--black);
+}

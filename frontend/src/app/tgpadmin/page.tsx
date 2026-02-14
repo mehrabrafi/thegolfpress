@@ -4,8 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useState, useEffect } from 'react';
 import { fetchAdminStats, fetchSystemHealth } from '@/lib/api';
 import styles from './page.module.css';
-import Link from 'next/link';
-import { Users, FileText, CheckCircle, Clock, ArrowUpRight, Activity, BarChart3, Shield, Database, Server, Wifi, Cpu } from 'lucide-react';
+import { Users, FileText, CheckCircle, Activity, BarChart3, Shield, Database, Server, Wifi, Cpu } from 'lucide-react';
 import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell
 } from 'recharts';
@@ -236,31 +235,7 @@ export default function AdminPage() {
                 </div>
             </div>
 
-            <div className={styles.quickActions}>
-                <h2 className={styles.sectionTitle}>Content Hub Priorities</h2>
-                <div className={styles.actionGrid}>
-                    <Link href="/tgpadmin/news" className={styles.actionCard}>
-                        <h3>News Matrix</h3>
-                        <p>Coordinate general news and breaking updates.</p>
-                        <ArrowUpRight size={18} />
-                    </Link>
-                    <Link href="/tgpadmin/guides-and-tips" className={styles.actionCard}>
-                        <h3>Guides & Tips</h3>
-                        <p>Refine tutorials and pedagogical content.</p>
-                        <ArrowUpRight size={18} />
-                    </Link>
-                    <Link href="/tgpadmin/courses" className={styles.actionCard}>
-                        <h3>Course Gallery</h3>
-                        <p>Curate global golf course profiles and reviews.</p>
-                        <ArrowUpRight size={18} />
-                    </Link>
-                    <Link href="/tgpadmin/users" className={styles.actionCard}>
-                        <h3>User Governance</h3>
-                        <p>Manage community roles and access levels.</p>
-                        <ArrowUpRight size={18} />
-                    </Link>
-                </div>
-            </div>
+
         </div>
     );
 }

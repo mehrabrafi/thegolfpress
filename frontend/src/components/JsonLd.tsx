@@ -39,6 +39,25 @@ export function createWebsiteJsonLd() {
     };
 }
 
+export function createOrganizationJsonLd() {
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thegolfpress.com';
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: 'The Golf Press',
+        url: siteUrl,
+        logo: `${siteUrl}/logo.png`,
+        sameAs: [
+            'https://twitter.com/thegolfpress',
+        ],
+        contactPoint: {
+            '@type': 'ContactPoint',
+            contactType: 'customer support',
+            url: siteUrl,
+        },
+    };
+}
+
 export function createArticleJsonLd(article: {
     title: string;
     description: string;

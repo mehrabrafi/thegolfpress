@@ -75,26 +75,39 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // Dynamic: Fetch news articles for individual URLs
     let newsRoutes: MetadataRoute.Sitemap = [];
+    let guideRoutes: MetadataRoute.Sitemap = [];
     try {
         const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
         const res = await fetch(`${API_BASE}/golf/news`, { next: { revalidate: 3600 } });
         if (res.ok) {
             const articles = await res.json();
-            newsRoutes = articles.map((article: { id: string; category?: string; updatedAt?: string; createdAt?: string }) => {
-                const isCourse = (article.category || '').toUpperCase() === 'COURSES';
-                return {
-                    url: isCourse
-                        ? `${SITE_URL}/courses/${article.id}`
-                        : `${SITE_URL}/news/${article.id}`,
-                    lastModified: new Date(article.updatedAt || article.createdAt || Date.now()),
-                    changeFrequency: 'weekly' as const,
-                    priority: 0.6,
-                };
+            articles.forEach((article: { id: string; category?: string; updatedAt?: string; createdAt?: string }) => {
+                const categoryUpper = (article.category || '').toUpperCase();
+                const isCourse = categoryUpper === 'COURSES';
+                const isGuide = categoryUpper === 'GUIDES-TIPS';
+
+                if (isGuide) {
+                    guideRoutes.push({
+                        url: `${SITE_URL}/guides-and-tips/post/${article.id}`,
+                        lastModified: new Date(article.updatedAt || article.createdAt || Date.now()),
+                        changeFrequency: 'weekly' as const,
+                        priority: 0.6,
+                    });
+                } else {
+                    newsRoutes.push({
+                        url: isCourse
+                            ? `${SITE_URL}/courses/${article.id}`
+                            : `${SITE_URL}/news/${article.id}`,
+                        lastModified: new Date(article.updatedAt || article.createdAt || Date.now()),
+                        changeFrequency: 'weekly' as const,
+                        priority: 0.6,
+                    });
+                }
             });
         }
-    } catch (error) {
-        console.error('Sitemap: Error fetching articles:', error);
+    } catch {
+        // Silently fail — sitemap will still include static routes
     }
 
-    return [...staticRoutes, ...newsRoutes];
+    return [...staticRoutes, ...newsRoutes, ...guideRoutes];
 }

@@ -82,12 +82,19 @@ Create `.env` file:
 ```bash
 nano .env
 ```
-Paste your backend environment variables (Database URL, JWT Secret, Cloudflare R2 credentials):
+Paste your backend environment variables:
 ```env
 DATABASE_URL="postgresql://admin:your_secure_password@localhost:5432/golfpress?schema=public"
-JWT_SECRET="your_jwt_secret"
-PORT=4000
-# Add your R2 credentials here too
+JWT_SECRET="your_jwt_secret_64_hex_chars"
+NODE_ENV=production
+PORT=5001
+ALLOW_REGISTRATION=false
+FRONTEND_URL=https://thegolfpress.com
+R2_ACCOUNT_ID=your_cloudflare_account_id
+R2_ACCESS_KEY_ID=your_r2_access_key
+R2_SECRET_ACCESS_KEY=your_r2_secret_key
+R2_BUCKET_NAME=thegolfpress
+NEXT_PUBLIC_IMAGE_URL=https://cdn.thegolfpress.com
 ```
 Save and exit (`Ctrl+X`, `Y`, `Enter`).
 
@@ -152,7 +159,7 @@ server {
     server_name api.thegolfpress.com;
 
     location / {
-        proxy_pass http://localhost:4000;
+        proxy_pass http://localhost:5001;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
