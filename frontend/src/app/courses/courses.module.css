@@ -419,6 +419,7 @@
     aspect-ratio: 16 / 9;
     overflow: hidden;
     margin-bottom: 12px;
+    position: relative;
 }
 
 .cardImage {

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { fetchNewsById, fetchNews, fetchTrendingNews } from '@/lib/api';
 import Link from 'next/link';
+import Image from 'next/image';
 import DOMPurify from 'dompurify';
 import JsonLd, { createArticleJsonLd } from '@/components/JsonLd';
 import styles from './NewsDetail.module.css';
@@ -77,7 +78,7 @@ export default function NewsDetailClient({
                     </div>
 
                     <div className={styles.heroImageContainer}>
-                        <img src={article.image} alt={article.title} className={styles.heroImage} />
+                        <Image src={article.image} alt={article.title} fill className={styles.heroImage} priority sizes="(max-width: 1100px) 100vw, 900px" style={{ objectFit: 'cover' }} />
                     </div>
                     <p className={styles.imageCaption}>{article.title} - Photo by The Golf Press</p>
 
@@ -178,7 +179,9 @@ export default function NewsDetailClient({
                             <div className={styles.trendingList}>
                                 {relatedNews.slice(0, 5).map((item, i) => (
                                     <Link href={`/news/${item.id}`} key={i} className={styles.trendingItem}>
-                                        <img src={item.image} alt={item.title} className={styles.trendingThumb} />
+                                        <div className={styles.trendingThumbWrapper}>
+                                            <Image src={item.image} alt={item.title} fill sizes="60px" className={styles.trendingThumb} />
+                                        </div>
                                         <div className={styles.trendingContent}>
                                             <span className={styles.trendingCategory}>{item.category}</span>
                                             <h4 className={styles.trendingTitle}>{item.title}</h4>
@@ -204,7 +207,7 @@ export default function NewsDetailClient({
                         {trendingNews.slice(0, 8).map((item, i) => (
                             <Link href={`/news/${item.id}`} key={i} className={styles.trendingCard}>
                                 <div className={styles.trendingCardThumbWrapper}>
-                                    <img src={item.image} alt={item.title} className={styles.trendingCardThumb} />
+                                    <Image src={item.image} alt={item.title} fill sizes="(max-width: 600px) 280px, 320px" className={styles.trendingCardThumb} />
                                     <span className={styles.trendingCardTag}>{item.category}</span>
                                 </div>
                                 <div className={styles.trendingCardContent}>

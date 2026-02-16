@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './GuidesSection.module.css';
 
 export default function GuidesSection({ articles }: { articles: any[] }) {
@@ -14,7 +15,7 @@ export default function GuidesSection({ articles }: { articles: any[] }) {
                 {articles.slice(0, 4).map((item, idx) => (
                     <Link key={idx} href={`/guides-and-tips/post/${item.id}`} className={styles.card}>
                         <div className={styles.imageWrapper}>
-                            <img src={item.image} alt={item.title} className={styles.image} />
+                            <Image src={item.image} alt={item.title} fill className={styles.image} sizes="(max-width: 768px) 50vw, 25vw" />
                         </div>
                         <span className={styles.tag}>{item.categoryTag || 'INSTRUCTION'}</span>
                         <h3 className={styles.cardTitle}>{item.title}</h3>

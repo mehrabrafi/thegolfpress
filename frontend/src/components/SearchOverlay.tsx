@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { fetchSearch } from '@/lib/api';
 import styles from './SearchOverlay.module.css';
 
@@ -212,7 +213,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                                         >
                                             <div className={styles.newsThumb}>
                                                 {article.image && (
-                                                    <img src={article.image} alt={article.title} loading="lazy" />
+                                                    <Image src={article.image} alt={article.title} fill sizes="80px" />
                                                 )}
                                             </div>
                                             <div className={styles.newsInfo}>
@@ -241,7 +242,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                                         >
                                             <div className={styles.playerAvatar}>
                                                 {player.image ? (
-                                                    <img src={player.image} alt={player.name} loading="lazy" />
+                                                    <Image src={player.image} alt={player.name} fill sizes="44px" />
                                                 ) : (
                                                     <div className={styles.playerAvatarPlaceholder}>
                                                         {player.name?.charAt(0) || '?'}

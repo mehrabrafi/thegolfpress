@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { fetchMaintenanceStatus } from '@/lib/api';
+import Image from 'next/image';
 import styles from './MaintenanceGuard.module.css';
 
 interface TimeLeft {
@@ -89,10 +90,13 @@ export default function MaintenanceGuard({ children }: { children: React.ReactNo
 
                 <div className={styles.content}>
                     <div className={styles.logoWrapper}>
-                        <img
+                        <Image
                             src="/logo.png"
                             alt="The Golf Press"
+                            width={240}
+                            height={80}
                             className={styles.logoImage}
+                            priority
                         />
                     </div>
 

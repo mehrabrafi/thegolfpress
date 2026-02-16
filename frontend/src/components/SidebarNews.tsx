@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './SidebarNews.module.css';
 
 interface Article {
@@ -33,7 +34,7 @@ export default function SidebarNews({ articles }: SidebarNewsProps) {
                         <Link key={idx} href={href} className={styles.item}>
                             {article.image && (
                                 <div className={styles.imageWrapper}>
-                                    <img src={article.image} alt={article.title} />
+                                    <Image src={article.image} alt={article.title} fill sizes="100px" style={{ objectFit: 'cover' }} />
                                 </div>
                             )}
                             <div className={styles.content}>

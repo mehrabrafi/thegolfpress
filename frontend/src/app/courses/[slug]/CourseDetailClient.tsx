@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import DOMPurify from 'dompurify';
 import { MapPinOff } from 'lucide-react';
 import JsonLd, { createGolfCourseJsonLd } from '@/components/JsonLd';
@@ -81,7 +82,7 @@ function CourseDetailContent({ course }: { course: Course }) {
                         <h1 className={detailStyles.title}>{course.title}</h1>
 
                         <div className={detailStyles.heroImageContainer}>
-                            <img src={course.image} alt={course.title} className={detailStyles.heroImage} />
+                            <Image src={course.image} alt={course.title} fill className={detailStyles.heroImage} priority sizes="(max-width: 1100px) 100vw, 900px" style={{ objectFit: 'cover' }} />
                         </div>
                         <p className={detailStyles.imageCaption}>{course.title}</p>
 
@@ -182,7 +183,7 @@ function CourseCategoryContent({ courses, slug }: { courses: Course[], slug: str
 const CourseCard = ({ item }: { item: Course }) => (
     <Link href={`/courses/${item.id}`} className={styles.categoryCard}>
         <div className={styles.cardImageWrapper}>
-            <img src={item.image} alt={item.title} className={styles.cardImage} />
+            <Image src={item.image} alt={item.title} fill className={styles.cardImage} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" style={{ objectFit: 'cover' }} />
         </div>
         <div className={styles.cardContent}>
             <span className={detailStyles.categoryLabel} style={{ marginBottom: '8px', display: 'inline-block', fontSize: '10px' }}>

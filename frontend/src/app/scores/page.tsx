@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { fetchLeaderboard } from '@/lib/api';
 import styles from './scores.module.css';
 import Loading from '@/components/Loading';
@@ -63,11 +64,11 @@ export default function ScoresPage() {
                                         className={styles.playerLink}
                                         title="View Player Profile"
                                     >
-                                        <img src={p.image || 'https://via.placeholder.com/40'} alt={p.name} className={styles.avatar} />
+                                        <Image src={p.image || 'https://via.placeholder.com/45'} alt={p.name} width={45} height={45} className={styles.avatar} />
                                         <div>
                                             <div className={styles.pName}>{p.name}</div>
                                             <div className={styles.pCountry}>
-                                                <img src={p.country} alt="flag" className={styles.flag} />
+                                                <Image src={p.country} alt="flag" width={16} height={12} className={styles.flag} />
                                                 {p.countryName}
                                             </div>
                                         </div>

@@ -58,6 +58,7 @@
     overflow: hidden;
     margin-bottom: 10px;
     background: #f5f5f5;
+    position: relative;
 }
 
 .image {

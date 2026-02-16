@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './courses.module.css';
 
 interface Course {
@@ -127,7 +128,7 @@ export default function CoursesClient({ initialCourses }: CoursesClientProps) {
 const CourseCard = ({ item }: { item: Course }) => (
     <Link href={`/courses/${item.id}`} className={styles.categoryCard}>
         <div className={styles.cardImageWrapper}>
-            <img src={item.image} alt={item.title} className={styles.cardImage} />
+            <Image src={item.image} alt={item.title} fill className={styles.cardImage} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" style={{ objectFit: 'cover' }} />
         </div>
         <div className={styles.cardContent}>
             <span style={{

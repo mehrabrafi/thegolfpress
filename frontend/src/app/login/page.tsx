@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import styles from './login.module.css';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function LoginPage() {
     const { login } = useAuth();
@@ -32,7 +33,7 @@ export default function LoginPage() {
                 <div className={styles.formContent}>
                     {/* Brand Logo */}
                     <Link href="/" className={styles.logoLink}>
-                        <img src="/logo.png" alt="The Golf Press" className={styles.authLogo} />
+                        <Image src="/logo.png" alt="The Golf Press" width={200} height={60} className={styles.authLogo} priority />
                     </Link>
 
                     <h1 className={styles.title}>SIGN IN</h1>

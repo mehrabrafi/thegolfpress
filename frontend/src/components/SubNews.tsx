@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './SubNews.module.css';
 
 interface SubNewsProps {
@@ -18,7 +19,7 @@ export default function SubNews({ articles }: SubNewsProps) {
                 return (
                     <Link key={idx} href={href} className={styles.card}>
                         <div className={styles.imageWrapper}>
-                            <img src={item.image} alt={item.title} />
+                            <Image src={item.image} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" style={{ objectFit: 'cover' }} />
                             <span className={styles.tag}>{item.categoryTag || item.category}</span>
                         </div>
                         <div className={styles.body}>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './Footer.module.css';
 import { Instagram, Youtube, Facebook, Twitter, Mail } from 'lucide-react';
 import { fetchSettings } from '@/lib/api';
@@ -29,7 +30,7 @@ export default function Footer() {
                 <div className={styles.topSection}>
                     <div className={styles.brandCol}>
                         <Link href="/" className={styles.footerLogo}>
-                            <img src="/logo.png" alt={getVal('site_name', 'The Golf Press')} className={styles.logoImage} />
+                            <Image src="/logo.png" alt={getVal('site_name', 'The Golf Press')} width={180} height={50} className={styles.logoImage} />
                         </Link>
                         <p className={styles.description}>
                             {getVal('site_description', 'The definitive voice in golf, delivering real-time scores, expert instruction, and premium news.')}

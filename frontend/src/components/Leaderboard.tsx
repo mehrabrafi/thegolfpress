@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './Leaderboard.module.css';
 
 interface Player {
@@ -37,11 +38,11 @@ export default function Leaderboard({ players }: { players: Player[] }) {
                                     className={styles.playerLink}
                                     title="View Player Profile"
                                 >
-                                    <img src={p.image} alt={p.name} className={styles.avatar} />
+                                    <Image src={p.image} alt={p.name} width={40} height={40} className={styles.avatar} />
                                     <div>
                                         <div className={styles.playerName}>{p.name}</div>
                                         <div className={styles.playerCountry}>
-                                            <img src={p.country} alt={`${p.name} country flag`} className={styles.miniFlag} />
+                                            <Image src={p.country} alt={`${p.name} country flag`} width={20} height={12} className={styles.miniFlag} />
                                         </div>
                                     </div>
                                 </Link>

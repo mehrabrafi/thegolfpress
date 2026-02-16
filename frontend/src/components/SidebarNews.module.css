@@ -45,6 +45,7 @@
     height: 75px;
     border-radius: 4px;
     overflow: hidden;
+    position: relative;
 }
 
 .imageWrapper img {

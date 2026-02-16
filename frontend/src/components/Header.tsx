@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, Suspense } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useSearchParams } from 'next/navigation';
 import styles from './Header.module.css';
 import { useAuth } from '@/context/AuthContext';
@@ -110,7 +111,7 @@ function HeaderContent() {
                         </div>
 
                         <Link href="/" className={styles.logo}>
-                            <img src="/logo.png" alt="The Golf Press" className={styles.logoImage} />
+                            <Image src="/logo.png" alt="The Golf Press" width={600} height={180} className={styles.logoImage} priority />
                         </Link>
 
                         <div className={styles.authRight}>
@@ -162,7 +163,7 @@ function HeaderContent() {
                     </div>
 
                     <Link href="/" className={styles.logoSmall}>
-                        <img src="/logo.png" alt="The Golf Press" className={styles.logoImageSmall} />
+                        <Image src="/logo.png" alt="The Golf Press" width={300} height={100} className={styles.logoImageSmall} />
                     </Link>
 
                     <div className={styles.catHeaderRight}>

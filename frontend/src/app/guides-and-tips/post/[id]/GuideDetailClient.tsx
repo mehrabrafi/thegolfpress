@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import DOMPurify from 'dompurify';
 import JsonLd, { createArticleJsonLd } from '@/components/JsonLd';
 import styles from './GuideDetail.module.css';
@@ -64,7 +65,7 @@ export default function GuideDetailClient({
                     </div>
 
                     <div className={styles.heroImageContainer}>
-                        <img src={article.image} alt={article.title} className={styles.heroImage} />
+                        <Image src={article.image} alt={article.title} fill className={styles.heroImage} priority sizes="(max-width: 900px) 100vw, 750px" style={{ objectFit: 'cover' }} />
                     </div>
 
                     <div className={styles.articleBody}>
@@ -103,7 +104,9 @@ export default function GuideDetailClient({
                         <div className={styles.relatedList}>
                             {relatedGuides.slice(0, 5).map((item, i) => (
                                 <Link href={`/guides-and-tips/post/${item.id}`} key={i} className={styles.relatedItem}>
-                                    <img src={item.image} alt={item.title} className={styles.relatedThumb} />
+                                    <div className={styles.relatedThumbWrapper}>
+                                        <Image src={item.image} alt={item.title} fill sizes="70px" className={styles.relatedThumb} />
+                                    </div>
                                     <div className={styles.relatedContent}>
                                         <span className={styles.relatedCategory}>{item.categoryTag}</span>
                                         <h4 className={styles.relatedTitle}>{item.title}</h4>
@@ -130,7 +133,7 @@ export default function GuideDetailClient({
                         {relatedGuides.slice(5, 13).map((item, i) => (
                             <Link href={`/guides-and-tips/post/${item.id}`} key={i} className={styles.bottomCard}>
                                 <div className={styles.bottomCardThumbWrapper}>
-                                    <img src={item.image} alt={item.title} className={styles.bottomCardThumb} />
+                                    <Image src={item.image} alt={item.title} fill sizes="(max-width: 600px) 240px, 300px" className={styles.bottomCardThumb} />
                                     <span className={styles.bottomCardTag}>{item.categoryTag}</span>
                                 </div>
                                 <div className={styles.bottomCardContent}>

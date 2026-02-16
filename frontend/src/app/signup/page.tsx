@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import styles from './signup.module.css';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function SignupPage() {
     const { signup } = useAuth();
@@ -33,7 +34,7 @@ export default function SignupPage() {
                 <div className={styles.formContent}>
                     {/* Brand Logo */}
                     <Link href="/" className={styles.logoLink}>
-                        <img src="/logo.png" alt="The Golf Press" className={styles.authLogo} />
+                        <Image src="/logo.png" alt="The Golf Press" width={200} height={60} className={styles.authLogo} priority />
                     </Link>
 
                     <h1 className={styles.title}>CREATE AN ACCOUNT</h1>

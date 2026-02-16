@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './LatestNews.module.css';
 
 interface NewsItem {
@@ -22,7 +23,7 @@ export default function LatestNews({ articles }: { articles: any[] }) {
                 {articles.map((item, idx) => (
                     <Link key={idx} href={`/news/${item.id}`} className={styles.newsCard}>
                         <div className={styles.imageWrapper}>
-                            <img src={item.image} alt={item.title} />
+                            <Image src={item.image} alt={item.title} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw" />
                             <span className={styles.tag}>{item.categoryTag || item.category}</span>
                         </div>
                         <div className={styles.cardBody}>

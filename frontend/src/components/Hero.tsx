@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './Hero.module.css';
 
 interface HeroProps {
@@ -11,7 +12,7 @@ export default function Hero({ article }: HeroProps) {
     return (
         <section className={styles.hero}>
             <div className={styles.bgWrapper}>
-                <img src={article.image} alt={article.title} className={styles.heroImage} />
+                <Image src={article.image} alt={article.title} fill priority className={styles.heroImage} />
             </div>
             <div className={styles.overlay}>
                 <div className={styles.content}>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { fetchRankings } from '@/lib/api';
 import styles from './players.module.css';
 
@@ -70,9 +71,11 @@ export default function PlayersPage() {
                                         className={styles.playerLink}
                                         title="View Player Profile"
                                     >
-                                        <img
+                                        <Image
                                             src={leader.athlete.image || 'https://a.espncdn.com/i/headshots/nophoto.png'}
                                             alt={leader.athlete.name}
+                                            width={40}
+                                            height={40}
                                             className={styles.avatar}
                                         />
                                         <span className={styles.playerName}>{leader.athlete.name}</span>

@@ -89,13 +89,12 @@
 .heroImageContainer {
     width: 100%;
     margin-bottom: 10px;
+    position: relative;
+    aspect-ratio: 16/9;
 }
 
 .heroImage {
-    width: 100%;
-    height: auto;
     border-radius: 8px;
-    display: block;
 }
 
 .imageCaption {
@@ -301,12 +300,17 @@
     border-bottom: none;
 }
 
-.trendingThumb {
+.trendingThumbWrapper {
     width: 60px;
     height: 60px;
     border-radius: 4px;
-    object-fit: cover;
+    overflow: hidden;
+    position: relative;
     flex-shrink: 0;
+}
+
+.trendingThumb {
+    object-fit: cover;
 }
 
 .trendingContent {

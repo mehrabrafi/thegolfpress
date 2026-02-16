@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from '../Guides.module.css';
 
 interface GuideCategoryClientProps {
@@ -20,7 +21,9 @@ export default function GuideCategoryClient({ articles, currentTagName }: GuideC
                     <div className={styles.sectionGrid} style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
                         {articles.map((item: any) => (
                             <Link href={`/guides-and-tips/post/${item.id}`} key={item.id} className={styles.articleCard}>
-                                <img src={item.image} alt={item.title} className={styles.articleImage} />
+                                <div className={styles.articleImageWrapper}>
+                                    <Image src={item.image} alt={item.title} fill className={styles.articleImage} sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1100px) 33vw, 300px" />
+                                </div>
                                 <span className={styles.articleTag}>{item.categoryTag}</span>
                                 <h4 className={styles.articleTitle}>{item.title}</h4>
                             </Link>

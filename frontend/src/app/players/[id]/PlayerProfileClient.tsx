@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { fetchPlayerProfile } from '@/lib/api';
 import styles from './player-profile.module.css';
 import PerformanceChart from './PerformanceChart';
@@ -78,10 +79,13 @@ export default function PlayerProfileClient({ id }: { id: string }) {
             {/* Hero Section */}
             <div className={styles.hero}>
                 <div className={styles.imageWrapper}>
-                    <img
+                    <Image
                         src={player.image || 'https://a.espncdn.com/i/headshots/nophoto.png'}
                         alt={player.name}
+                        fill
                         className={styles.playerImage}
+                        priority
+                        sizes="200px"
                     />
                 </div>
                 <div className={styles.playerInfo}>
@@ -304,7 +308,7 @@ export default function PlayerProfileClient({ id }: { id: string }) {
                         {player.relatedNews.map((news: any) => (
                             <Link key={news.id} href={`/news/${news.id}`} className={styles.newsItem}>
                                 <div className={styles.newsImageWrapper}>
-                                    <img src={news.image} alt={news.title} className={styles.newsImage} />
+                                    <Image src={news.image} alt={news.title} fill className={styles.newsImage} sizes="200px" />
                                 </div>
                                 <div className={styles.newsContent}>
                                     <div className={styles.newsCategory}>{news.category}</div>

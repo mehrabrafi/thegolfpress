@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './DynamicSection.module.css';
 
 interface DynamicSectionProps {
@@ -30,7 +31,7 @@ export default function DynamicSection({ title, articles, link, linkText }: Dyna
                     return (
                         <Link key={idx} href={linkHref} className={styles.card}>
                             <div className={styles.imageWrapper}>
-                                <img src={item.image} alt={item.title} className={styles.image} />
+                                <Image src={item.image} alt={item.title} fill className={styles.image} sizes="(max-width: 768px) 50vw, 33vw" />
                                 {item.categoryTag && <span className={styles.tag}>{item.categoryTag}</span>}
                             </div>
                             <h3 className={styles.cardTitle}>{item.title}</h3>
