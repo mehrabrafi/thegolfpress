@@ -5,12 +5,13 @@ import MaintenanceGuard from '@/components/MaintenanceGuard';
 import { Providers } from '@/components/Providers';
 import JsonLd, { createOrganizationJsonLd } from '@/components/JsonLd';
 import './globals.css';
-import { Playfair_Display, Oswald, Roboto } from 'next/font/google';
+import { Playfair_Display, Oswald, Roboto, Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif', display: 'swap' });
 const oswald = Oswald({ subsets: ['latin'], variable: '--font-sans-condensed', display: 'swap' });
 const roboto = Roboto({ weight: ['400', '500', '700'], subsets: ['latin'], variable: '--font-sans', display: 'swap' });
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://thegolfpress.com';
 
@@ -79,7 +80,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${playfair.variable} ${oswald.variable} ${roboto.variable}`}>
+      <body className={`${playfair.variable} ${oswald.variable} ${roboto.variable} ${inter.variable}`}>
         <JsonLd data={createOrganizationJsonLd()} />
         <Providers>
           <MaintenanceGuard>

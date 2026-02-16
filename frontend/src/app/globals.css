@@ -15,10 +15,7 @@
   --text-dark: #121212;
   --text-light: #767676;
 
-  /* Fonts */
-  --font-serif: 'Playfair Display', serif;
-  --font-sans-condensed: 'Oswald', sans-serif;
-  --font-sans: 'Roboto', sans-serif;
+  /* Fonts are loaded via next/font in layout.tsx */
 }
 
 * {

@@ -4,7 +4,7 @@
     min-height: 100vh;
     background: #ffffff;
     width: 100vw;
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--font-sans);
     /* Fallback */
 }
 
@@ -65,7 +65,7 @@
 
 /* Title */
 .title {
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-sans-condensed);
     font-weight: 700;
     font-size: 2.2rem;
     color: #000000;
@@ -90,7 +90,7 @@
 }
 
 .group label {
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--font-sans);
     font-weight: 700;
     font-size: 0.8rem;
     color: #000000;
@@ -106,7 +106,7 @@
     border-radius: 0 !important;
     /* Force sharp corners */
     font-size: 1rem;
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--font-sans);
     background: #ffffff;
     color: #000;
     appearance: none;
@@ -122,7 +122,7 @@
 
 /* Links */
 .forgotPassword {
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--font-sans);
     font-size: 0.8rem;
     color: #666666;
     text-decoration: underline;
@@ -152,7 +152,7 @@
     font-size: 0.75rem;
     color: #666666;
     line-height: 1.5;
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--font-sans);
 }
 
 .legalLink {
@@ -171,7 +171,7 @@
     color: #ffffff;
     border: none;
     border-radius: 2px;
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--font-sans-condensed);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -189,7 +189,7 @@
 /* Footer */
 .footer {
     margin-top: 40px;
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--font-sans);
     font-size: 0.9rem;
     color: #000000;
     font-weight: 500;
@@ -206,7 +206,7 @@
 
 .error {
     color: #ed3e49;
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--font-sans);
     font-size: 0.9rem;
     margin-bottom: 20px;
     font-weight: 500;

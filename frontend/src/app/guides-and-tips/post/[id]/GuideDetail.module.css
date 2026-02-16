@@ -2,12 +2,12 @@
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px 20px 80px 20px;
-    font-family: 'Georgia', serif;
+    font-family: var(--font-serif);
 }
 
 /* Breadcrumb */
 .breadcrumb {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-inter);
     font-size: 0.8rem;
     color: #718096;
     margin-bottom: 30px;
@@ -49,7 +49,7 @@
 .categoryLabel {
     background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
     color: #2e7d32;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-inter);
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -62,7 +62,7 @@
 }
 
 .title {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-serif);
     font-size: 2.2rem;
     font-weight: 700;
     line-height: 1.15;
@@ -75,7 +75,7 @@
     align-items: center;
     justify-content: flex-start;
     margin-bottom: 30px;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-inter);
     border-bottom: 1px solid #eee;
     padding-bottom: 20px;
 }
@@ -114,7 +114,7 @@
 .articleBody h1,
 .articleBody h2,
 .articleBody h3 {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-serif);
     font-weight: 700;
     margin-top: 40px;
     margin-bottom: 20px;
@@ -148,7 +148,7 @@
     font-size: 1.25rem;
     color: #1a202c;
     font-weight: 600;
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-serif);
 }
 
 .articleBody img {
@@ -171,7 +171,7 @@
     display: flex;
     align-items: center;
     gap: 15px;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-inter);
     font-size: 0.8rem;
     font-weight: 700;
     color: #a0aec0;
@@ -224,7 +224,7 @@
 }
 
 .sectionTitle {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-inter);
     font-size: 1.1rem;
     font-weight: 700;
     color: #1a202c;
@@ -274,7 +274,7 @@
 }
 
 .relatedCategory {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-inter);
     font-size: 0.65rem;
     color: #2e7d32;
     font-weight: 700;
@@ -283,7 +283,7 @@
 }
 
 .relatedTitle {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-serif);
     font-size: 0.9rem;
     font-weight: 700;
     color: #1a202c;
@@ -297,7 +297,7 @@
 }
 
 .relatedMeta {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-inter);
     font-size: 0.7rem;
     color: #a0aec0;
 }
@@ -378,7 +378,7 @@
 }
 
 .bottomCardTitle {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-serif);
     font-size: 1.1rem;
     font-weight: 700;
     color: #1a202c;
@@ -395,7 +395,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-inter);
     font-size: 0.8rem;
     color: #718096;
 }
