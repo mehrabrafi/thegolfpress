@@ -27,13 +27,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     useEffect(() => {
         async function loadUser() {
+            // Check for a login hint to avoid unnecessary 401s in logs/Lighthouse
+            const authHint = localStorage.getItem('tgp_auth_hint');
+
+            if (!authHint) {
+                setLoading(false);
+                return;
+            }
+
             try {
-                // Auth is now fully cookie-based — no token needed
                 const profile = await getProfile();
                 setUser(profile);
+                // Ensure hint is set if we got a profile
+                localStorage.setItem('tgp_auth_hint', 'true');
             } catch {
-                // If profile fails, user is likely not logged in or cookie expired
                 setUser(null);
+                // Clear hint if profile fetch fails
+                localStorage.removeItem('tgp_auth_hint');
             }
             setLoading(false);
         }
@@ -42,7 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const login = async (credentials: any) => {
         const data = await apiLogin(credentials);
-        // Token is now set as httpOnly cookie by the server — no need to store it
+        localStorage.setItem('tgp_auth_hint', 'true');
         setUser(data.user);
         if (data.user.role === 'ADMIN') {
             router.push('/tgpadmin/dashboard');
@@ -53,6 +63,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const signup = async (userData: any) => {
         const data = await apiRegister(userData);
+        localStorage.setItem('tgp_auth_hint', 'true');
         setUser(data.user);
         if (data.user.role === 'ADMIN') {
             router.push('/tgpadmin/dashboard');
@@ -68,6 +79,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             // Logout API call failed — clear local state anyway
         }
         setUser(null);
+        localStorage.removeItem('tgp_auth_hint');
         router.push('/login');
     };
 
