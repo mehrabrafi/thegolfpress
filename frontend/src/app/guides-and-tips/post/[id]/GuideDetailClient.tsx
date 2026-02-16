@@ -87,9 +87,9 @@ export default function GuideDetailClient({
 
                     <div className={styles.shareSection}>
                         SHARE:
-                        <button className={styles.shareBtn}>X</button>
-                        <button className={styles.shareBtn}>f</button>
-                        <button className={styles.shareBtn}>🔗</button>
+                        <button className={styles.shareBtn} aria-label="Share on X (Twitter)">X</button>
+                        <button className={styles.shareBtn} aria-label="Share on Facebook">f</button>
+                        <button className={styles.shareBtn} aria-label="Copy link to clipboard">🔗</button>
                     </div>
                 </main>
 
@@ -99,7 +99,7 @@ export default function GuideDetailClient({
                     <div className={styles.sidebarSection}>
                         <div className={styles.sectionHeader}>
                             <div className={styles.accentBar}></div>
-                            <h3 className={styles.sectionTitle}>More Guides</h3>
+                            <h2 className={styles.sectionTitle}>More Guides</h2>
                         </div>
                         <div className={styles.relatedList}>
                             {relatedGuides.slice(0, 5).map((item, i) => (
@@ -109,7 +109,7 @@ export default function GuideDetailClient({
                                     </div>
                                     <div className={styles.relatedContent}>
                                         <span className={styles.relatedCategory}>{item.categoryTag}</span>
-                                        <h4 className={styles.relatedTitle}>{item.title}</h4>
+                                        <h3 className={styles.relatedTitle}>{item.title}</h3>
                                         <span className={styles.relatedMeta}>{formatDate(item.createdAt || new Date().toISOString())}</span>
                                     </div>
                                 </Link>
@@ -126,7 +126,7 @@ export default function GuideDetailClient({
                 <div className={styles.bottomRelated}>
                     <div className={styles.sectionHeader}>
                         <div className={styles.accentBar}></div>
-                        <h3 className={styles.sectionTitle}>More from Guides &amp; Tips</h3>
+                        <h2 className={styles.sectionTitle}>More from Guides &amp; Tips</h2>
                     </div>
 
                     <div className={styles.bottomGrid}>
@@ -137,7 +137,7 @@ export default function GuideDetailClient({
                                     <span className={styles.bottomCardTag}>{item.categoryTag}</span>
                                 </div>
                                 <div className={styles.bottomCardContent}>
-                                    <h4 className={styles.bottomCardTitle}>{item.title}</h4>
+                                    <h3 className={styles.bottomCardTitle}>{item.title}</h3>
                                     <div className={styles.bottomCardMeta}>
                                         <span>{formatDate(item.createdAt || new Date().toISOString())}</span>
                                     </div>

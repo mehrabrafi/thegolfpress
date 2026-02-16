@@ -102,7 +102,7 @@ function CourseDetailContent({ course }: { course: Course }) {
                         <div className={detailStyles.sidebarSection}>
                             <div className={detailStyles.sectionHeader}>
                                 <div className={detailStyles.greenBar}></div>
-                                <h3 className={detailStyles.sectionTitle}>Course Map</h3>
+                                <h2 className={detailStyles.sectionTitle}>Course Map</h2>
                             </div>
 
                             {hasSufficientLocation ? (

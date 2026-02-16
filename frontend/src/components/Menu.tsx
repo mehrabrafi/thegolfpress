@@ -29,7 +29,7 @@ export default function Menu({ isOpen, toggleMenu }: MenuProps) {
             <div className={`${styles.overlay} ${isOpen ? styles.open : ''}`} onClick={toggleMenu} />
             <div className={`${styles.menuContainer} ${isOpen ? styles.open : ''}`}>
                 <div className={styles.header}>
-                    <button className={styles.closeBtn} onClick={toggleMenu}>
+                    <button className={styles.closeBtn} onClick={toggleMenu} aria-label="Close menu">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
                     </button>
                     <Link href="/" className={styles.logoLink} onClick={toggleMenu}>
@@ -84,11 +84,11 @@ export default function Menu({ isOpen, toggleMenu }: MenuProps) {
                 <div className={styles.socialSection}>
                     <span className={styles.followText}>FOLLOW US</span>
                     <div className={styles.socialIcons}>
-                        <Link href="#" className={styles.socialIcon}><Instagram size={24} /></Link>
-                        <Link href="#" className={styles.socialIcon}><X size={24} /></Link>
-                        <Link href="#" className={styles.socialIcon}><Youtube size={24} /></Link>
-                        <Link href="#" className={styles.socialIcon}><Facebook size={24} /></Link>
-                        <Link href="#" className={styles.socialIcon}><Video size={24} /></Link>
+                        <Link href="#" className={styles.socialIcon} aria-label="Follow us on Instagram"><Instagram size={24} /></Link>
+                        <Link href="#" className={styles.socialIcon} aria-label="Follow us on X (Twitter)"><X size={24} /></Link>
+                        <Link href="#" className={styles.socialIcon} aria-label="Subscribe to our Youtube channel"><Youtube size={24} /></Link>
+                        <Link href="#" className={styles.socialIcon} aria-label="Follow us on Facebook"><Facebook size={24} /></Link>
+                        <Link href="#" className={styles.socialIcon} aria-label="Watch our videos"><Video size={24} /></Link>
                     </div>
                 </div>
             </div>

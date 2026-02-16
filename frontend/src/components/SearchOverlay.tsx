@@ -139,6 +139,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                         type="text"
                         className={styles.searchInput}
                         placeholder="Search news, players, topics..."
+                        aria-label="Search site content"
                         value={query}
                         onChange={handleInputChange}
                         autoComplete="off"
@@ -173,7 +174,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                                     <line x1="21" y1="21" x2="16.65" y2="16.65" />
                                 </svg>
                             </div>
-                            <p className={styles.initialTitle}>Search The Golf Press</p>
+                            <h1 className={styles.initialTitle}>Search The Golf Press</h1>
                             <p className={styles.initialHint}>Find news articles, golf players, and more</p>
                             <div className={styles.shortcuts}>
                                 <span className={styles.shortcutKey}>ESC to close</span>
@@ -189,7 +190,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
                                 <line x1="8" y1="11" x2="14" y2="11" />
                             </svg>
-                            <p className={styles.noResultsTitle}>No results found</p>
+                            <h2 className={styles.noResultsTitle}>No results found</h2>
                             <p className={styles.noResultsHint}>Try different keywords or check spelling</p>
                         </div>
                     )}
@@ -201,7 +202,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                             {results.news?.length > 0 && (
                                 <div className={styles.resultSection}>
                                     <div className={styles.sectionHeader}>
-                                        <span className={styles.sectionLabel}>Articles</span>
+                                        <h2 className={styles.sectionLabel}>Articles</h2>
                                         <span className={styles.sectionCount}>{results.news.length} found</span>
                                     </div>
                                     {results.news.map((article: any) => (
@@ -218,7 +219,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                                             </div>
                                             <div className={styles.newsInfo}>
                                                 <div className={styles.newsCategory}>{article.category}</div>
-                                                <div className={styles.newsTitle}>{article.title}</div>
+                                                <h3 className={styles.newsTitle}>{article.title}</h3>
                                                 <div className={styles.newsExcerpt}>{article.excerpt}</div>
                                             </div>
                                         </Link>
@@ -230,7 +231,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                             {results.players?.length > 0 && (
                                 <div className={styles.resultSection}>
                                     <div className={styles.sectionHeader}>
-                                        <span className={styles.sectionLabel}>Players</span>
+                                        <h2 className={styles.sectionLabel}>Players</h2>
                                         <span className={styles.sectionCount}>{results.players.length} found</span>
                                     </div>
                                     {results.players.map((player: any) => (
@@ -250,7 +251,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                                                 )}
                                             </div>
                                             <div className={styles.playerInfo}>
-                                                <div className={styles.playerName}>{player.name}</div>
+                                                <h3 className={styles.playerName}>{player.name}</h3>
                                                 {player.country && (
                                                     <div className={styles.playerCountry}>{player.country}</div>
                                                 )}
@@ -267,7 +268,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                             {results.categories?.length > 0 && (
                                 <div className={styles.resultSection}>
                                     <div className={styles.sectionHeader}>
-                                        <span className={styles.sectionLabel}>Categories</span>
+                                        <h2 className={styles.sectionLabel}>Categories</h2>
                                         <span className={styles.sectionCount}>{results.categories.length} found</span>
                                     </div>
                                     {results.categories.map((cat: any) => (
@@ -283,7 +284,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                                                 </svg>
                                             </div>
                                             <div className={styles.categoryInfo}>
-                                                <div className={styles.categoryName}>{cat.name}</div>
+                                                <h3 className={styles.categoryName}>{cat.name}</h3>
                                                 <div className={styles.categoryCount}>
                                                     {cat._count?.news || 0} articles
                                                     {cat.subTags?.length > 0 && ` · ${cat.subTags.length} sub-tags`}

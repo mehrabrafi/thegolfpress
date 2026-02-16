@@ -58,6 +58,7 @@ export default function CoursesClient({ initialCourses }: CoursesClientProps) {
                             type="text"
                             className={styles.searchInput}
                             placeholder="Search by location or course name..."
+                            aria-label="Search golf courses"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />

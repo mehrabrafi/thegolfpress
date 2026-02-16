@@ -143,9 +143,9 @@ export default function NewsDetailClient({
 
                     <div className={styles.shareSection}>
                         SHARE:
-                        <button className={styles.shareBtn}>X</button>
-                        <button className={styles.shareBtn}>f</button>
-                        <button className={styles.shareBtn}>🔗</button>
+                        <button className={styles.shareBtn} aria-label="Share on X (Twitter)">X</button>
+                        <button className={styles.shareBtn} aria-label="Share on Facebook">f</button>
+                        <button className={styles.shareBtn} aria-label="Copy link to clipboard">🔗</button>
                     </div>
                 </main>
 
@@ -155,7 +155,7 @@ export default function NewsDetailClient({
                         <div className={styles.sidebarSection}>
                             <div className={styles.sectionHeader}>
                                 <div className={styles.greenBar}></div>
-                                <h3 className={styles.sectionTitle}>Course Map</h3>
+                                <h2 className={styles.sectionTitle}>Course Map</h2>
                             </div>
                             <div style={{ borderRadius: '8px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
                                 <iframe
@@ -174,7 +174,7 @@ export default function NewsDetailClient({
                         <div className={styles.sidebarSection}>
                             <div className={styles.sectionHeader}>
                                 <div className={styles.greenBar}></div>
-                                <h3 className={styles.sectionTitle}>Related Coverage</h3>
+                                <h2 className={styles.sectionTitle}>Related Coverage</h2>
                             </div>
                             <div className={styles.trendingList}>
                                 {relatedNews.slice(0, 5).map((item, i) => (
@@ -184,7 +184,7 @@ export default function NewsDetailClient({
                                         </div>
                                         <div className={styles.trendingContent}>
                                             <span className={styles.trendingCategory}>{item.category}</span>
-                                            <h4 className={styles.trendingTitle}>{item.title}</h4>
+                                            <h3 className={styles.trendingTitle}>{item.title}</h3>
                                             <span className={styles.trendingMeta}>{formatDate(item.createdAt || new Date().toISOString())}</span>
                                         </div>
                                     </Link>
@@ -200,7 +200,7 @@ export default function NewsDetailClient({
                 <div className={styles.bottomRelated}>
                     <div className={styles.sectionHeader}>
                         <div className={styles.greenBar}></div>
-                        <h3 className={styles.sectionTitle}>{trendingTitle}</h3>
+                        <h2 className={styles.sectionTitle}>{trendingTitle}</h2>
                     </div>
 
                     <div className={styles.trendingGrid}>
@@ -211,7 +211,7 @@ export default function NewsDetailClient({
                                     <span className={styles.trendingCardTag}>{item.category}</span>
                                 </div>
                                 <div className={styles.trendingCardContent}>
-                                    <h4 className={styles.trendingCardTitle}>{item.title}</h4>
+                                    <h3 className={styles.trendingCardTitle}>{item.title}</h3>
                                     <div className={styles.trendingCardMeta}>
                                         <span>{item.viewCount} views</span>
                                         <span>•</span>

@@ -22,7 +22,7 @@ export default function SidebarNews({ articles }: SidebarNewsProps) {
     return (
         <div className={styles.sidebar}>
             <div className={styles.header}>
-                <h3>TRENDING</h3>
+                <h2>TRENDING</h2>
             </div>
             <div className={styles.list}>
                 {articles.map((article, idx) => {
@@ -39,7 +39,7 @@ export default function SidebarNews({ articles }: SidebarNewsProps) {
                             )}
                             <div className={styles.content}>
                                 <span className={styles.category}>{article.categoryTag || article.category || 'NEWS'}</span>
-                                <h4 className={styles.title}>{article.title}</h4>
+                                <h3 className={styles.title}>{article.title}</h3>
                                 <span className={styles.time}>{article.time || new Date(article.createdAt).toLocaleDateString()}</span>
                             </div>
                         </Link>

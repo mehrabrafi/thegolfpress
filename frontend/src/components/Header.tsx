@@ -124,14 +124,14 @@ function HeaderContent() {
                     {/* Home Header - Row 2: Navigation */}
                     <div className={styles.navBarWrapper}>
                         <div className={`container ${styles.navBar}`}>
-                            <div className={styles.menuItem} onClick={() => setIsMenuOpen(true)}>
+                            <button className={styles.menuItem} onClick={() => setIsMenuOpen(true)} aria-label="Open menu">
                                 <div className={styles.hamburger}>
                                     <span></span>
                                     <span></span>
                                     <span></span>
                                 </div>
                                 <span className={styles.menuText}>MENU</span>
-                            </div>
+                            </button>
 
                             <nav className={styles.nav}>
                                 <Link href="/news">NEWS</Link>
@@ -142,9 +142,9 @@ function HeaderContent() {
                                 <Link href="/rankings">RANKINGS</Link>
                             </nav>
 
-                            <div className={styles.searchItem} onClick={() => setIsSearchOpen(true)}>
+                            <button className={styles.searchItem} onClick={() => setIsSearchOpen(true)} aria-label="Open search">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
-                            </div>
+                            </button>
                         </div>
                     </div>
                 </>
@@ -152,13 +152,13 @@ function HeaderContent() {
                 /* Category Page Header - Single Row */
                 <div className={`container ${styles.catHeaderContent}`}>
                     <div className={styles.catHeaderLeft}>
-                        <div className={styles.menuItem} onClick={() => setIsMenuOpen(true)}>
+                        <button className={styles.menuItem} onClick={() => setIsMenuOpen(true)} aria-label="Open menu">
                             <div className={styles.hamburger}>
                                 <span></span>
                                 <span></span>
                                 <span></span>
                             </div>
-                        </div>
+                        </button>
                         <span className={styles.sectionTitle}>{sectionName}</span>
                     </div>
 
@@ -170,9 +170,9 @@ function HeaderContent() {
                         {user?.role === 'ADMIN' && (
                             <Link href="/tgpadmin" className={styles.adminPanelLinkSmall}>ADMIN PANEL</Link>
                         )}
-                        <div className={styles.searchItem} onClick={() => setIsSearchOpen(true)}>
+                        <button className={styles.searchItem} onClick={() => setIsSearchOpen(true)} aria-label="Open search">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
-                        </div>
+                        </button>
                     </div>
                 </div>
             )}
