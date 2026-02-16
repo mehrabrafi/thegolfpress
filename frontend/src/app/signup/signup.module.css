@@ -191,3 +191,19 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+/* ===== Responsive Signup Extra ===== */
+@media (max-width: 480px) {
+    .formSection {
+        padding: 40px 20px;
+    }
+
+    .authLogo {
+        height: 80px;
+    }
+
+    .title {
+        font-size: 1.8rem;
+        margin-bottom: 25px;
+    }
+}

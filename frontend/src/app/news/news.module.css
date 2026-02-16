@@ -453,4 +453,29 @@
     .articleImage {
         height: 220px;
     }
+
+    .featuredContent {
+        padding: 25px 20px;
+    }
+
+    .pageTitle {
+        font-size: 1.8rem;
+    }
+
+    .container {
+        padding: 20px 16px 60px 16px;
+    }
+
+    .featuredImage {
+        min-height: 300px;
+    }
+
+    .articleTitle {
+        font-size: 1.3rem;
+    }
+
+    .loadMoreBtn {
+        padding: 12px 30px;
+        font-size: 0.8rem;
+    }
 }

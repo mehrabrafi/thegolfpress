@@ -184,4 +184,38 @@
     .table td:nth-child(9) {
         display: none;
     }
+
+    .title {
+        font-size: 1.8rem;
+    }
+
+    .scoreGrid {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table td,
+    .table th {
+        padding: 12px 10px;
+        font-size: 0.85rem;
+    }
+
+    .avatar {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .table th:nth-child(4),
+    .table td:nth-child(4) {
+        display: none;
+    }
+
+    .table td,
+    .table th {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+    }
 }

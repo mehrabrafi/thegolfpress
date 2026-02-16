@@ -136,3 +136,39 @@
     display: block;
     margin-top: 4px;
 }
+
+/* ===== Responsive Leaderboard ===== */
+@media (max-width: 768px) {
+    .card {
+        padding: 15px;
+    }
+
+    .cardHeader h3 {
+        font-size: 1.2rem;
+        padding-left: 10px;
+    }
+
+    .table {
+        font-size: 0.8rem;
+    }
+
+    .table th,
+    .table td {
+        padding: 8px 4px;
+    }
+
+    .playerCell {
+        gap: 6px;
+    }
+
+    .avatar {
+        width: 26px;
+        height: 26px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cardHeader h3 {
+        font-size: 1rem;
+    }
+}

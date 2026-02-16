@@ -125,6 +125,20 @@
     }
 }
 
+@media (max-width: 768px) {
+    .title {
+        font-size: 2rem;
+    }
+
+    .articleBody {
+        font-size: 1rem;
+    }
+
+    .pageContainer {
+        padding: 20px 16px 60px 16px;
+    }
+}
+
 .mapPlaceholder {
     width: 100%;
     height: 300px;

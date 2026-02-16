@@ -114,4 +114,37 @@
     .table td:nth-child(5) {
         display: none;
     }
+
+    .title {
+        font-size: 1.8rem;
+    }
+
+    .scheduleGrid {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table td,
+    .table th {
+        padding: 12px 10px;
+        font-size: 0.85rem;
+    }
+
+    .container {
+        padding: 20px 0 60px 0;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .table th:nth-child(4),
+    .table td:nth-child(4) {
+        display: none;
+    }
+
+    .table td,
+    .table th {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+    }
 }

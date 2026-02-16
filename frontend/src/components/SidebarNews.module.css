@@ -96,3 +96,23 @@
     font-size: 0.75rem;
     color: #707070;
 }
+
+/* ===== Responsive SidebarNews ===== */
+@media (max-width: 768px) {
+    .sidebar {
+        padding: 15px;
+    }
+
+    .header h2 {
+        font-size: 1.2rem;
+    }
+
+    .imageWrapper {
+        width: 80px;
+        height: 60px;
+    }
+
+    .title {
+        font-size: 0.9rem;
+    }
+}

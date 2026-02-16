@@ -208,4 +208,22 @@
         gap: 20px;
         text-align: center;
     }
+
+    .linksCol ul {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .logoImage {
+        height: 80px;
+    }
+
+    .description {
+        max-width: 100%;
+    }
+
+    .legalLinks {
+        flex-direction: column;
+        gap: 12px;
+    }
 }

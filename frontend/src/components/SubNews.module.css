@@ -61,3 +61,24 @@
     font-size: 0.75rem;
     color: #707070;
 }
+
+/* ===== Responsive SubNews ===== */
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .imageWrapper {
+        height: 200px;
+    }
+
+    .body h3 {
+        font-size: 1.1rem;
+    }
+}

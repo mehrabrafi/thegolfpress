@@ -67,3 +67,15 @@
         transform: translateX(-50%);
     }
 }
+
+/* ===== Responsive LiveFeed ===== */
+@media (max-width: 768px) {
+    .liveFeed {
+        font-size: 0.7rem;
+        padding: 8px 0;
+    }
+
+    .labelWrapper {
+        padding-right: 15px;
+    }
+}

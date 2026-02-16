@@ -364,3 +364,112 @@
     height: 3px;
     background: var(--primary-red);
 }
+
+/* ===== More Mobile Header ===== */
+@media (max-width: 768px) {
+    .topBar {
+        height: 70px;
+        padding: 0 15px;
+    }
+
+    .logoImage {
+        height: 100px;
+    }
+
+    .logo {
+        width: 200px;
+    }
+
+    .signUpText {
+        font-size: 0.65rem;
+    }
+
+    .loginLink {
+        font-size: 0.85rem;
+    }
+
+    .adminPanelLink {
+        font-size: 0.75rem;
+        margin-right: 10px;
+    }
+
+    .navBar {
+        height: 42px;
+        padding: 0 15px;
+    }
+
+    .menuText {
+        font-size: 0.8rem;
+    }
+
+    .subNavLink {
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+    }
+
+    .subNav {
+        gap: 15px;
+        padding: 10px 15px;
+    }
+
+    /* Category Page Header */
+    .catHeaderContent {
+        height: 60px;
+        padding: 0 15px;
+    }
+
+    .catHeaderLeft {
+        min-width: 120px;
+        gap: 8px;
+    }
+
+    .catHeaderRight {
+        min-width: 120px;
+        gap: 10px;
+    }
+
+    .logoImageSmall {
+        height: 70px;
+    }
+
+    .sectionTitle {
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+    }
+
+    .loginLinkSmall {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .topBar {
+        height: 60px;
+        padding: 0 12px;
+    }
+
+    .logoImage {
+        height: 80px;
+    }
+
+    .logo {
+        width: 160px;
+    }
+
+    .authLeft {
+        display: none;
+    }
+
+    .loginLink {
+        font-size: 0.8rem;
+    }
+
+    .subNav {
+        gap: 12px;
+        padding: 8px 12px;
+    }
+
+    .subNavLink {
+        font-size: 0.65rem;
+    }
+}

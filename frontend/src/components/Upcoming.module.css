@@ -99,3 +99,18 @@
     font-size: 1rem;
     line-height: 1;
 }
+
+/* ===== Responsive Upcoming ===== */
+@media (max-width: 768px) {
+    .card {
+        padding: 15px;
+    }
+
+    .cardHeader h3 {
+        font-size: 1rem;
+    }
+
+    .eventInfo .name {
+        font-size: 0.85rem;
+    }
+}
