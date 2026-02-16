@@ -71,11 +71,11 @@
 
 .category {
     font-size: 0.7rem;
-    color: #999;
+    color: #707070;
     text-transform: uppercase;
     font-weight: 700;
     letter-spacing: 1px;
-    font-family: var(--font-sans-condensed);
+    font-family: var(--font-inter);
 }
 
 .title {
@@ -94,5 +94,5 @@
 
 .time {
     font-size: 0.75rem;
-    color: #bbb;
+    color: #707070;
 }

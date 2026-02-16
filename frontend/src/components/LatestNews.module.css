@@ -104,7 +104,7 @@
 
 .cardBody p {
     font-size: 0.9rem;
-    color: #777;
+    color: #606060;
     margin-bottom: 15px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -114,6 +114,6 @@
 
 .time {
     font-size: 0.75rem;
-    color: #999;
+    color: #707070;
     font-weight: 600;
 }

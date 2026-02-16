@@ -51,9 +51,9 @@
 
 .inquiryLabel {
     display: block;
-    font-family: var(--font-sans-condensed);
+    font-family: var(--font-inter);
     font-size: 0.65rem;
-    color: #666;
+    color: #a0a0a0;
     letter-spacing: 2px;
     font-weight: 700;
     margin-bottom: 4px;
@@ -91,11 +91,11 @@
 .linksCol h4,
 .socialSection h4,
 .contactCol h4 {
-    font-family: var(--font-sans-condensed);
+    font-family: var(--font-inter);
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: #888;
+    color: #a0a0a0;
     margin-bottom: 25px;
 }
 
@@ -172,7 +172,7 @@
     justify-content: space-between;
     align-items: center;
     font-size: 0.8rem;
-    color: #666;
+    color: #a0a0a0;
     border-top: 1px solid #222;
 }
 
@@ -182,13 +182,13 @@
 }
 
 .legalLinks a {
-    color: #666;
+    color: #a0a0a0;
     text-decoration: none;
     transition: color 0.2s;
 }
 
 .legalLinks a:hover {
-    color: #999;
+    color: #ffffff;
 }
 
 @media (max-width: 1024px) {

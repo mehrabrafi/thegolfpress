@@ -224,10 +224,10 @@
 }
 
 .sectionTitle {
-    font-family: var(--font-sans-condensed);
+    font-family: var(--font-inter);
     font-weight: 700;
     font-size: 0.9rem;
-    color: #999;
+    color: #707070;
     letter-spacing: 0.1em;
     text-transform: uppercase;
 }
@@ -334,10 +334,10 @@
 }
 
 .subNavLink {
-    font-family: var(--font-sans-condensed);
+    font-family: var(--font-inter);
     font-weight: 700;
     font-size: 0.8rem;
-    color: #888;
+    color: #707070;
     text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 1.5px;

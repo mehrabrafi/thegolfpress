@@ -30,7 +30,7 @@
 
 .liveTag {
     background: #fff5f5;
-    color: #ff4d4d;
+    color: #cb2c2c;
     font-size: 0.7rem;
     font-weight: 800;
     padding: 4px 8px;
@@ -45,7 +45,7 @@
 
 .table th {
     text-align: left;
-    color: #999;
+    color: #707070;
     font-weight: 600;
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
@@ -99,11 +99,11 @@
 
 .playerCountry {
     font-size: 0.7rem;
-    color: #999;
+    color: #707070;
 }
 
 .scoreMinus {
-    color: var(--golf-green);
+    color: #1b8a4a;
     font-weight: 700;
 }
 

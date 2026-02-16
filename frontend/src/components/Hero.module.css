@@ -65,7 +65,7 @@
 
 .content p {
     font-size: 1.1rem;
-    color: #e0e0e0;
+    color: #ffffff;
     margin-bottom: 30px;
     font-family: var(--font-sans);
     max-width: 80%;
@@ -87,7 +87,7 @@
 }
 
 .readBtn:hover {
-    background: #c92b36;
+    background: #b91d28;
 }
 
 .arrow {
