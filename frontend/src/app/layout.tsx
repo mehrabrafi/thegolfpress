@@ -1,4 +1,5 @@
 import Header from '@/components/Header';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import Footer from '@/components/Footer';
 import MaintenanceGuard from '@/components/MaintenanceGuard';
 import { Providers } from '@/components/Providers';
@@ -89,6 +90,7 @@ export default function RootLayout({
             <Footer />
           </MaintenanceGuard>
         </Providers>
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || ''} />
       </body>
     </html>
   )
