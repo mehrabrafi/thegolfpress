@@ -33,5 +33,13 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "typescript": "^5"
-  }
+  },
+  "browserslist": [
+    "defaults",
+    "not IE 11",
+    "not IOS < 12",
+    "not Safari < 13",
+    ">0.2%",
+    "not dead"
+  ]
 }
