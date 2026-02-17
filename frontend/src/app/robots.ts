@@ -10,6 +10,10 @@ export default function robots(): MetadataRoute.Robots {
                 allow: '/',
                 disallow: ['/tgpadmin/', '/login', '/signup', '/api/'],
             },
+            {
+                userAgent: ['GPTBot', 'CCBot', 'Google-Extended'],
+                disallow: '/',
+            },
         ],
         sitemap: `${siteUrl}/sitemap.xml`,
     };
