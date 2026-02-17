@@ -52,12 +52,12 @@ export function middleware(request: NextRequest) {
     // Content Security Policy — primary defense against XSS
     const csp = [
         "default-src 'self'",
-        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com",         // Next.js requires unsafe-inline/eval
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://static.cloudflareinsights.com",         // Next.js requires unsafe-inline/eval
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
         "font-src 'self' https://fonts.gstatic.com",
         "img-src 'self' data: blob: https://cdn.thegolfpress.com https://a.espncdn.com https://*.espncdn.com https://maps.google.com https://maps.googleapis.com https://www.google-analytics.com https://www.googletagmanager.com",
         "frame-src 'self' https://maps.google.com https://www.google.com",
-        "connect-src 'self' https://cdn.thegolfpress.com https://api.thegolfpress.com https://thegolfpress.com https://*.espn.com https://www.google-analytics.com",
+        "connect-src 'self' https://cdn.thegolfpress.com https://api.thegolfpress.com https://thegolfpress.com https://*.espn.com https://www.google-analytics.com https://cloudflareinsights.com",
         "media-src 'self'",
         "object-src 'none'",
         "base-uri 'self'",
