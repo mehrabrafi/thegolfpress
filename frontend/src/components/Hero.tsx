@@ -17,7 +17,7 @@ export default function Hero({ article }: HeroProps) {
             <div className={styles.overlay}>
                 <div className={styles.content}>
                     <span className={styles.tag}><span className={styles.icon}>⛳</span> {article.categoryTag || article.category}</span>
-                    <h1>{article.title}</h1>
+                    <h2>{article.title}</h2>
                     <p>{article.excerpt || article.content?.substring(0, 150) + '...'}</p>
                     {(() => {
                         const isCourse = (article.category && article.category.toUpperCase() === 'COURSES') ||

@@ -52,7 +52,8 @@ export default function HomeClient({
     const sidebarArticles = trendingNews || [];
 
     return (
-        <main>
+        <>
+            <h1 className="sr-only">The Golf Press — Live Scores, News & Course Reviews</h1>
             <JsonLd data={createWebsiteJsonLd()} />
             {/* Live Feed */}
             {lbData ? (
@@ -103,6 +104,6 @@ export default function HomeClient({
                     />
                 ))}
             </div>
-        </main>
+        </>
     );
 }
