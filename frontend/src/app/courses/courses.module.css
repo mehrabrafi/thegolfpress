@@ -234,7 +234,7 @@
     position: relative;
     height: 500px;
     width: 100%;
-    background-image: url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&q=80&w=2600');
+    background-image: url('https://cdn.thegolfpress.com/searchbackgroundimage.png');
     background-size: cover;
     background-position: center;
     display: flex;
