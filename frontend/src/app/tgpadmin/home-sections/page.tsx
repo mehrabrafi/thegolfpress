@@ -134,12 +134,8 @@ export default function HomeSectionsPage() {
                             >
                                 <option value="">Select a category</option>
                                 {categories.map(cat => (
-                                    <option key={cat.id} value={cat.name.toUpperCase()}>{cat.name}</option>
+                                    <option key={cat.id} value={cat.name.toUpperCase().replace(/ /g, '-')}>{cat.name}</option>
                                 ))}
-                                <option value="GUIDES-TIPS">GUIDES-TIPS (Legacy)</option>
-                                <option value="COURSES">COURSES (Legacy)</option>
-                                <option value="EQUIPMENT">EQUIPMENT</option>
-                                <option value="BREAKING">BREAKING</option>
                             </select>
                             {formData.category && (
                                 <p className={styles.categoryNote}>
