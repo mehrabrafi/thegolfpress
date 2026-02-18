@@ -47,8 +47,8 @@
 }
 
 .categoryLabel {
-    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
-    color: #2e7d32;
+    background: #fff5f5;
+    color: var(--primary-red);
     font-family: var(--font-inter);
     font-size: 0.75rem;
     font-weight: 700;
@@ -141,7 +141,7 @@
 }
 
 .articleBody blockquote {
-    border-left: 4px solid #2e7d32;
+    border-left: 4px solid var(--primary-red);
     padding-left: 20px;
     margin: 40px 0;
     font-style: italic;
@@ -186,7 +186,7 @@
 .accentBar {
     width: 4px;
     height: 24px;
-    background: #2e7d32;
+    background: var(--primary-red);
     border-radius: 2px;
 }
 
@@ -243,7 +243,7 @@
 .relatedCategory {
     font-family: var(--font-inter);
     font-size: 0.65rem;
-    color: #2e7d32;
+    color: var(--primary-red);
     font-weight: 700;
     text-transform: uppercase;
     margin-bottom: 3px;
@@ -328,7 +328,7 @@
     position: absolute;
     top: 12px;
     left: 12px;
-    background: #2e7d32;
+    background: var(--primary-red);
     color: white;
     font-size: 0.65rem;
     font-weight: 700;

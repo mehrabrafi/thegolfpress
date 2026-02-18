@@ -23,7 +23,6 @@ export default function CoursesSection({ courses }: { courses: Course[] }) {
                     <Link key={idx} href={`/courses/${item.id}`} className={styles.card}>
                         <div className={styles.imageWrapper}>
                             <Image src={item.image} alt={item.title} fill className={styles.image} sizes="(max-width: 768px) 100vw, 33vw" />
-                            <span className={styles.tag}>{item.categoryTag || 'COURSE'}</span>
                         </div>
                         <h3 className={styles.cardTitle}>{item.title}</h3>
                     </Link>

@@ -17,11 +17,10 @@ export default function GuidesSection({ articles }: { articles: any[] }) {
                         <div className={styles.imageWrapper}>
                             <Image src={item.image} alt={item.title} fill className={styles.image} sizes="(max-width: 768px) 50vw, 25vw" />
                         </div>
-                        <span className={styles.tag}>{item.categoryTag || 'INSTRUCTION'}</span>
                         <h3 className={styles.cardTitle}>{item.title}</h3>
                     </Link>
                 ))}
             </div>
-        </section>
+        </section >
     );
 }

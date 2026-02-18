@@ -104,7 +104,6 @@ export default function GuideDetailClient({
                                         <Image src={item.image} alt={item.title} fill sizes="70px" className={styles.relatedThumb} />
                                     </div>
                                     <div className={styles.relatedContent}>
-                                        <span className={styles.relatedCategory}>{item.categoryTag}</span>
                                         <h3 className={styles.relatedTitle}>{item.title}</h3>
                                         <span className={styles.relatedMeta}>{formatDate(item.createdAt || new Date().toISOString())}</span>
                                     </div>
@@ -130,7 +129,6 @@ export default function GuideDetailClient({
                             <Link href={`/guides-and-tips/post/${item.id}`} key={i} className={styles.bottomCard}>
                                 <div className={styles.bottomCardThumbWrapper}>
                                     <Image src={item.image} alt={item.title} fill sizes="(max-width: 600px) 240px, 300px" className={styles.bottomCardThumb} />
-                                    <span className={styles.bottomCardTag}>{item.categoryTag}</span>
                                 </div>
                                 <div className={styles.bottomCardContent}>
                                     <h3 className={styles.bottomCardTitle}>{item.title}</h3>

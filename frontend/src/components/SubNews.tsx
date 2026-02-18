@@ -20,7 +20,6 @@ export default function SubNews({ articles }: SubNewsProps) {
                     <Link key={idx} href={href} className={styles.card}>
                         <div className={styles.imageWrapper}>
                             <Image src={item.image} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" style={{ objectFit: 'cover' }} />
-                            <span className={styles.tag}>{item.categoryTag || item.category}</span>
                         </div>
                         <div className={styles.body}>
                             <h3>{item.title}</h3>

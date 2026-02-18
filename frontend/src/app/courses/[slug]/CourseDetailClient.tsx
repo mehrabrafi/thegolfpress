@@ -186,9 +186,6 @@ const CourseCard = ({ item }: { item: Course }) => (
             <Image src={item.image} alt={item.title} fill className={styles.cardImage} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" style={{ objectFit: 'cover' }} />
         </div>
         <div className={styles.cardContent}>
-            <span className={detailStyles.categoryLabel} style={{ marginBottom: '8px', display: 'inline-block', fontSize: '10px' }}>
-                {item.categoryTag || 'COURSE'}
-            </span>
             <h3 className={styles.cardTitle}>{item.title}</h3>
         </div>
     </Link>

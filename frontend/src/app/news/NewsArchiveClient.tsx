@@ -52,7 +52,6 @@ function NewsPageContent({ initialArticles }: NewsArchiveClientProps) {
                     />
                     <div className={styles.featuredContent}>
                         <div className={styles.meta}>
-                            <span className={styles.category}>{featured.category}</span>
                             <span className={styles.time}>{featured.time}</span>
                         </div>
                         <h2 className={styles.featuredTitle}>{featured.title}</h2>
@@ -80,12 +79,10 @@ function NewsPageContent({ initialArticles }: NewsArchiveClientProps) {
                                     className={styles.articleImage}
                                     style={{ backgroundImage: `url(${article.image})` }}
                                 >
-                                    <span className={styles.tag}>{article.categoryTag}</span>
                                 </div>
                                 <div className={styles.articleBody}>
                                     <div className={styles.articleMeta}>
-                                        <span className={styles.articleCategory}>{article.category}</span>
-                                        <span className={styles.articleTime}>• {article.time}</span>
+                                        <span className={styles.articleTime}>{article.time}</span>
                                     </div>
                                     <h3 className={styles.articleTitle}>{article.title}</h3>
                                     <p className={styles.articleExcerpt}>{article.excerpt}</p>

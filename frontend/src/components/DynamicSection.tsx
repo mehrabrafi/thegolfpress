@@ -32,7 +32,6 @@ export default function DynamicSection({ title, articles, link, linkText }: Dyna
                         <Link key={idx} href={linkHref} className={styles.card}>
                             <div className={styles.imageWrapper}>
                                 <Image src={item.image} alt={item.title} fill className={styles.image} sizes="(max-width: 768px) 50vw, 33vw" />
-                                {item.categoryTag && <span className={styles.tag}>{item.categoryTag}</span>}
                             </div>
                             <h3 className={styles.cardTitle}>{item.title}</h3>
                         </Link>

@@ -179,7 +179,6 @@ export default function NewsDetailClient({
                                             <Image src={item.image} alt={item.title} fill sizes="60px" className={styles.trendingThumb} />
                                         </div>
                                         <div className={styles.trendingContent}>
-                                            <span className={styles.trendingCategory}>{item.category}</span>
                                             <h3 className={styles.trendingTitle}>{item.title}</h3>
                                             <span className={styles.trendingMeta}>{formatDate(item.createdAt || new Date().toISOString())}</span>
                                         </div>
@@ -204,7 +203,6 @@ export default function NewsDetailClient({
                             <Link href={`/news/${item.id}`} key={i} className={styles.trendingCard}>
                                 <div className={styles.trendingCardThumbWrapper}>
                                     <Image src={item.image} alt={item.title} fill sizes="(max-width: 600px) 280px, 320px" className={styles.trendingCardThumb} />
-                                    <span className={styles.trendingCardTag}>{item.category}</span>
                                 </div>
                                 <div className={styles.trendingCardContent}>
                                     <h3 className={styles.trendingCardTitle}>{item.title}</h3>

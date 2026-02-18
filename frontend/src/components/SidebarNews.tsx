@@ -38,7 +38,6 @@ export default function SidebarNews({ articles }: SidebarNewsProps) {
                                 </div>
                             )}
                             <div className={styles.content}>
-                                <span className={styles.category}>{article.categoryTag || article.category || 'NEWS'}</span>
                                 <h3 className={styles.title}>{article.title}</h3>
                                 <span className={styles.time}>{article.time || new Date(article.createdAt).toLocaleDateString()}</span>
                             </div>
