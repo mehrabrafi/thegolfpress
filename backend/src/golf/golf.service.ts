@@ -829,9 +829,18 @@ export class GolfService {
     }
 
     async deleteHomeSection(id: string) {
-        return this.prisma.homeSection.delete({
-            where: { id }
-        });
+        try {
+            this.logger.log(`Deleting home section with ID: ${id}`);
+            return await this.prisma.homeSection.delete({
+                where: { id }
+            });
+        } catch (error) {
+            this.logger.error(`Error deleting home section ${id}: ${error.message}`);
+            if (error.code === 'P2025') {
+                throw new NotFoundException(`Home section with ID ${id} not found`);
+            }
+            throw error;
+        }
     }
 
     // ── Content Analytics ─────────────────────────────────────────
