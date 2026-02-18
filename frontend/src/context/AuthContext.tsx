@@ -55,7 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem('tgp_auth_hint', 'true');
         setUser(data.user);
         if (data.user.role === 'ADMIN') {
-            router.push('/tgpadmin/dashboard');
+            router.push('/tgpadmin');
         } else {
             router.push('/');
         }
@@ -66,7 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem('tgp_auth_hint', 'true');
         setUser(data.user);
         if (data.user.role === 'ADMIN') {
-            router.push('/tgpadmin/dashboard');
+            router.push('/tgpadmin');
         } else {
             router.push('/');
         }
