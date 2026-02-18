@@ -134,7 +134,7 @@ export default function HomeSectionsPage() {
                             >
                                 <option value="">Select a category</option>
                                 {categories.map(cat => (
-                                    <option key={cat.id} value={cat.name.toUpperCase().replace(/ /g, '-')}>{cat.name}</option>
+                                    <option key={cat.id} value={cat.slug.toUpperCase()}>{cat.name}</option>
                                 ))}
                             </select>
                             {formData.category && (
