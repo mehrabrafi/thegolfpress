@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { fetchAllHomeSections, createHomeSection, updateHomeSection, deleteHomeSection, fetchCategories } from '@/lib/api';
+import { fetchAllHomeSections, createHomeSection, updateHomeSection, deleteHomeSection, fetchCategories, fetchNews } from '@/lib/api';
 import styles from './home-sections.module.css';
 
 export default function HomeSectionsPage() {
@@ -19,6 +19,8 @@ export default function HomeSectionsPage() {
         maxItems: 4
     });
 
+    const [sectionCounts, setSectionCounts] = useState<{ [key: string]: number }>({});
+
     useEffect(() => {
         loadData();
     }, []);
@@ -31,6 +33,19 @@ export default function HomeSectionsPage() {
             ]);
             setSections(sects);
             setCategories(cats);
+
+            // Fetch counts for each section category
+            const counts: { [key: string]: number } = {};
+            await Promise.all(sects.map(async (s: any) => {
+                try {
+                    const articles = await fetchNews(s.category);
+                    counts[s.id] = articles.length;
+                } catch (e) {
+                    counts[s.id] = 0;
+                }
+            }));
+            setSectionCounts(counts);
+
         } catch (error) {
             console.error('Error loading home sections data:', error);
         } finally {
@@ -202,7 +217,12 @@ export default function HomeSectionsPage() {
                                         <span className={styles.itemOrder}>#{section.order}</span>
                                         <div className={styles.itemMain}>
                                             <h3 className={styles.itemTitle}>{section.title}</h3>
-                                            <span className={styles.itemSubtitle}>{section.category} • {section.maxItems} items</span>
+                                            <span className={styles.itemSubtitle}>
+                                                {section.category} • Show max {section.maxItems} items
+                                                <span className={sectionCounts[section.id] > 0 ? styles.countSuccess : styles.countError}>
+                                                    ({sectionCounts[section.id] || 0} articles found)
+                                                </span>
+                                            </span>
                                         </div>
                                     </div>
                                     <div className={styles.itemActions}>
