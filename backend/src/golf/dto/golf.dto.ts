@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsEnum, IsUUID } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsUUID, IsNumber, IsBoolean } from 'class-validator';
 
 export class CreateNewsDto {
     @IsString()
@@ -149,9 +149,11 @@ export class CreateHomeSectionDto {
     category: string;
 
     @IsOptional()
+    @IsNumber()
     order?: number;
 
     @IsOptional()
+    @IsBoolean()
     active?: boolean;
 
     @IsOptional()
@@ -163,6 +165,7 @@ export class CreateHomeSectionDto {
     linkText?: string;
 
     @IsOptional()
+    @IsNumber()
     maxItems?: number;
 }
 
@@ -176,9 +179,11 @@ export class UpdateHomeSectionDto {
     category?: string;
 
     @IsOptional()
+    @IsNumber()
     order?: number;
 
     @IsOptional()
+    @IsBoolean()
     active?: boolean;
 
     @IsOptional()
@@ -190,5 +195,6 @@ export class UpdateHomeSectionDto {
     linkText?: string;
 
     @IsOptional()
+    @IsNumber()
     maxItems?: number;
 }
