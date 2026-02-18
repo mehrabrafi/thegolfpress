@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import DOMPurify from 'dompurify';
 import JsonLd, { createArticleJsonLd } from '@/components/JsonLd';
+import ShareButtons from '@/components/ShareButtons';
 import styles from './GuideDetail.module.css';
 
 interface GuideDetailClientProps {
@@ -85,12 +86,7 @@ export default function GuideDetailClient({
                         )}
                     </div>
 
-                    <div className={styles.shareSection}>
-                        SHARE:
-                        <button className={styles.shareBtn} aria-label="Share on X (Twitter)">X</button>
-                        <button className={styles.shareBtn} aria-label="Share on Facebook">f</button>
-                        <button className={styles.shareBtn} aria-label="Copy link to clipboard">🔗</button>
-                    </div>
+                    <ShareButtons title={article.title} url={`${SITE_URL}/guides-and-tips/post/${id}`} />
                 </main>
 
                 {/* Sidebar */}

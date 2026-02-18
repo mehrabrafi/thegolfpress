@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import DOMPurify from 'dompurify';
 import JsonLd, { createArticleJsonLd } from '@/components/JsonLd';
+import ShareButtons from '@/components/ShareButtons';
 import styles from './NewsDetail.module.css';
 
 interface NewsDetailClientProps {
@@ -141,12 +142,7 @@ export default function NewsDetailClient({
                         )}
                     </div>
 
-                    <div className={styles.shareSection}>
-                        SHARE:
-                        <button className={styles.shareBtn} aria-label="Share on X (Twitter)">X</button>
-                        <button className={styles.shareBtn} aria-label="Share on Facebook">f</button>
-                        <button className={styles.shareBtn} aria-label="Copy link to clipboard">🔗</button>
-                    </div>
+                    <ShareButtons title={article.title} url={`${SITE_URL}/news/${id}`} />
                 </main>
 
                 {/* Right Column: Sidebar */}

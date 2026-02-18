@@ -1,0 +1,98 @@
+.shareSection {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: var(--font-inter, sans-serif);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #a0aec0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.shareLabel {
+    margin-right: 5px;
+}
+
+.shareBtn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #edf2f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4a5568;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    outline: none;
+    position: relative;
+}
+
+.shareBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.shareBtn svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2px;
+}
+
+/* Specific Colors on Hover */
+.shareBtn.x:hover {
+    background: #000;
+    color: #fff;
+}
+
+.shareBtn.facebook:hover {
+    background: #1877f2;
+    color: #fff;
+    border: 1px solid #1877f2;
+    /* Ensure border matches if present */
+}
+
+.shareBtn.link:hover {
+    background: #718096;
+    color: #fff;
+}
+
+.shareBtn.copied {
+    background: #48bb78;
+    color: #fff;
+}
+
+/* Tooltip for Copied state */
+.tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2d3748;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    margin-bottom: 8px;
+}
+
+.tooltip.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+@media (max-width: 600px) {
+    .shareSection {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+}

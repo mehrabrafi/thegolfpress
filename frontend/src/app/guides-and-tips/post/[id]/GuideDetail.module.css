@@ -163,40 +163,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-/* Share Footer */
-.shareSection {
-    margin-top: 60px;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-family: var(--font-inter);
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: #a0aec0;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
 
-.shareBtn {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: #edf2f7;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #4a5568;
-    cursor: pointer;
-    transition: 0.2s;
-    font-size: 0.85rem;
-}
-
-.shareBtn:hover {
-    background: #cbd5e0;
-}
 
 /* Sidebar */
 .sidebar {
