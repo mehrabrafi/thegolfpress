@@ -123,11 +123,18 @@ export default function HomeSectionsPage() {
                                 ))}
                                 <option value="GUIDES-TIPS">GUIDES-TIPS (Legacy)</option>
                                 <option value="COURSES">COURSES (Legacy)</option>
+                                <option value="EQUIPMENT">EQUIPMENT</option>
+                                <option value="BREAKING">BREAKING</option>
                             </select>
+                            {formData.category && (
+                                <p className={styles.categoryNote}>
+                                    Checking articles... (Make sure this matches your News category)
+                                </p>
+                            )}
                         </div>
                         <div className={styles.formRow}>
                             <div className={styles.formGroup}>
-                                <label>Order</label>
+                                <label>Order (Sorting)</label>
                                 <input
                                     type="number"
                                     value={formData.order}
@@ -135,7 +142,7 @@ export default function HomeSectionsPage() {
                                 />
                             </div>
                             <div className={styles.formGroup}>
-                                <label>Max Items</label>
+                                <label>Max Items to Show</label>
                                 <input
                                     type="number"
                                     value={formData.maxItems}

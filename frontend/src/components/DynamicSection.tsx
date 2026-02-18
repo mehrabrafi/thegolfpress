@@ -10,7 +10,10 @@ interface DynamicSectionProps {
 }
 
 export default function DynamicSection({ title, articles, link, linkText }: DynamicSectionProps) {
-    if (!articles || articles.length === 0) return null;
+    if (!articles || articles.length === 0) {
+        console.warn(`[DynamicSection] Hiding section "${title}" because no articles were found.`);
+        return null;
+    }
 
     return (
         <section className={styles.section}>

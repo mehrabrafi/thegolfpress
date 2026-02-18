@@ -133,6 +133,14 @@
     background: #f3f4f6;
 }
 
+.categoryNote {
+    font-size: 0.75rem;
+    color: #ed3e49;
+    margin-top: 5px;
+    font-style: italic;
+    font-weight: 500;
+}
+
 .itemInfo {
     display: flex;
     align-items: center;

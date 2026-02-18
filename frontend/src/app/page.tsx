@@ -24,13 +24,17 @@ export default async function Home() {
 
   // Fetch articles for each dynamic section
   const sectionArticles: { [key: string]: any[] } = {};
+  console.log(`[Home] Processing ${homeSections.length} active home sections...`);
+
   await Promise.all(
     homeSections.map(async (section: any) => {
       try {
+        console.log(`[Home] Fetching articles for section: "${section.title}" (Category: ${section.category})`);
         const articles = await fetchNews(section.category);
+        console.log(`[Home] Section "${section.title}" returned ${articles.length} articles.`);
         sectionArticles[section.id] = articles.slice(0, section.maxItems);
       } catch (err) {
-        console.error(`Error loading articles for section ${section.id}:`, err);
+        console.error(`[Home] Error loading articles for section ${section.id} (${section.title}):`, err);
       }
     })
   );
