@@ -22,10 +22,16 @@ async function bootstrap() {
 
   // CORS — dynamic origin based on environment
   const isProduction = process.env.NODE_ENV === 'production';
+  const allowedOrigins = [
+    'https://thegolfpress.com',
+    'https://www.thegolfpress.com',
+    process.env.FRONTEND_URL,
+  ].filter((origin): origin is string => !!origin);
+
   app.enableCors({
     origin: isProduction
-      ? (process.env.FRONTEND_URL || 'https://thegolfpress.com')
-      : 'http://localhost:3000',
+      ? allowedOrigins
+      : ['http://localhost:3000', 'http://127.0.0.1:3000'],
     credentials: true,
   });
 
