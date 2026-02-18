@@ -12,9 +12,7 @@
 .imageSection {
     flex: 1;
     /* Use a high-res golf lifestyle image */
-    background-image: url('https://cdn.thegolfpress.com/signin.png');
-    background-size: cover;
-    background-position: center;
+
     position: relative;
     /* Ensure it has width on desktop */
     min-width: 50%;

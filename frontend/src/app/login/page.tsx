@@ -24,8 +24,15 @@ export default function LoginPage() {
     return (
         <div className={styles.container}>
             {/* Left Image Section */}
+            {/* Left Image Section */}
             <div className={styles.imageSection}>
-                {/* Optional: Overlay or other content on image */}
+                <Image
+                    src="https://cdn.thegolfpress.com/signin.png"
+                    alt="Golf Wire Pro Login"
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    priority
+                />
             </div>
 
             {/* Right Form Section */}

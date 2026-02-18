@@ -10,9 +10,7 @@
 /* Left Section - Image */
 .imageSection {
     flex: 1;
-    background-image: url('https://cdn.thegolfpress.com/signup.png');
-    background-size: cover;
-    background-position: center;
+
     position: relative;
     min-width: 50%;
 }

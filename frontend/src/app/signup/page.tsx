@@ -25,8 +25,15 @@ export default function SignupPage() {
     return (
         <div className={styles.container}>
             {/* Left Image Section */}
+            {/* Left Image Section */}
             <div className={styles.imageSection}>
-                {/* Optional: Overlay */}
+                <Image
+                    src="https://cdn.thegolfpress.com/signup.png"
+                    alt="Golf Wire Pro Signup"
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    priority
+                />
             </div>
 
             {/* Right Form Section */}
