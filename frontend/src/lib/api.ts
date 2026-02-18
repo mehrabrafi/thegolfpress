@@ -366,6 +366,7 @@ export async function fetchHomeSections() {
 export async function fetchAllHomeSections(_token?: string) {
     const res = await fetch(`${API_BASE_URL}/admin/home-sections`, {
         credentials: 'include',
+        cache: 'no-store'
     });
     if (!res.ok) throw new Error('Failed to fetch all home sections');
     return res.json();
