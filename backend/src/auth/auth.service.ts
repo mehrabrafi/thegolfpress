@@ -37,29 +37,40 @@ export class AuthService {
     }
 
     async forgotPassword(email: string) {
-        console.log('ForgotPassword requested for:', email);
-        const user = await this.prisma.user.findUnique({ where: { email } });
-        if (!user) {
-            console.log('User not found in database for email:', email);
+        console.log('--- FORGOT PASSWORD PROCESS START ---');
+        console.log('Email received:', email);
+
+        try {
+            const user = await this.prisma.user.findUnique({ where: { email } });
+            if (!user) {
+                console.log('NOTICE: User with this email does not exist in our database.');
+                return true;
+            }
+
+            const token = crypto.randomBytes(32).toString('hex');
+            const expires = new Date();
+            expires.setHours(expires.getHours() + 1);
+
+            await this.prisma.user.update({
+                where: { email },
+                data: {
+                    resetToken: token,
+                    resetTokenExpires: expires,
+                },
+            });
+
+            console.log('Database updated with reset token. Sending email now...');
+
+            // WE MUST AWAIT THIS TO ENSURE IT COMPLETES
+            const emailResult = await this.emailService.sendPasswordResetEmail(email, token);
+
+            console.log('Email Status:', emailResult ? 'SUCCESS' : 'FAILED');
+            console.log('--- FORGOT PASSWORD PROCESS END ---');
             return true;
+        } catch (error) {
+            console.error('CRITICAL ERROR in forgotPassword process:', error);
+            return true; // We still return true to avoid email enumeration
         }
-
-        const token = crypto.randomBytes(32).toString('hex');
-        const expires = new Date();
-        expires.setHours(expires.getHours() + 1);
-
-        await this.prisma.user.update({
-            where: { email },
-            data: {
-                resetToken: token,
-                resetTokenExpires: expires,
-            },
-        });
-
-        console.log('Generated token for user. Now calling EmailService...');
-        const emailSent = await this.emailService.sendPasswordResetEmail(email, token);
-        console.log('EmailService result:', emailSent);
-        return true;
     }
 
     async resetPassword(token: string, newPassword: string) {
