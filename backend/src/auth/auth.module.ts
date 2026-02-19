@@ -8,6 +8,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { LocalStrategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
 
+import { EmailService } from './email.service';
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -21,8 +23,8 @@ import { JwtStrategy } from './jwt.strategy';
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthService, PrismaService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, PrismaService, LocalStrategy, JwtStrategy, EmailService],
   controllers: [AuthController],
-  exports: [AuthService]
+  exports: [AuthService, EmailService]
 })
 export class AuthModule { }

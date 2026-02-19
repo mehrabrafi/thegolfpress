@@ -3,12 +3,15 @@ import { PrismaService } from '../prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { RegisterDto } from './dto/auth.dto';
+import { EmailService } from './email.service';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class AuthService {
     constructor(
         private prisma: PrismaService,
         private jwtService: JwtService,
+        private emailService: EmailService,
     ) { }
 
     async validateUser(email: string, pass: string): Promise<any> {
@@ -33,8 +36,55 @@ export class AuthService {
         };
     }
 
+    async forgotPassword(email: string) {
+        const user = await this.prisma.user.findUnique({ where: { email } });
+        if (!user) {
+            return true;
+        }
+
+        const token = crypto.randomBytes(32).toString('hex');
+        const expires = new Date();
+        expires.setHours(expires.getHours() + 1);
+
+        await this.prisma.user.update({
+            where: { email },
+            data: {
+                resetToken: token,
+                resetTokenExpires: expires,
+            },
+        });
+
+        await this.emailService.sendPasswordResetEmail(email, token);
+        return true;
+    }
+
+    async resetPassword(token: string, newPassword: string) {
+        const user = await this.prisma.user.findFirst({
+            where: {
+                resetToken: token,
+                resetTokenExpires: { gt: new Date() },
+            },
+        });
+
+        if (!user) {
+            throw new UnauthorizedException('Invalid or expired reset token');
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 12);
+
+        await this.prisma.user.update({
+            where: { id: user.id },
+            data: {
+                password: hashedPassword,
+                resetToken: null,
+                resetTokenExpires: null,
+            },
+        });
+
+        return { message: 'Password has been reset successfully' };
+    }
+
     async register(data: RegisterDto) {
-        // In production, disable open registration unless explicitly enabled
         const allowRegistration = process.env.ALLOW_REGISTRATION !== 'false';
         if (!allowRegistration) {
             throw new UnauthorizedException('Registration is currently disabled. Contact an administrator.');
@@ -47,7 +97,6 @@ export class AuthService {
                     email: data.email,
                     password: hashedPassword,
                     name: data.name,
-                    // role is NOT included — defaults to USER in the schema
                 },
             });
             const { password, ...safeUser } = user;
