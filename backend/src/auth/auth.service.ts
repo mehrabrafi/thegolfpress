@@ -37,8 +37,10 @@ export class AuthService {
     }
 
     async forgotPassword(email: string) {
+        console.log('ForgotPassword requested for:', email);
         const user = await this.prisma.user.findUnique({ where: { email } });
         if (!user) {
+            console.log('User not found in database for email:', email);
             return true;
         }
 
@@ -54,7 +56,9 @@ export class AuthService {
             },
         });
 
-        await this.emailService.sendPasswordResetEmail(email, token);
+        console.log('Generated token for user. Now calling EmailService...');
+        const emailSent = await this.emailService.sendPasswordResetEmail(email, token);
+        console.log('EmailService result:', emailSent);
         return true;
     }
 

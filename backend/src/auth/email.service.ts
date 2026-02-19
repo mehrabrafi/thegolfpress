@@ -40,10 +40,12 @@ export class EmailService {
         };
 
         try {
-            await this.transporter.sendMail(mailOptions);
+            console.log('Attempting to send email to:', email);
+            const info = await this.transporter.sendMail(mailOptions);
+            console.log('Email sent successfully! MessageId:', info.messageId);
             return true;
         } catch (error) {
-            console.error('Error sending email:', error);
+            console.error('Error sending email via nodemailer:', error);
             return false;
         }
     }
