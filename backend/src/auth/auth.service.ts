@@ -37,13 +37,9 @@ export class AuthService {
     }
 
     async forgotPassword(email: string) {
-        console.log('--- FORGOT PASSWORD PROCESS START ---');
-        console.log('Email received:', email);
-
         try {
             const user = await this.prisma.user.findUnique({ where: { email } });
             if (!user) {
-                console.log('NOTICE: User with this email does not exist in our database.');
                 return true;
             }
 
@@ -59,13 +55,9 @@ export class AuthService {
                 },
             });
 
-            console.log('Database updated with reset token. Sending email now...');
-
             // WE MUST AWAIT THIS TO ENSURE IT COMPLETES
-            const emailResult = await this.emailService.sendPasswordResetEmail(email, token);
+            await this.emailService.sendPasswordResetEmail(email, token);
 
-            console.log('Email Status:', emailResult ? 'SUCCESS' : 'FAILED');
-            console.log('--- FORGOT PASSWORD PROCESS END ---');
             return true;
         } catch (error) {
             console.error('CRITICAL ERROR in forgotPassword process:', error);

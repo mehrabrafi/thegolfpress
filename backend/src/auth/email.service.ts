@@ -41,9 +41,7 @@ export class EmailService {
         };
 
         try {
-            console.log('Attempting to send email to:', email);
-            const info = await this.transporter.sendMail(mailOptions);
-            console.log('Email sent successfully! MessageId:', info.messageId);
+            await this.transporter.sendMail(mailOptions);
             return true;
         } catch (error) {
             console.error('Error sending email via nodemailer:', error);
