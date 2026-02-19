@@ -9,11 +9,12 @@ export class EmailService {
         this.transporter = nodemailer.createTransport({
             host: 'smtp-relay.brevo.com',
             port: 587,
-            secure: false, // true for 465, false for 587
+            secure: false, // TLS
             auth: {
                 user: process.env.BREVO_SMTP_USER,
                 pass: process.env.BREVO_API_KEY,
             },
+            connectionTimeout: 10000, // 10 seconds
         });
     }
 
