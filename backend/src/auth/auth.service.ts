@@ -92,7 +92,16 @@ export class AuthService {
     }
 
     async register(data: RegisterDto) {
-        const allowRegistration = process.env.ALLOW_REGISTRATION !== 'false';
+        let allowRegistration = process.env.ALLOW_REGISTRATION !== 'false';
+
+        const setting = await this.prisma.setting.findUnique({
+            where: { key: 'allow_registration' }
+        });
+
+        if (setting) {
+            allowRegistration = setting.value === 'true';
+        }
+
         if (!allowRegistration) {
             throw new UnauthorizedException('Registration is currently disabled. Contact an administrator.');
         }

@@ -779,9 +779,10 @@ export class GolfService {
     }
 
     async updateSetting(key: string, value: string) {
-        return this.prisma.setting.update({
+        return this.prisma.setting.upsert({
             where: { key },
-            data: { value }
+            update: { value },
+            create: { key, value }
         });
     }
 

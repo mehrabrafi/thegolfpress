@@ -13,6 +13,8 @@ export default function SettingsPage() {
     const [maintenanceOn, setMaintenanceOn] = useState(false);
     const [maintenanceLoading, setMaintenanceLoading] = useState(false);
     const [maintenanceEndTime, setMaintenanceEndTime] = useState('');
+    const [registrationOn, setRegistrationOn] = useState(true);
+    const [registrationLoading, setRegistrationLoading] = useState(false);
 
     useEffect(() => {
         loadSettings();
@@ -23,6 +25,13 @@ export default function SettingsPage() {
         try {
             const data = await fetchSettings();
             setSettings(data);
+
+            const regSetting = data.find((s: any) => s.key === 'allow_registration');
+            if (regSetting) {
+                setRegistrationOn(regSetting.value === 'true');
+            } else {
+                setRegistrationOn(true); // default if not in DB
+            }
         } catch (error) {
             console.error('Error loading settings', error);
         } finally {
@@ -61,6 +70,21 @@ export default function SettingsPage() {
             console.error('Error toggling maintenance mode', error);
         } finally {
             setMaintenanceLoading(false);
+        }
+    };
+
+    const handleToggleRegistration = async () => {
+        setRegistrationLoading(true);
+        const newValue = !registrationOn;
+        try {
+            await updateSetting('allow_registration', String(newValue));
+            setRegistrationOn(newValue);
+            setSuccess('allow_registration');
+            setTimeout(() => setSuccess(null), 3000);
+        } catch (error) {
+            console.error('Error toggling registration', error);
+        } finally {
+            setRegistrationLoading(false);
         }
     };
 
@@ -103,6 +127,42 @@ export default function SettingsPage() {
             <div className={styles.header}>
                 <h1>Global Site Configuration</h1>
                 <p>Manage the foundational identity and contact matrix of your platform.</p>
+            </div>
+
+            {/* ── Registration Toggle Card ────────────────────────────── */}
+            <div className={`${styles.maintenanceCard} ${!registrationOn ? styles.maintenanceActive : ''}`} style={{ marginBottom: '20px' }}>
+                <div className={styles.maintenanceTop}>
+                    <div className={styles.maintenanceLeft}>
+                        <div className={`${styles.maintenanceIcon} ${!registrationOn ? styles.maintenanceIconActive : ''}`}>
+                            {!registrationOn ? <AlertTriangle size={24} /> : <Shield size={24} />}
+                        </div>
+                        <div>
+                            <h2 className={styles.maintenanceTitle}>Registration System</h2>
+                            <p className={styles.maintenanceDesc}>
+                                {registrationOn
+                                    ? 'Users can currently sign up for new accounts.'
+                                    : 'Registration is currently disabled. New users cannot sign up.'
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <div className={styles.maintenanceRight}>
+                        {success === 'allow_registration' && (
+                            <span className={styles.maintenanceSaved}>
+                                <CheckCircle size={14} /> Saved
+                            </span>
+                        )}
+                        <button
+                            className={`${styles.toggleBtn} ${registrationOn ? styles.toggleOn : styles.toggleOff}`}
+                            onClick={handleToggleRegistration}
+                            disabled={registrationLoading}
+                            aria-label="Toggle registration"
+                        >
+                            <span className={styles.toggleKnob}></span>
+                            <span className={styles.toggleLabel}>{registrationOn ? 'ON' : 'OFF'}</span>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             {/* ── Maintenance Mode Card ────────────────────────────── */}
