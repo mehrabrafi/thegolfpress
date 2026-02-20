@@ -200,18 +200,24 @@
 @media (max-width: 768px) {
     .topSection {
         grid-template-columns: 1fr;
-        gap: 40px;
+        gap: 35px;
     }
 
     .bottomSection {
-        flex-direction: column;
-        gap: 20px;
+        flex-direction: column-reverse;
+        gap: 25px;
         text-align: center;
     }
 
     .linksCol ul {
-        grid-template-columns: 1fr;
-        gap: 10px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .socialIcons {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
     }
 
     .logoImage {
@@ -220,10 +226,13 @@
 
     .description {
         max-width: 100%;
+        margin-bottom: 10px;
     }
 
     .legalLinks {
-        flex-direction: column;
-        gap: 12px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px 25px;
     }
 }

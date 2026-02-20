@@ -91,6 +91,13 @@ export default function Footer() {
                                 <a href={`mailto:${getVal('contact_email_ads', 'ads@thegolfpress.com')}`} className={styles.inquiryEmail}>{getVal('contact_email_ads', 'ads@thegolfpress.com')}</a>
                             </div>
                         </div>
+                        <div className={styles.inquiryItem}>
+                            <span className={styles.inquiryLabel}>SUPPORT</span>
+                            <div className={styles.emailWrapper}>
+                                <Mail size={14} className={styles.mailIcon} />
+                                <a href={`mailto:${getVal('contact_email_support', 'support@thegolfpress.com')}`} className={styles.inquiryEmail}>{getVal('contact_email_support', 'support@thegolfpress.com')}</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
