@@ -108,6 +108,17 @@ function HeaderContent() {
                     {/* Home Header - Row 1: Branding & Auth */}
                     <div className={`container ${styles.topBar}`}>
                         <div className={styles.authLeft}>
+                            {!user ? (
+                                <>
+                                    <Link href="/signup" className={styles.signUpText} style={{ textDecoration: 'none' }}>SIGN UP</Link>
+                                    <Link href="/login" className={styles.loginLink} style={{ textDecoration: 'none' }}>LOG IN</Link>
+                                </>
+                            ) : (
+                                <>
+                                    <span className={styles.signUpText}>WELCOME</span>
+                                    <button onClick={logout} className={styles.loginLink}>LOG OUT</button>
+                                </>
+                            )}
                         </div>
 
                         <Link href="/" className={styles.logo}>
