@@ -5,21 +5,28 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Footer.module.css';
 import { Instagram, Youtube, Facebook, Twitter, Mail } from 'lucide-react';
-import { fetchSettings } from '@/lib/api';
 
 export default function Footer() {
     const [settings, setSettings] = useState<any[]>([]);
 
     useEffect(() => {
+        const controller = new AbortController();
         async function load() {
             try {
-                const data = await fetchSettings();
+                const res = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL || '/api'}/golf/settings`,
+                    { signal: controller.signal }
+                );
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
                 setSettings(data);
-            } catch (e) {
-                console.error('Footer settings load error', e);
+            } catch (e: any) {
+                if (e?.name === 'AbortError') return; // Component unmounted
+                // Silently use defaults when API is unreachable
             }
         }
         load();
+        return () => controller.abort();
     }, []);
 
     const getVal = (key: string, fallback: string) => settings.find(s => s.key === key)?.value || fallback;

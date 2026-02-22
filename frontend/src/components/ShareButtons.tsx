@@ -7,9 +7,10 @@ import styles from './ShareButtons.module.css';
 interface ShareButtonsProps {
     title: string;
     url?: string;
+    minimal?: boolean;
 }
 
-export default function ShareButtons({ title, url }: ShareButtonsProps) {
+export default function ShareButtons({ title, url, minimal = false }: ShareButtonsProps) {
     const [shareUrl, setShareUrl] = useState('');
     const [copied, setCopied] = useState(false);
 
@@ -49,7 +50,7 @@ export default function ShareButtons({ title, url }: ShareButtonsProps) {
     };
 
     return (
-        <div className={styles.shareSection}>
+        <div className={`${styles.shareSection} ${minimal ? styles.minimal : ''}`}>
             <span className={styles.shareLabel}>SHARE:</span>
 
             {/* X (Twitter) */}

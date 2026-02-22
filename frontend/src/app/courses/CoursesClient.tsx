@@ -13,6 +13,8 @@ interface Course {
     excerpt?: string;
     category: string;
     categoryTag?: string;
+    author?: string;
+    time?: string;
     createdAt?: string;
 }
 
@@ -96,18 +98,18 @@ export default function CoursesClient({ initialCourses }: CoursesClientProps) {
                                 <div className={styles.sectionHeader}>
                                     <div className={styles.sectionLeft}>
                                         <div className={styles.redBar}></div>
-                                        <Link href={`/courses/${tag.toLowerCase()}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                        <Link href={`/courses/${tag.toLowerCase().replace(/\s+/g, '-')}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                                             <h2 className={styles.sectionTitle} style={{ cursor: 'pointer' }}>COURSES IN {tag}</h2>
                                         </Link>
                                     </div>
-                                    <Link href={`/courses/${tag.toLowerCase()}`} className={styles.viewAllLink}>
+                                    <Link href={`/courses/${tag.toLowerCase().replace(/\s+/g, '-')}`} className={styles.viewAllLink}>
                                         View All
                                     </Link>
                                 </div>
 
-                                {/* Horizontal Slider for courses in this tag */}
+                                {/* Showing only top 3 courses per tag as requested */}
                                 <div className={styles.sliderContainer}>
-                                    {groupedCourses[tag].map((item: Course) => (
+                                    {groupedCourses[tag].slice(0, 3).map((item: Course) => (
                                         <CourseCard key={item.id} item={item} />
                                     ))}
                                 </div>
@@ -133,6 +135,10 @@ const CourseCard = ({ item }: { item: Course }) => (
         </div>
         <div className={styles.cardContent}>
             <h3 className={styles.cardTitle}>{item.title}</h3>
+            <p className={styles.cardExcerpt}>{item.excerpt}</p>
+            <div className={styles.cardMeta}>
+                BY {item.author?.toUpperCase() || 'THE GOLF PRESS'} • PUBLISHED {item.time?.toUpperCase() || (item.createdAt ? new Date(item.createdAt).toLocaleDateString().toUpperCase() : '')}
+            </div>
         </div>
     </Link>
 );

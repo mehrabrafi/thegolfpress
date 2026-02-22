@@ -1,10 +1,12 @@
 'use client';
 
+import { useState, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import DOMPurify from 'dompurify';
 import { MapPinOff } from 'lucide-react';
 import JsonLd, { createGolfCourseJsonLd } from '@/components/JsonLd';
+import { API_BASE_URL } from '@/lib/api';
 import styles from '../courses.module.css';
 import detailStyles from './course-detail.module.css';
 
@@ -17,23 +19,70 @@ interface Course {
     excerpt?: string;
     category: string;
     categoryTag?: string;
+    author?: string;
+    time?: string;
     createdAt?: string;
 }
 
 interface CourseDetailClientProps {
     viewMode: 'detail' | 'category' | 'error';
     course: Course | null;
-    courses: Course[];
+    initialCourses: Course[];
+    serverTotal: number;
+    pageSize: number;
     slug: string;
+    tagFilter: string;
 }
 
-export default function CourseDetailClient({ viewMode, course, courses, slug }: CourseDetailClientProps) {
+// ── Client-side paginated fetch ─────────────────────────────────
+async function clientFetchCourses(params: {
+    skip: number;
+    take: number;
+    tag: string;
+}): Promise<{ data: any[]; total: number }> {
+    const query = new URLSearchParams();
+    query.append('category', 'COURSES');
+    if (params.tag) query.append('tag', params.tag);
+    query.append('skip', String(params.skip));
+    query.append('take', String(params.take));
+
+    const res = await fetch(`${API_BASE_URL}/news?${query.toString()}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to fetch courses');
+
+    const json = await res.json();
+
+    if (Array.isArray(json)) {
+        return { data: json, total: json.length };
+    }
+    return {
+        data: Array.isArray(json.data) ? json.data : [],
+        total: typeof json.total === 'number' ? json.total : (json.data?.length ?? 0),
+    };
+}
+
+export default function CourseDetailClient({
+    viewMode,
+    course,
+    initialCourses,
+    serverTotal,
+    pageSize,
+    slug,
+    tagFilter,
+}: CourseDetailClientProps) {
     if (viewMode === 'detail' && course) {
         return <CourseDetailContent course={course} />;
     }
 
     if (viewMode === 'category') {
-        return <CourseCategoryContent courses={courses} slug={slug} />;
+        return (
+            <CourseCategoryContent
+                initialCourses={initialCourses}
+                serverTotal={serverTotal}
+                pageSize={pageSize}
+                slug={slug}
+                tagFilter={tagFilter}
+            />
+        );
     }
 
     return (
@@ -137,9 +186,43 @@ function CourseDetailContent({ course }: { course: Course }) {
 }
 
 
-// ── Course Category Component ───────────────────────────────────
-function CourseCategoryContent({ courses, slug }: { courses: Course[], slug: string }) {
+// ── Course Category Component (with Load More) ──────────────────
+function CourseCategoryContent({
+    initialCourses,
+    serverTotal,
+    pageSize,
+    slug,
+    tagFilter,
+}: {
+    initialCourses: Course[];
+    serverTotal: number;
+    pageSize: number;
+    slug: string;
+    tagFilter: string;
+}) {
     const title = slug ? slug.replace(/-/g, ' ').toUpperCase() : 'COURSES';
+    const [courses, setCourses] = useState<Course[]>(initialCourses);
+    const [total, setTotal] = useState<number>(serverTotal);
+    const [loadingMore, setLoadingMore] = useState(false);
+
+    const hasMore = courses.length < total && courses.length > 0;
+
+    const handleLoadMore = useCallback(async () => {
+        setLoadingMore(true);
+        try {
+            const { data, total: t } = await clientFetchCourses({
+                skip: courses.length,
+                take: pageSize,
+                tag: tagFilter,
+            });
+            setCourses(prev => [...prev, ...data]);
+            setTotal(t);
+        } catch (err) {
+            console.error('Load more courses failed:', err);
+        } finally {
+            setLoadingMore(false);
+        }
+    }, [courses.length, pageSize, tagFilter]);
 
     return (
         <div className={styles.container}>
@@ -164,11 +247,37 @@ function CourseCategoryContent({ courses, slug }: { courses: Course[], slug: str
                     </div>
 
                     {courses.length > 0 ? (
-                        <div className={styles.cardsGrid}>
-                            {courses.map((item) => (
-                                <CourseCard key={item.id} item={item} />
-                            ))}
-                        </div>
+                        <>
+                            <div className={styles.cardsGrid}>
+                                {courses.map((item) => (
+                                    <CourseCard key={item.id} item={item} />
+                                ))}
+                            </div>
+
+                            {hasMore && (
+                                <div className={styles.loadMore}>
+                                    <button
+                                        className={styles.loadMoreBtn}
+                                        onClick={handleLoadMore}
+                                        disabled={loadingMore}
+                                    >
+                                        {loadingMore ? (
+                                            'Loading...'
+                                        ) : (
+                                            <>
+                                                Load More Courses{' '}
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                                    <path d="m6 9 6 6 6-6" />
+                                                </svg>
+                                            </>
+                                        )}
+                                    </button>
+                                    <span className={styles.articleCount}>
+                                        Showing {courses.length} of {total} courses
+                                    </span>
+                                </div>
+                            )}
+                        </>
                     ) : (
                         <div style={{ textAlign: 'center', padding: '60px', color: '#666' }}>
                             <p>No courses found in {title}.</p>
@@ -187,6 +296,10 @@ const CourseCard = ({ item }: { item: Course }) => (
         </div>
         <div className={styles.cardContent}>
             <h3 className={styles.cardTitle}>{item.title}</h3>
+            <p className={styles.cardExcerpt}>{item.excerpt}</p>
+            <div className={styles.cardMeta}>
+                BY {item.author?.toUpperCase() || 'THE GOLF PRESS'} • PUBLISHED {item.time?.toUpperCase() || (item.createdAt ? new Date(item.createdAt).toLocaleDateString().toUpperCase() : '')}
+            </div>
         </div>
     </Link>
 );

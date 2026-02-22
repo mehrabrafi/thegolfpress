@@ -63,28 +63,33 @@ export default function RankingsPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {activeCategory?.leaders?.map((leader: any) => (
-                            <tr key={leader.athlete.id}>
-                                <td className={styles.rankCell}>{leader.rank}</td>
-                                <td className={styles.playerCell}>
-                                    <a
-                                        href={`/players/${leader.athlete.id}`}
-                                        className={styles.playerLink}
-                                        title="View Player Profile"
-                                    >
-                                        <Image
-                                            src={leader.athlete.image || 'https://a.espncdn.com/i/headshots/nophoto.png'}
-                                            alt={leader.athlete.name}
-                                            width={40}
-                                            height={40}
-                                            className={styles.avatar}
-                                        />
-                                        <span className={styles.playerName}>{leader.athlete.name}</span>
-                                    </a>
-                                </td>
-                                <td className={styles.valueCell}>{leader.value}</td>
-                            </tr>
-                        ))}
+                        {activeCategory?.leaders?.map((leader: any) => {
+                            return (
+                                <tr key={leader.athlete.id}>
+                                    <td className={styles.rankCell}>{leader.rank}</td>
+                                    <td className={styles.playerCell}>
+                                        <a
+                                            href={`/players/${leader.athlete.id}`}
+                                            className={styles.playerLink}
+                                            title="View Player Profile"
+                                        >
+                                            <img
+                                                src={leader.athlete.image || 'https://avatar.iran.liara.run/public'}
+                                                alt={leader.athlete.name}
+                                                width={40}
+                                                height={40}
+                                                className={styles.avatar}
+                                                onError={(e) => {
+                                                    (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(leader.athlete.name)}&background=f1f1f1&color=ed3e49&bold=true&font-size=0.33`;
+                                                }}
+                                            />
+                                            <span className={styles.playerName}>{leader.athlete.name}</span>
+                                        </a>
+                                    </td>
+                                    <td className={styles.valueCell}>{leader.value}</td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>

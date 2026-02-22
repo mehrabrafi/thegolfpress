@@ -17,6 +17,7 @@ export default function CategoryManagement() {
     const [searchTerm, setSearchTerm] = useState('');
     const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
     const [newSubTagName, setNewSubTagName] = useState<Record<string, string>>({});
+    const [newSubTagImage, setNewSubTagImage] = useState<Record<string, string>>({});
 
     useEffect(() => {
         loadData();
@@ -42,11 +43,13 @@ export default function CategoryManagement() {
 
     const handleAddSubTag = async (categoryId: string) => {
         const name = newSubTagName[categoryId];
+        const image = newSubTagImage[categoryId] || '';
         if (!name) return;
 
         try {
-            await createSubTag({ name, categoryId });
+            await createSubTag({ name, categoryId, image });
             setNewSubTagName(prev => ({ ...prev, [categoryId]: '' }));
+            setNewSubTagImage(prev => ({ ...prev, [categoryId]: '' }));
             loadData();
         } catch (error) {
             console.error('Error adding sub-tag', error);
@@ -229,43 +232,72 @@ export default function CategoryManagement() {
                                                 <td colSpan={4} style={{ padding: '15px 40px' }}>
                                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                                         <h4 style={{ fontSize: '0.8rem', color: '#64748b', textTransform: 'uppercase' }}>Sub-Tags / Sections</h4>
-                                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', alignItems: 'flex-start' }}>
                                                             {cat.subTags?.map((tag: any) => (
-                                                                <span
+                                                                <div
                                                                     key={tag.id}
                                                                     style={{
-                                                                        display: 'inline-flex',
-                                                                        alignItems: 'center',
-                                                                        gap: '5px',
-                                                                        padding: '4px 10px',
+                                                                        display: 'flex',
+                                                                        flexDirection: 'column',
+                                                                        gap: '8px',
+                                                                        padding: '10px',
                                                                         background: 'white',
                                                                         border: '1px solid #e2e8f0',
-                                                                        borderRadius: '4px',
-                                                                        fontSize: '0.85rem'
+                                                                        borderRadius: '8px',
+                                                                        width: '180px',
+                                                                        boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
                                                                     }}
                                                                 >
-                                                                    {tag.name}
-                                                                    <button
-                                                                        onClick={() => handleDeleteSubTag(tag.id)}
-                                                                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: '2px' }}
-                                                                    >
-                                                                        <X size={12} />
-                                                                    </button>
-                                                                </span>
+                                                                    {tag.image && (
+                                                                        <img
+                                                                            src={tag.image}
+                                                                            alt={tag.name}
+                                                                            style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '4px' }}
+                                                                        />
+                                                                    )}
+                                                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                                        <span style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{tag.name}</span>
+                                                                        <button
+                                                                            onClick={() => handleDeleteSubTag(tag.id)}
+                                                                            style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: '2px' }}
+                                                                        >
+                                                                            <Trash2 size={12} />
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
                                                             ))}
-                                                            <div style={{ display: 'flex', gap: '5px' }}>
+
+                                                            {/* Dynamic Add Form */}
+                                                            <div style={{
+                                                                display: 'flex',
+                                                                flexDirection: 'column',
+                                                                gap: '10px',
+                                                                padding: '15px',
+                                                                background: 'white',
+                                                                border: '2px dashed #e2e8f0',
+                                                                borderRadius: '8px',
+                                                                width: '240px'
+                                                            }}>
+                                                                <h5 style={{ margin: 0, fontSize: '0.75rem', color: '#64748b' }}>ADD NEW SECTION</h5>
                                                                 <input
                                                                     type="text"
                                                                     value={newSubTagName[cat.id] || ''}
                                                                     onChange={e => setNewSubTagName(prev => ({ ...prev, [cat.id]: e.target.value }))}
-                                                                    placeholder="New Sub-Tag..."
-                                                                    style={{ padding: '4px 8px', border: '1px solid #e2e8f0', borderRadius: '4px', fontSize: '0.85rem' }}
+                                                                    placeholder="Section Name (e.g. Drivers)"
+                                                                    style={{ padding: '6px 10px', border: '1px solid #e2e8f0', borderRadius: '4px', fontSize: '0.8rem' }}
+                                                                />
+                                                                <input
+                                                                    type="text"
+                                                                    value={newSubTagImage[cat.id] || ''}
+                                                                    onChange={e => setNewSubTagImage(prev => ({ ...prev, [cat.id]: e.target.value }))}
+                                                                    placeholder="Image URL..."
+                                                                    style={{ padding: '6px 10px', border: '1px solid #e2e8f0', borderRadius: '4px', fontSize: '0.8rem' }}
                                                                 />
                                                                 <button
                                                                     onClick={() => handleAddSubTag(cat.id)}
-                                                                    style={{ background: '#d91b2b', color: 'white', border: 'none', borderRadius: '4px', padding: '4px 8px', cursor: 'pointer' }}
+                                                                    style={{ background: '#d91b2b', color: 'white', border: 'none', borderRadius: '4px', padding: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.8rem' }}
                                                                 >
-                                                                    <Plus size={14} />
+                                                                    Create Section
                                                                 </button>
                                                             </div>
                                                         </div>

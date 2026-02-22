@@ -1,0 +1,389 @@
+/* ── Full Screen Split Layout ─────────────────────────────────────── */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: #fff;
+    z-index: 10000;
+    display: flex;
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.leftPanel {
+    flex: 1;
+    position: relative;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+@media (max-width: 992px) {
+    .leftPanel {
+        display: none;
+    }
+}
+
+.bgImage {
+    object-fit: cover;
+    z-index: 1;
+}
+
+.rightPanel {
+    flex: 1.2;
+    background: white;
+    padding: 60px 80px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    .rightPanel {
+        padding: 40px 20px;
+    }
+}
+
+.closeBtn {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.2s;
+}
+
+.closeBtn:hover {
+    color: var(--black);
+}
+
+/* ── Content Branding ───────────────────────────────────────────── */
+.branding {
+    margin-bottom: 60px;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--black);
+    margin-bottom: 12px;
+    letter-spacing: -1px;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 450px;
+}
+
+/* ── Progress Indicators ────────────────────────────────────────── */
+.progressDots {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 40px;
+}
+
+.dot {
+    width: 30px;
+    height: 4px;
+    background: #eee;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.dotActive {
+    background: var(--primary-red);
+    width: 60px;
+}
+
+/* ── Step Content ───────────────────────────────────────────────── */
+.stepContent {
+    flex: 1;
+}
+
+.stepHeading {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 40px;
+}
+
+/* ── Hierarchical Chips ─────────────────────────────────────────── */
+.categoriesList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 60px;
+}
+
+.categoryWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+/* ── Chips Styles (Restored wrapping grid) ─────────────────────── */
+.chipsGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 40px;
+}
+
+.chip {
+    padding: 12px 24px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #444;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chip:hover {
+    border-color: #999;
+    background: #f9f9f9;
+}
+
+.chipActive {
+    border-color: var(--black);
+    background: var(--black);
+    color: white;
+}
+
+.chipActive:hover {
+    background: #222;
+    border-color: #222;
+}
+
+/* ── Sub-Selection Area (Below the main grid) ─────────────────── */
+.subSelectionArea {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 20px;
+    padding-top: 30px;
+    border-top: 1px solid #f0f0f0;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.subGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.subGroupTitle {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.subChipsGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.subChip {
+    padding: 10px 18px;
+    border: 1px solid #eee;
+    background: #f9f9f9;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.subChip:hover {
+    border-color: #ccc;
+    background: white;
+}
+
+.subChipActive {
+    background: var(--primary-red);
+    border-color: var(--primary-red);
+    color: white;
+}
+
+.subChipActive:hover {
+    background: #d4222a;
+    /* Slightly darker shade of primary red */
+    border-color: #d4222a;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Player Grid ────────────────────────────────────────────────── */
+.playersGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.playerCard {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.playerCard:hover {
+    border-color: #999;
+    background: #fcfcfc;
+    transform: translateY(-2px);
+}
+
+.playerSelected {
+    border-color: var(--black);
+    background: #f8f9fa;
+    box-shadow: 0 0 0 1px var(--black);
+}
+
+.avatarWrapper {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 12px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.playerAvatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #eee;
+}
+
+.avatarFallback {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #f8f9fa;
+    color: var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.1rem;
+    border: 2px solid #eee;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.playerName {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* ── Actions ────────────────────────────────────────────────────── */
+.actions {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 40px;
+    border-top: 1px solid #eee;
+}
+
+.skipBtn {
+    background: none;
+    border: none;
+    color: #999;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+.nextBtn {
+    background: var(--black);
+    color: white;
+    border: none;
+    padding: 16px 40px;
+    border-radius: 100px;
+    font-weight: 800;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.nextBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.nextBtn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ── Success State ──────────────────────────────────────────────── */
+.successWrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+}
+
+.successIcon {
+    font-size: 5rem;
+    margin-bottom: 30px;
+}
+
+.successTitle {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.successSubtitle {
+    color: #666;
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    max-width: 500px;
+}

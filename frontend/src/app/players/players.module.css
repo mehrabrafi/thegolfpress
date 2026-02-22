@@ -189,3 +189,46 @@
         font-size: 1.5rem;
     }
 }
+.followCell {
+    text-align: center;
+    width: 100px;
+}
+
+.followBtn {
+    background: transparent;
+    border: 1px solid var(--primary-red);
+    color: var(--primary-red);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.followBtn:hover {
+    background: var(--primary-red);
+    color: var(--white);
+}
+
+.followingBtn {
+    background: var(--primary-red);
+    color: var(--white);
+}
+
+.followingBtn:hover {
+    background: #c0212b;
+    border-color: #c0212b;
+}
+
+@media (max-width: 768px) {
+    .followCell {
+        width: 80px;
+    }
+    .followBtn {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+    }
+}

@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { GolfModule } from './golf/golf.module';
 import { AuthModule } from './auth/auth.module';
 import { UploadModule } from './upload/upload.module';
+import { PlayerModule } from './player/player.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { UploadModule } from './upload/upload.module';
     GolfModule,
     AuthModule,
     UploadModule,
+    PlayerModule,
   ],
   controllers: [AppController],
   providers: [

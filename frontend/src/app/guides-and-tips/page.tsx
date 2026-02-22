@@ -12,7 +12,7 @@ export default async function GuidesAndTipsPage() {
         ]);
 
         // Filter for Guides & Tips articles (matches both old "How-To" and new "Guides-Tips" names)
-        guideArticles = newsData.filter((item: any) => {
+        guideArticles = newsData.data.filter((item: any) => {
             const cat = (item.category || '').toUpperCase();
             return cat === 'HOW-TO' || cat === 'GUIDES-TIPS' || cat === 'GUIDES & TIPS';
         });

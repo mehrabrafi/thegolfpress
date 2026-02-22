@@ -13,6 +13,12 @@
     letter-spacing: 0.05em;
 }
 
+.shareSection.minimal {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
 .shareLabel {
     margin-right: 5px;
 }

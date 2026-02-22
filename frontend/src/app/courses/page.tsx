@@ -5,7 +5,8 @@ export default async function CoursesPage() {
     let courses: any[] = [];
 
     try {
-        courses = await fetchNews('COURSES');
+        const { data } = await fetchNews('COURSES');
+        courses = data;
     } catch (error) {
         console.error('Error fetching courses:', error);
     }

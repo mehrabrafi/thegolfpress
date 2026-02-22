@@ -39,4 +39,29 @@ export class UploadController {
         const url = await this.uploadService.uploadFile(file);
         return { url };
     }
+
+    @Post('profile')
+    @UseGuards(AuthGuard('jwt'))
+    @UseInterceptors(FileInterceptor('file', {
+        limits: {
+            fileSize: 5 * 1024 * 1024, // 5MB max for profile pics
+        },
+        fileFilter: (_req, file, callback) => {
+            const allowedMimes = ['image/jpeg', 'image/png', 'image/webp'];
+            if (!allowedMimes.includes(file.mimetype)) {
+                return callback(
+                    new BadRequestException('Only JPEG, PNG, and WebP images are allowed'),
+                    false,
+                );
+            }
+            callback(null, true);
+        },
+    }))
+    async uploadProfilePic(@UploadedFile() file: Express.Multer.File) {
+        if (!file) {
+            throw new BadRequestException('No file provided');
+        }
+        const url = await this.uploadService.uploadFile(file);
+        return { url };
+    }
 }

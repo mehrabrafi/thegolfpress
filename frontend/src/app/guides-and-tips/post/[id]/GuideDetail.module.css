@@ -73,11 +73,44 @@
 .authorRow {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     margin-bottom: 30px;
     font-family: var(--font-inter);
     border-bottom: 1px solid #eee;
     padding-bottom: 20px;
+}
+
+.authorInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.authorAvatarWrapper {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.authorAvatar {
+    object-fit: contain;
+    background: #f8f9fa;
+}
+
+.authorText {
+    display: flex;
+    flex-direction: column;
+}
+
+.authorName {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #2d3748;
 }
 
 .publishInfo {

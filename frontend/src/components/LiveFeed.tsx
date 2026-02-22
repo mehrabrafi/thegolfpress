@@ -9,7 +9,7 @@ interface PlayerScore {
 export default function LiveFeed({ players }: { players: PlayerScore[] }) {
     return (
         <div className={styles.liveFeed}>
-            <div className={`container ${styles.feedContent}`}>
+            <div className={styles.feedContent} style={{ padding: '0 20px' }}>
                 <div className={styles.labelWrapper}>
                     <span className={styles.label}>LIVE FEED:</span>
                 </div>

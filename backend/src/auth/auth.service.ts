@@ -31,9 +31,54 @@ export class AuthService {
                 id: user.id,
                 email: user.email,
                 name: user.name,
-                role: user.role
+                role: user.role,
+                onboardingCompleted: user.onboardingCompleted ?? false,
             }
         };
+    }
+
+    async completeOnboarding(userId: string, preferredCategories: string[], playerIds: string[]) {
+        // Save preferred categories as JSON string
+        await this.prisma.user.update({
+            where: { id: userId },
+            data: {
+                preferredCategories: JSON.stringify(preferredCategories),
+                onboardingCompleted: true,
+                followedPlayers: playerIds.length > 0
+                    ? { connect: playerIds.map(id => ({ id })) }
+                    : undefined,
+            },
+        });
+        return { success: true };
+    }
+
+    async getFullProfile(userId: string) {
+        const user = await this.prisma.user.findUnique({
+            where: { id: userId },
+            include: { followedPlayers: true }
+        });
+        if (!user) throw new UnauthorizedException('User not found');
+        const { password, ...result } = user;
+        return result;
+    }
+
+    async updateProfile(userId: string, data: { name?: string; image?: string }) {
+        const user = await this.prisma.user.update({
+            where: { id: userId },
+            data: {
+                name: data.name,
+                image: data.image,
+            },
+        });
+        const { password, ...result } = user;
+        return result;
+    }
+
+    async deleteAccount(userId: string) {
+        await this.prisma.user.delete({
+            where: { id: userId },
+        });
+        return { message: 'Account deleted successfully' };
     }
 
     async forgotPassword(email: string) {

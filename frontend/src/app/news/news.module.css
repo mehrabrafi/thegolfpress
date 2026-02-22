@@ -204,6 +204,13 @@
     color: #999;
 }
 
+.dot {
+    width: 3px;
+    height: 3px;
+    background-color: #ccc;
+    border-radius: 50%;
+}
+
 .articleTitle {
     font-size: 1.6rem;
     font-weight: 800;
@@ -396,7 +403,9 @@
 .loadMore {
     margin-top: 60px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
 }
 
 .loadMoreBtn {
@@ -416,8 +425,20 @@
     transition: all 0.3s;
 }
 
-.loadMoreBtn:hover {
+.loadMoreBtn:hover:not(:disabled) {
     background: #d0021b;
+}
+
+.loadMoreBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.articleCount {
+    font-size: 0.8rem;
+    color: #999;
+    font-family: var(--font-sans);
+    letter-spacing: 0.5px;
 }
 
 /* Responsive */

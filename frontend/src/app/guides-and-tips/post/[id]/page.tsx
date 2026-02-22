@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: any }): Promise<Met
                 type: 'article',
                 publishedTime: article.createdAt,
                 modifiedTime: article.updatedAt || article.createdAt,
-                authors: [article.author?.name || 'The Golf Press Editorial'],
+                authors: [article.author || 'The Golf Press Editorial'],
                 images: article.image ? [{ url: article.image, width: 1200, height: 630, alt: article.title }] : [],
                 url: `${SITE_URL}/guides-and-tips/post/${id}`,
             },
@@ -52,7 +52,7 @@ export default async function GuideDetailPage({ params }: { params: any }) {
             );
         }
 
-        const allNews = allNewsResult.status === 'fulfilled' ? allNewsResult.value : [];
+        const allNews = allNewsResult.status === 'fulfilled' ? allNewsResult.value.data : [];
 
         // Get related Guides & Tips articles (same category)
         const relatedGuides = allNews.filter((n: any) => {

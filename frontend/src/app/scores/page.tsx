@@ -55,37 +55,48 @@ export default function ScoresPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {data?.players?.map((p: any, idx: number) => (
-                            <tr key={idx}>
-                                <td className={styles.posCell}>{p.position}</td>
-                                <td className={styles.playerCell}>
-                                    <a
-                                        href={`/players/${p.id}`}
-                                        className={styles.playerLink}
-                                        title="View Player Profile"
-                                    >
-                                        <Image src={p.image || 'https://via.placeholder.com/45'} alt={p.name} width={45} height={45} className={styles.avatar} />
-                                        <div>
-                                            <div className={styles.pName}>{p.name}</div>
-                                            <div className={styles.pCountry}>
-                                                <Image src={p.country} alt="flag" width={16} height={12} className={styles.flag} />
-                                                {p.countryName}
+                        {data?.players?.map((p: any, idx: number) => {
+                            return (
+                                <tr key={idx}>
+                                    <td className={styles.posCell}>{p.position}</td>
+                                    <td className={styles.playerCell}>
+                                        <a
+                                            href={`/players/${p.id}`}
+                                            className={styles.playerLink}
+                                            title="View Player Profile"
+                                        >
+                                            <img
+                                                src={p.image || 'https://avatar.iran.liara.run/public'}
+                                                alt={p.name}
+                                                width={45}
+                                                height={45}
+                                                className={styles.avatar}
+                                                onError={(e) => {
+                                                    (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=f1f1f1&color=ed3e49&bold=true&font-size=0.33`;
+                                                }}
+                                            />
+                                            <div>
+                                                <div className={styles.pName}>{p.name}</div>
+                                                <div className={styles.pCountry}>
+                                                    <Image src={p.country} alt="flag" width={16} height={12} className={styles.flag} />
+                                                    {p.countryName}
+                                                </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                </td>
-                                <td className={p.score?.startsWith('-') ? styles.scoreMinus : styles.scorePlus}>
-                                    {p.score}
-                                </td>
-                                <td>{p.thru}</td>
-                                <td className={p.today?.startsWith('-') ? styles.scoreMinus : ''}>{p.today}</td>
-                                <td>{p.rounds[0]}</td>
-                                <td>{p.rounds[1]}</td>
-                                <td>{p.rounds[2]}</td>
-                                <td>{p.rounds[3]}</td>
-                                <td>{p.totalStrokes}</td>
-                            </tr>
-                        ))}
+                                        </a>
+                                    </td>
+                                    <td className={p.score?.startsWith('-') ? styles.scoreMinus : styles.scorePlus}>
+                                        {p.score}
+                                    </td>
+                                    <td>{p.thru}</td>
+                                    <td className={p.today?.startsWith('-') ? styles.scoreMinus : ''}>{p.today}</td>
+                                    <td>{p.rounds[0]}</td>
+                                    <td>{p.rounds[1]}</td>
+                                    <td>{p.rounds[2]}</td>
+                                    <td>{p.rounds[3]}</td>
+                                    <td>{p.totalStrokes}</td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>

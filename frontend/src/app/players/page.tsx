@@ -2,22 +2,21 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { fetchRankings } from '@/lib/api';
+import { fetchAllPlayers } from '@/lib/api';
+import PlayerList from '@/components/Players/PlayerList';
+import Loading from '@/components/Loading';
 import styles from './players.module.css';
 
 export default function PlayersPage() {
-    const [categories, setCategories] = useState<any[]>([]);
-    const [activeCategoryId, setActiveCategoryId] = useState<string>('');
+    const [players, setPlayers] = useState<any[]>([]);
+    const [searchQuery, setSearchQuery] = useState('');
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function load() {
             try {
-                const data = await fetchRankings();
-                setCategories(data);
-                if (data.length > 0) {
-                    setActiveCategoryId(data[0].id);
-                }
+                const data = await fetchAllPlayers();
+                setPlayers(data);
             } catch (err) {
                 console.error('Error loading players:', err);
             } finally {
@@ -27,66 +26,66 @@ export default function PlayersPage() {
         load();
     }, []);
 
-    const activeCategory = categories.find(c => c.id === activeCategoryId);
+    const filteredPlayers = players.filter(p =>
+        p.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
-    if (loading) {
-        return <div className={styles.loading}>Loading PGA Tour Players...</div>;
-    }
+    if (loading) return <Loading />;
 
     return (
         <div className={`container ${styles.container}`}>
-            <div className={styles.header}>
-                <h1 className={styles.title}>PGA Tour Players</h1>
-                <p className={styles.subtitle}>PLAYER PERFORMANCE & PROFILES</p>
-            </div>
 
-            <div className={styles.tabs}>
-                {categories.map(cat => (
-                    <button
-                        key={cat.id}
-                        className={`${styles.tab} ${activeCategoryId === cat.id ? styles.activeTab : ''}`}
-                        onClick={() => setActiveCategoryId(cat.id)}
-                    >
-                        {cat.name}
-                    </button>
-                ))}
+            <div className={styles.header}>
+                <h2 className={styles.title}>Discover Professional Golfers</h2>
+                <p className={styles.subtitle}>EXPLORE CAREER STATS, RANKINGS & PERFORMANCE</p>
             </div>
 
             <div className={styles.rankingsGrid}>
                 <table className={styles.table}>
                     <thead>
                         <tr>
-                            <th>RANK</th>
                             <th>PLAYER</th>
-                            <th style={{ textAlign: 'right' }}>{activeCategory?.name?.toUpperCase()}</th>
+                            <th style={{ textAlign: 'right' }}>PROFILE</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {activeCategory?.leaders?.map((leader: any) => (
-                            <tr key={leader.athlete.id}>
-                                <td className={styles.rankCell}>{leader.rank}</td>
+                        {filteredPlayers.map((player: any) => (
+                            <tr key={player.id}>
                                 <td className={styles.playerCell}>
                                     <a
-                                        href={`/players/${leader.athlete.id}`}
+                                        href={`/players/${player.id}`}
                                         className={styles.playerLink}
                                         title="View Player Profile"
                                     >
-                                        <Image
-                                            src={leader.athlete.image || 'https://a.espncdn.com/i/headshots/nophoto.png'}
-                                            alt={leader.athlete.name}
-                                            width={40}
-                                            height={40}
+                                        <img
+                                            src={player.image || 'https://avatar.iran.liara.run/public'}
+                                            alt={player.name}
+                                            width={50}
+                                            height={50}
                                             className={styles.avatar}
+                                            onError={(e) => {
+                                                (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(player.name)}&background=f1f1f1&color=ed3e49&bold=true&font-size=0.33`;
+                                            }}
                                         />
-                                        <span className={styles.playerName}>{leader.athlete.name}</span>
+                                        <span className={styles.playerName}>{player.name}</span>
                                     </a>
                                 </td>
-                                <td className={styles.valueCell}>{leader.value}</td>
+                                <td style={{ textAlign: 'right' }}>
+                                    <a href={`/players/${player.id}`} className={styles.tab} style={{ fontSize: '0.75rem', padding: '5px 15px' }}>
+                                        VIEW PROFILE
+                                    </a>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
+
+            {filteredPlayers.length === 0 && (
+                <div className={styles.loading}>
+                    {searchQuery ? `No players matching "${searchQuery}"` : "No players found in the database."}
+                </div>
+            )}
         </div>
     );
 }

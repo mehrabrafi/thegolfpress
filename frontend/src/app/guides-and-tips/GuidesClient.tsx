@@ -18,12 +18,18 @@ const Section = ({ title, items, categoryTag }: { title: string, items: any[], c
             </Link>
         </div>
         <div className={styles.sectionGrid}>
-            {items.map(item => (
+            {items.slice(0, 3).map(item => (
                 <Link href={`/guides-and-tips/post/${item.id}`} key={item.id} className={styles.articleCard}>
                     <div className={styles.articleImageWrapper}>
                         <Image src={item.image} alt={item.title} fill className={styles.articleImage} sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1100px) 33vw, 25vw" />
                     </div>
-                    <h3 className={styles.articleTitle}>{item.title}</h3>
+                    <div className={styles.articleInfo}>
+                        <h3 className={styles.articleTitle}>{item.title}</h3>
+                        <p className={styles.articleExcerpt}>{item.excerpt}</p>
+                        <div className={styles.articleMeta}>
+                            BY {item.author?.toUpperCase() || 'THE GOLF PRESS'} • PUBLISHED {item.time?.toUpperCase() || (item.createdAt ? new Date(item.createdAt).toLocaleDateString().toUpperCase() : '')}
+                        </div>
+                    </div>
                 </Link>
             ))}
         </div>

@@ -29,8 +29,8 @@
 }
 
 .status {
-    background: #ffebee;
-    color: #d32f2f;
+    background: rgba(218, 37, 50, 0.1);
+    color: var(--primary-red);
     padding: 6px 15px;
     border-radius: 20px;
     font-size: 0.85rem;
@@ -43,7 +43,7 @@
 .dot {
     width: 8px;
     height: 8px;
-    background: #d32f2f;
+    background: var(--primary-red);
     border-radius: 50%;
     animation: pulse 1.5s infinite;
 }
@@ -172,8 +172,6 @@
         gap: 15px;
     }
 
-    .table th:nth-child(5),
-    .table td:nth-child(5),
     .table th:nth-child(6),
     .table td:nth-child(6),
     .table th:nth-child(7),
@@ -181,7 +179,9 @@
     .table th:nth-child(8),
     .table td:nth-child(8),
     .table th:nth-child(9),
-    .table td:nth-child(9) {
+    .table td:nth-child(9),
+    .table th:nth-child(10),
+    .table td:nth-child(10) {
         display: none;
     }
 
@@ -208,8 +208,8 @@
 
 @media (max-width: 480px) {
 
-    .table th:nth-child(4),
-    .table td:nth-child(4) {
+    .table th:nth-child(5),
+    .table td:nth-child(5) {
         display: none;
     }
 

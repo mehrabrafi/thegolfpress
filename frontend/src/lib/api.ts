@@ -2,6 +2,7 @@ const IS_SERVER = typeof window === 'undefined';
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || (IS_SERVER ? 'http://localhost:5001' : '/api');
 export const API_BASE_URL = `${BASE_URL}/golf`;
 export const AUTH_BASE_URL = `${BASE_URL}/auth`;
+export const PLAYER_BASE_URL = `${BASE_URL}/player`;
 export const UPLOAD_URL = `${BASE_URL}/upload`;
 
 // ── Public Data Endpoints ───────────────────────────────────────
@@ -43,24 +44,31 @@ export async function fetchPlayerProfile(id: string) {
     return res.json();
 }
 
-export async function fetchNews(category?: string, tag?: string, status?: string) {
-    // Use a dummy base for relative URLs to support URL API
-    const baseUrl = API_BASE_URL.startsWith('http') ? API_BASE_URL : 'http://localhost';
-    const url = new URL(`${baseUrl.replace('http://localhost', '')}/news`, baseUrl);
-
-    // Fix: if API_BASE_URL is relative, we can't just pass it to new URL as base if it's not absolute.
-    // Simpler approach:
+export async function fetchNews(category?: string, tag?: string, status?: string, skip?: number, take?: number, excludeCategories?: string[]): Promise<{ data: any[]; total: number }> {
     const queryParams = new URLSearchParams();
     if (category) queryParams.append('category', category);
     if (tag) queryParams.append('tag', tag);
     if (status) queryParams.append('status', status);
+    if (skip !== undefined) queryParams.append('skip', String(skip));
+    if (take !== undefined) queryParams.append('take', String(take));
+    if (excludeCategories && excludeCategories.length > 0) queryParams.append('excludeCategories', excludeCategories.join(','));
 
     const queryString = queryParams.toString();
     const finalUrl = `${API_BASE_URL}/news${queryString ? `?${queryString}` : ''}`;
 
     const res = await fetch(finalUrl, { next: { revalidate: 60 } });
     if (!res.ok) throw new Error('Failed to fetch news');
-    return res.json();
+
+    const json = await res.json();
+
+    // Normalize: backend পুরনো (array) বা নতুন ({ data, total }) যেকোনো format পাঠাতে পারে
+    if (Array.isArray(json)) {
+        return { data: json, total: json.length };
+    }
+    return {
+        data: Array.isArray(json.data) ? json.data : [],
+        total: typeof json.total === 'number' ? json.total : (json.data?.length ?? 0),
+    };
 }
 
 export async function fetchNewsById(id: string) {
@@ -144,12 +152,64 @@ export async function getProfile() {
     return res.json();
 }
 
+export async function completeOnboarding(preferredCategories: string[], playerIds: string[]) {
+    const res = await fetch(`${AUTH_BASE_URL}/onboarding`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ preferredCategories, playerIds }),
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to complete onboarding');
+    return res.json();
+}
+
 export async function logout() {
     const res = await fetch(`${AUTH_BASE_URL}/logout`, {
         method: 'POST',
         credentials: 'include',
     });
     if (!res.ok) throw new Error('Logout failed');
+    return res.json();
+}
+
+export async function updateUserProfile(data: { name?: string; image?: string }) {
+    const res = await fetch(`${AUTH_BASE_URL}/profile`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to update profile');
+    return res.json();
+}
+
+export async function deleteUserAccount() {
+    const res = await fetch(`${AUTH_BASE_URL}/delete-account`, {
+        method: 'POST',
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to delete account');
+    return res.json();
+}
+
+export async function uploadProfileImage(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const res = await fetch(`${UPLOAD_URL}/profile`, {
+        method: 'POST',
+        body: formData,
+        credentials: 'include',
+    });
+
+    if (!res.ok) {
+        let errorMsg = `Upload failed (${res.status})`;
+        try {
+            const errorBody = await res.json();
+            errorMsg = errorBody.message || errorMsg;
+        } catch { }
+        throw new Error(errorMsg);
+    }
     return res.json();
 }
 
@@ -357,48 +417,80 @@ export async function deleteSubTag(id: string, _token?: string) {
 
 // ── Home Section Endpoints ──────────────────────────────────────
 
-export async function fetchHomeSections() {
-    const res = await fetch(`${API_BASE_URL}/home-sections`);
-    if (!res.ok) throw new Error('Failed to fetch home sections');
+
+
+
+// ── Player Follow Endpoints ──────────────────────────────────────
+
+export async function fetchAllPlayers() {
+    const res = await fetch(`${PLAYER_BASE_URL}`);
+    if (!res.ok) throw new Error('Failed to fetch players');
     return res.json();
 }
 
-export async function fetchAllHomeSections(_token?: string) {
-    const res = await fetch(`${API_BASE_URL}/admin/home-sections`, {
+export async function fetchMyPlayers() {
+    const res = await fetch(`${PLAYER_BASE_URL}/my-list`, {
         credentials: 'include',
-        cache: 'no-store'
     });
-    if (!res.ok) throw new Error('Failed to fetch all home sections');
+    if (!res.ok) throw new Error('Failed to fetch user players');
     return res.json();
 }
 
-export async function createHomeSection(data: any, _token?: string) {
-    const res = await fetch(`${API_BASE_URL}/admin/home-sections`, {
+export async function fetchMyFeed() {
+    const res = await fetch(`${PLAYER_BASE_URL}/my-feed`, {
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to fetch feed');
+    return res.json();
+}
+
+export async function followPlayer(id: string) {
+    const res = await fetch(`${PLAYER_BASE_URL}/follow/${id}`, {
+        method: 'POST',
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to follow player');
+    return res.json();
+}
+
+export async function unfollowPlayer(id: string) {
+    const res = await fetch(`${PLAYER_BASE_URL}/follow/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to unfollow player');
+    return res.json();
+}
+
+// ── Admin Player Management Endpoints ────────────────────────────
+
+export async function adminCreatePlayer(data: { name: string; slug: string; image?: string }) {
+    const res = await fetch(`${PLAYER_BASE_URL}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
         credentials: 'include',
     });
-    if (!res.ok) throw new Error('Failed to create home section');
+    if (!res.ok) throw new Error('Failed to create player');
     return res.json();
 }
 
-export async function updateHomeSection(id: string, data: any, _token?: string) {
-    const res = await fetch(`${API_BASE_URL}/admin/home-sections/${id}`, {
+export async function adminUpdatePlayer(id: string, data: { name?: string; slug?: string; image?: string }) {
+    const res = await fetch(`${PLAYER_BASE_URL}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
         credentials: 'include',
     });
-    if (!res.ok) throw new Error('Failed to update home section');
+    if (!res.ok) throw new Error('Failed to update player');
     return res.json();
 }
 
-export async function deleteHomeSection(id: string, _token?: string) {
-    const res = await fetch(`${API_BASE_URL}/admin/home-sections/${id}`, {
+export async function adminDeletePlayer(id: string) {
+    const res = await fetch(`${PLAYER_BASE_URL}/${id}`, {
         method: 'DELETE',
         credentials: 'include',
     });
-    if (!res.ok) throw new Error('Failed to delete home section');
+    if (!res.ok) throw new Error('Failed to delete player');
     return res.json();
 }

@@ -1,9 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { fetchSearch } from '@/lib/api';
+import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './SearchOverlay.module.css';
 
 interface SearchOverlayProps {
@@ -13,11 +11,8 @@ interface SearchOverlayProps {
 
 export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
     const [query, setQuery] = useState('');
-    const [results, setResults] = useState<any>(null);
-    const [loading, setLoading] = useState(false);
-    const [hasSearched, setHasSearched] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
-    const debounceRef = useRef<NodeJS.Timeout | null>(null);
+    const router = useRouter();
 
     // Focus input when overlay opens
     useEffect(() => {
@@ -25,8 +20,6 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
             setTimeout(() => inputRef.current?.focus(), 150);
         } else {
             setQuery('');
-            setResults(null);
-            setHasSearched(false);
         }
     }, [isOpen]);
 
@@ -60,57 +53,13 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
         };
     }, [isOpen]);
 
-    // Debounced search
-    const doSearch = useCallback(async (searchQuery: string) => {
-        if (searchQuery.trim().length < 2) {
-            setResults(null);
-            setHasSearched(false);
-            setLoading(false);
-            return;
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (query.trim()) {
+            router.push(`/search?q=${encodeURIComponent(query)}`);
+            onClose();
         }
-
-        setLoading(true);
-        try {
-            const data = await fetchSearch(searchQuery);
-            setResults(data);
-            setHasSearched(true);
-        } catch (err) {
-            console.error('Search error:', err);
-            setResults({ news: [], categories: [], players: [] });
-            setHasSearched(true);
-        } finally {
-            setLoading(false);
-        }
-    }, []);
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setQuery(value);
-
-        if (debounceRef.current) {
-            clearTimeout(debounceRef.current);
-        }
-
-        debounceRef.current = setTimeout(() => {
-            doSearch(value);
-        }, 350);
     };
-
-    const handleClear = () => {
-        setQuery('');
-        setResults(null);
-        setHasSearched(false);
-        inputRef.current?.focus();
-    };
-
-    const handleResultClick = () => {
-        onClose();
-    };
-
-    const totalResults =
-        (results?.news?.length || 0) +
-        (results?.players?.length || 0) +
-        (results?.categories?.length || 0);
 
     return (
         <div
@@ -121,185 +70,29 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
         >
             {/* Close Button */}
             <button className={styles.closeBtn} onClick={onClose} aria-label="Close search">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18" />
                     <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
             </button>
 
             <div className={styles.searchContainer}>
-                {/* Search Input */}
-                <div className={styles.inputWrapper}>
-                    <svg className={styles.searchIcon} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="11" cy="11" r="8" />
-                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                    </svg>
+                <form className={styles.inputForm} onSubmit={handleSubmit}>
                     <input
                         ref={inputRef}
                         type="text"
                         className={styles.searchInput}
-                        placeholder="Search news, players, topics..."
+                        placeholder="FIND ON THE GOLF PRESS."
                         aria-label="Search site content"
                         value={query}
-                        onChange={handleInputChange}
+                        onChange={(e) => setQuery(e.target.value)}
                         autoComplete="off"
                         spellCheck="false"
                     />
-                    {query && (
-                        <button className={styles.clearBtn} onClick={handleClear} aria-label="Clear search">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <circle cx="12" cy="12" r="10" />
-                                <line x1="15" y1="9" x2="9" y2="15" />
-                                <line x1="9" y1="9" x2="15" y2="15" />
-                            </svg>
-                        </button>
-                    )}
-                </div>
-
-                {/* Results */}
-                <div className={styles.resultsArea}>
-                    {/* Loading State */}
-                    {loading && (
-                        <div className={styles.loadingContainer}>
-                            <div className={styles.spinner} />
-                        </div>
-                    )}
-
-                    {/* Initial State */}
-                    {!loading && !hasSearched && !query && (
-                        <div className={styles.initialState}>
-                            <div className={styles.initialIcon}>
-                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-                                    <circle cx="11" cy="11" r="8" />
-                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                                </svg>
-                            </div>
-                            <h1 className={styles.initialTitle}>Search The Golf Press</h1>
-                            <p className={styles.initialHint}>Find news articles, golf players, and more</p>
-                            <div className={styles.shortcuts}>
-                                <span className={styles.shortcutKey}>ESC to close</span>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* No Results */}
-                    {!loading && hasSearched && totalResults === 0 && (
-                        <div className={styles.noResults}>
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                <circle cx="11" cy="11" r="8" />
-                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                                <line x1="8" y1="11" x2="14" y2="11" />
-                            </svg>
-                            <h2 className={styles.noResultsTitle}>No results found</h2>
-                            <p className={styles.noResultsHint}>Try different keywords or check spelling</p>
-                        </div>
-                    )}
-
-                    {/* Results Sections */}
-                    {!loading && hasSearched && totalResults > 0 && (
-                        <>
-                            {/* News Results */}
-                            {results.news?.length > 0 && (
-                                <div className={styles.resultSection}>
-                                    <div className={styles.sectionHeader}>
-                                        <h2 className={styles.sectionLabel}>Articles</h2>
-                                        <span className={styles.sectionCount}>{results.news.length} found</span>
-                                    </div>
-                                    {results.news.map((article: any) => (
-                                        <Link
-                                            key={article.id}
-                                            href={`/news/${article.id}`}
-                                            className={styles.newsItem}
-                                            onClick={handleResultClick}
-                                        >
-                                            <div className={styles.newsThumb}>
-                                                {article.image && (
-                                                    <Image src={article.image} alt={article.title} fill sizes="80px" />
-                                                )}
-                                            </div>
-                                            <div className={styles.newsInfo}>
-                                                <div className={styles.newsCategory}>{article.category}</div>
-                                                <h3 className={styles.newsTitle}>{article.title}</h3>
-                                                <div className={styles.newsExcerpt}>{article.excerpt}</div>
-                                            </div>
-                                        </Link>
-                                    ))}
-                                </div>
-                            )}
-
-                            {/* Player Results */}
-                            {results.players?.length > 0 && (
-                                <div className={styles.resultSection}>
-                                    <div className={styles.sectionHeader}>
-                                        <h2 className={styles.sectionLabel}>Players</h2>
-                                        <span className={styles.sectionCount}>{results.players.length} found</span>
-                                    </div>
-                                    {results.players.map((player: any) => (
-                                        <Link
-                                            key={player.id}
-                                            href={`/players/${player.id}`}
-                                            className={styles.playerItem}
-                                            onClick={handleResultClick}
-                                        >
-                                            <div className={styles.playerAvatar}>
-                                                {player.image ? (
-                                                    <Image src={player.image} alt={player.name} fill sizes="44px" />
-                                                ) : (
-                                                    <div className={styles.playerAvatarPlaceholder}>
-                                                        {player.name?.charAt(0) || '?'}
-                                                    </div>
-                                                )}
-                                            </div>
-                                            <div className={styles.playerInfo}>
-                                                <h3 className={styles.playerName}>{player.name}</h3>
-                                                {player.country && (
-                                                    <div className={styles.playerCountry}>{player.country}</div>
-                                                )}
-                                            </div>
-                                            <svg className={styles.playerArrow} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                <polyline points="9 18 15 12 9 6" />
-                                            </svg>
-                                        </Link>
-                                    ))}
-                                </div>
-                            )}
-
-                            {/* Category Results */}
-                            {results.categories?.length > 0 && (
-                                <div className={styles.resultSection}>
-                                    <div className={styles.sectionHeader}>
-                                        <h2 className={styles.sectionLabel}>Categories</h2>
-                                        <span className={styles.sectionCount}>{results.categories.length} found</span>
-                                    </div>
-                                    {results.categories.map((cat: any) => (
-                                        <Link
-                                            key={cat.id}
-                                            href={`/${cat.slug}`}
-                                            className={styles.categoryItem}
-                                            onClick={handleResultClick}
-                                        >
-                                            <div className={styles.categoryIcon}>
-                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary-red)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                    <path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z" />
-                                                </svg>
-                                            </div>
-                                            <div className={styles.categoryInfo}>
-                                                <h3 className={styles.categoryName}>{cat.name}</h3>
-                                                <div className={styles.categoryCount}>
-                                                    {cat._count?.news || 0} articles
-                                                    {cat.subTags?.length > 0 && ` · ${cat.subTags.length} sub-tags`}
-                                                </div>
-                                            </div>
-                                            <svg className={styles.playerArrow} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                <polyline points="9 18 15 12 9 6" />
-                                            </svg>
-                                        </Link>
-                                    ))}
-                                </div>
-                            )}
-                        </>
-                    )}
-                </div>
+                    <button type="submit" className={styles.searchSubmitBtn}>
+                        Search
+                    </button>
+                </form>
             </div>
         </div>
     );

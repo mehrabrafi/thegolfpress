@@ -42,7 +42,7 @@ export default function GuideDetailClient({
                 image: article.image,
                 datePublished: article.createdAt || new Date().toISOString(),
                 dateModified: article.updatedAt || article.createdAt || new Date().toISOString(),
-                authorName: article.author?.name || 'The Golf Press Editorial',
+                authorName: article.author || 'The Golf Press Editorial',
                 url: `${SITE_URL}/guides-and-tips/post/${id}`,
             })} />
 
@@ -60,6 +60,20 @@ export default function GuideDetailClient({
                     <h1 className={styles.title}>{article.title}</h1>
 
                     <div className={styles.authorRow}>
+                        <div className={styles.authorInfo}>
+                            <div className={styles.authorAvatarWrapper}>
+                                <Image
+                                    src="/logo.png"
+                                    alt={article.author || 'The Golf Press Editorial'}
+                                    width={32}
+                                    height={32}
+                                    className={styles.authorAvatar}
+                                />
+                            </div>
+                            <div className={styles.authorText}>
+                                <span className={styles.authorName}>By {article.author || 'The Golf Press Editorial'}</span>
+                            </div>
+                        </div>
                         <div className={styles.publishInfo}>
                             {formatDate(article.createdAt || new Date().toISOString())} • {article.readTime || '5 min read'}
                         </div>

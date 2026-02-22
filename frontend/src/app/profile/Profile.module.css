@@ -1,0 +1,269 @@
+.profileContainer {
+    max-width: 800px;
+    margin: 80px auto;
+    padding: 40px;
+    background: white;
+    border: 1px solid #eeeeee;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.title {
+    font-size: 2.5rem;
+    font-family: var(--font-sans-condensed);
+    font-weight: 800;
+    margin-bottom: 40px;
+    color: var(--black);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--primary-red);
+    display: inline-block;
+    padding-bottom: 8px;
+}
+
+.profileSection {
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+}
+
+@media (max-width: 768px) {
+    .profileSection {
+        flex-direction: column;
+        gap: 40px;
+    }
+}
+
+.avatarSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.avatarWrapper {
+    width: 150px;
+    height: 150px;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #f5f5f5;
+    border: 4px solid white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.avatarImage {
+    object-fit: cover;
+}
+
+.avatarPlaceholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    font-weight: 800;
+    color: #ccc;
+    text-transform: uppercase;
+}
+
+.uploadLabel {
+    background: var(--black);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    font-family: var(--font-sans-condensed);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.uploadLabel:hover {
+    background: var(--primary-red);
+    transform: translateY(-2px);
+}
+
+.formSection {
+    flex: 1;
+}
+
+.field {
+    margin-bottom: 30px;
+}
+
+.label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 800;
+    font-family: var(--font-sans-condensed);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+    color: #666;
+}
+
+.input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.input:focus {
+    border-color: var(--black);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+}
+
+.input:disabled {
+    background: #f9f9f9;
+    color: #999;
+    cursor: not-allowed;
+}
+
+.actions {
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.saveBtn {
+    background: var(--black);
+    color: white;
+    border: none;
+    padding: 16px 40px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 1rem;
+    font-family: var(--font-sans-condensed);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.saveBtn:hover:not(:disabled) {
+    background: var(--primary-red);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.saveBtn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.deleteBtn {
+    background: none;
+    border: none;
+    color: #cc0000;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+
+.deleteBtn:hover {
+    color: #ff0000;
+}
+
+.message {
+    margin-top: 20px;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.success {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border-left: 4px solid #4caf50;
+}
+
+.error {
+    background: #ffebee;
+    color: #c62828;
+    border-left: 4px solid #f44336;
+}
+
+/* Modal Styles */
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    max-width: 450px;
+    width: 100%;
+    text-align: center;
+}
+
+.modalTitle {
+    font-size: 2rem;
+    font-family: var(--font-sans-condensed);
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.modalText {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.modalActions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.cancelBtn {
+    background: #f5f5f5;
+    color: #444;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.cancelBtn:hover {
+    background: #eeeeee;
+}
+
+.confirmDeleteBtn {
+    background: #cc0000;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.confirmDeleteBtn:hover {
+    background: #ff0000;
+}

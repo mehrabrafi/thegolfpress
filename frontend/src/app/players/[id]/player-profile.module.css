@@ -67,6 +67,53 @@
     text-transform: uppercase;
 }
 
+.nameRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+}
+
+.followBtn {
+    background: transparent;
+    border: 2px solid var(--primary-red);
+    color: var(--primary-red);
+    padding: 10px 24px;
+    border-radius: 100px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+}
+
+.followBtn:hover:not(:disabled) {
+    background: var(--primary-red);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(237, 62, 73, 0.3);
+}
+
+.followBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.following {
+    background: var(--primary-red);
+    color: white;
+}
+
+.following:hover:not(:disabled) {
+    background: #d4222a;
+    border-color: #d4222a;
+}
+
 .heroMeta {
     display: flex;
     align-items: center;
@@ -548,6 +595,16 @@
 
     .playerInfo h1 {
         font-size: 2.5rem;
+    }
+
+    .nameRow {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .followBtn {
+        width: 100%;
+        justify-content: center;
     }
 
     .detailsGrid {

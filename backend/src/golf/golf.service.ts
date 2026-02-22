@@ -357,11 +357,27 @@ export class GolfService {
         }
     }
 
-    async getNews(category?: string, tag?: string, status?: string) {
-        this.logger.log(`Fetching news for category: ${category || 'ALL'} tag: ${tag || 'ALL'} status: ${status || 'PUBLISHED (default)'}`);
+    async getNews(category?: string, tag?: string, status?: string, skip = 0, take?: number, excludeCategories?: string[], search?: string) {
+        this.logger.log(`Fetching news for category: ${category || 'ALL'} tag: ${tag || 'ALL'} status: ${status || 'PUBLISHED (default)'} skip: ${skip} take: ${take ?? 'ALL'} exclude: ${excludeCategories?.join(',') || 'NONE'} search: ${search || 'NONE'}`);
         const where: any = {};
         if (category) where.category = { equals: category, mode: 'insensitive' };
         if (tag) where.categoryTag = { equals: tag, mode: 'insensitive' };
+
+        if (search) {
+            where.OR = [
+                { title: { contains: search, mode: 'insensitive' } },
+                { excerpt: { contains: search, mode: 'insensitive' } },
+                { content: { contains: search, mode: 'insensitive' } },
+            ];
+        }
+
+        // Exclude specific categories (e.g. COURSES, GUIDES-TIPS from news archive)
+        if (excludeCategories && excludeCategories.length > 0) {
+            where.category = {
+                ...where.category,
+                notIn: excludeCategories,
+            };
+        }
 
         // Handle status filtering
         if (status === 'ALL') {
@@ -373,12 +389,17 @@ export class GolfService {
             where.status = 'PUBLISHED';
         }
 
-        return this.prisma.news.findMany({
-            where,
-            orderBy: {
-                createdAt: 'desc'
-            }
-        });
+        const [data, total] = await Promise.all([
+            this.prisma.news.findMany({
+                where,
+                orderBy: { createdAt: 'desc' },
+                skip,
+                ...(take ? { take } : {}),
+            }),
+            this.prisma.news.count({ where }),
+        ]);
+
+        return { data, total };
     }
 
     @Cron(CronExpression.EVERY_MINUTE)
@@ -452,6 +473,7 @@ export class GolfService {
                 time: data.time || new Date().toLocaleDateString(),
                 status: data.status || 'PUBLISHED',
                 publishedAt: data.publishedAt ? new Date(data.publishedAt) : new Date(),
+                author: data.author || null,
 
                 // Relations handling
                 categoryRef: data.categoryId ? { connect: { id: data.categoryId } } : undefined,
@@ -473,6 +495,7 @@ export class GolfService {
                 categoryTag: data.categoryTag,
                 status: data.status,
                 publishedAt: data.publishedAt ? new Date(data.publishedAt) : undefined,
+                author: data.author,
                 categoryId: data.categoryId || null,
                 subTagId: data.subTagId || null,
             }
@@ -535,6 +558,7 @@ export class GolfService {
         return this.prisma.subTag.create({
             data: {
                 name: data.name,
+                image: data.image,
                 categoryId: data.categoryId
             }
         });
@@ -545,6 +569,7 @@ export class GolfService {
             where: { id },
             data: {
                 name: data.name,
+                image: data.image,
                 categoryId: data.categoryId
             }
         });
@@ -784,64 +809,6 @@ export class GolfService {
             update: { value },
             create: { key, value }
         });
-    }
-
-    // Home Section Management
-    async getHomeSections() {
-        return this.prisma.homeSection.findMany({
-            where: { active: true },
-            orderBy: { order: 'asc' }
-        });
-    }
-
-    async getAllHomeSections() {
-        return this.prisma.homeSection.findMany({
-            orderBy: { order: 'asc' }
-        });
-    }
-
-    async createHomeSection(data: any) {
-        return this.prisma.homeSection.create({
-            data: {
-                title: data.title,
-                category: data.category,
-                order: data.order || 0,
-                active: data.active !== undefined ? data.active : true,
-                link: data.link,
-                linkText: data.linkText,
-                maxItems: data.maxItems || 4
-            }
-        });
-    }
-
-    async updateHomeSection(id: string, data: any) {
-        return this.prisma.homeSection.update({
-            where: { id },
-            data: {
-                title: data.title,
-                category: data.category,
-                order: data.order,
-                active: data.active,
-                link: data.link,
-                linkText: data.linkText,
-                maxItems: data.maxItems
-            }
-        });
-    }
-
-    async deleteHomeSection(id: string) {
-        try {
-            this.logger.log(`Deleting home section with ID: ${id}`);
-            return await this.prisma.homeSection.delete({
-                where: { id }
-            });
-        } catch (error) {
-            this.logger.error(`Error deleting home section ${id}: ${error.message}`);
-            if (error.code === 'P2025') {
-                throw new NotFoundException(`Home section with ID ${id} not found`);
-            }
-            throw error;
-        }
     }
 
     // ── Content Analytics ─────────────────────────────────────────

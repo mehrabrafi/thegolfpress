@@ -63,7 +63,7 @@ export default function NewsDetailClient({
                 image: article.image,
                 datePublished: article.createdAt || new Date().toISOString(),
                 dateModified: article.updatedAt || article.createdAt || new Date().toISOString(),
-                authorName: article.author?.name || 'The Golf Press Editorial',
+                authorName: article.author || 'The Golf Press Editorial',
                 url: `${SITE_URL}/news/${id}`,
             })} />
             <div className={styles.topLayout}>
@@ -73,6 +73,20 @@ export default function NewsDetailClient({
                     <h1 className={styles.title}>{article.title}</h1>
 
                     <div className={styles.authorRow}>
+                        <div className={styles.authorInfo}>
+                            <div className={styles.authorAvatarWrapper}>
+                                <Image
+                                    src="/logo.png"
+                                    alt={article.author || 'The Golf Press Editorial'}
+                                    width={40}
+                                    height={40}
+                                    className={styles.authorAvatar}
+                                />
+                            </div>
+                            <div className={styles.authorText}>
+                                <span className={styles.authorName}>By {article.author || 'The Golf Press Editorial'}</span>
+                            </div>
+                        </div>
                         <div className={styles.publishInfo}>
                             {formatDate(article.createdAt || new Date().toISOString())} • {article.readTime || '5 min read'}
                         </div>

@@ -58,6 +58,16 @@ export default function Menu({ isOpen, toggleMenu }: MenuProps) {
                         Rankings
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
                     </Link>
+                    <Link href="/players" className={styles.navItem} onClick={toggleMenu}>
+                        Players
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+                    </Link>
+                    {user && (
+                        <Link href="/my-feed" className={styles.navItem} onClick={toggleMenu}>
+                            My Feed
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+                        </Link>
+                    )}
                 </div>
 
                 <div className={styles.authSection}>

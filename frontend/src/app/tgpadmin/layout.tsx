@@ -16,6 +16,8 @@ import {
     Wrench,
     LogOut,
     BarChart3,
+    Trophy,
+    Sparkles,
 } from 'lucide-react';
 import styles from './admin.module.css';
 
@@ -56,8 +58,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <Link href="/tgpadmin/courses" className={styles.navItem}>
                         <Flag size={18} /> Manage Courses
                     </Link>
-                    <Link href="/tgpadmin/home-sections" className={styles.navItem}>
-                        <LayoutTemplate size={18} /> Home Sections
+                    <Link href="/tgpadmin/equipment" className={styles.navItem}>
+                        <Wrench size={18} /> Manage Equipment
+                    </Link>
+                    <Link href="/tgpadmin/lifestyle" className={styles.navItem}>
+                        <Sparkles size={18} /> Manage Lifestyle
+                    </Link>
+                    <Link href="/tgpadmin/players" className={styles.navItem}>
+                        <Trophy size={18} /> Manage Players
                     </Link>
                     <Link href="/tgpadmin/users" className={styles.navItem}>
                         <Users size={18} /> Users

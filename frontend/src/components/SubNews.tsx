@@ -12,9 +12,17 @@ export default function SubNews({ articles }: SubNewsProps) {
     return (
         <div className={styles.grid}>
             {articles.map((item, idx) => {
-                const isCourse = (item.category && item.category.toUpperCase() === 'COURSES') ||
-                    (item.categoryTag && item.categoryTag?.toUpperCase() === 'COURSES');
-                const href = isCourse ? `/courses/${item.id}` : `/news/${item.id}`;
+                const category = (item.category || item.categoryTag || '').toUpperCase();
+                const isCourse = category === 'COURSES';
+                const isEquipment = category === 'EQUIPMENT';
+                const isLifestyle = category === 'LIFESTYLE';
+                const isGuide = category === 'GUIDES-TIPS';
+
+                let href = `/news/${item.id}`;
+                if (isCourse) href = `/courses/${item.id}`;
+                else if (isEquipment) href = `/equipment/${item.id}`;
+                else if (isLifestyle) href = `/lifestyle/${item.id}`;
+                else if (isGuide) href = `/guides-and-tips/post/${item.id}`;
 
                 return (
                     <Link key={idx} href={href} className={styles.card}>

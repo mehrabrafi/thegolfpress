@@ -3,26 +3,36 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { login as apiLogin, register as apiRegister, logout as apiLogout, getProfile } from '@/lib/api';
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
+
+// Dynamically import wizard to avoid SSR issues with player fetch
+const OnboardingWizard = dynamic(() => import('@/components/OnboardingWizard'), { ssr: false });
 
 interface AuthContextType {
     user: any;
+    setUser: (user: any) => void;
     login: (credentials: any) => Promise<void>;
     signup: (userData: any) => Promise<void>;
     logout: () => void;
+    openOnboarding: (mode?: 'onboarding' | 'tune') => void;
     loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
     user: null,
+    setUser: () => { },
     login: async () => { },
     signup: async () => { },
     logout: () => { },
+    openOnboarding: () => { },
     loading: true,
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [showOnboarding, setShowOnboarding] = useState(false);
+    const [onboardingMode, setOnboardingMode] = useState<'onboarding' | 'tune'>('onboarding');
     const router = useRouter();
 
     useEffect(() => {
@@ -65,10 +75,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const data = await apiRegister(userData);
         localStorage.setItem('tgp_auth_hint', 'true');
         setUser(data.user);
-        if (data.user.role === 'ADMIN') {
-            router.push('/tgpadmin');
+
+        // Show onboarding wizard for new users (role is always USER on new signup)
+        if (data.user.role !== 'ADMIN') {
+            setShowOnboarding(true);
+            // Don't navigate yet — wizard will handle it
         } else {
-            router.push('/');
+            router.push('/tgpadmin');
         }
     };
 
@@ -79,13 +92,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             // Logout API call failed — clear local state anyway
         }
         setUser(null);
+        setShowOnboarding(false);
         localStorage.removeItem('tgp_auth_hint');
         router.push('/login');
     };
 
+    const openOnboarding = (mode: 'onboarding' | 'tune' = 'onboarding') => {
+        setOnboardingMode(mode);
+        setShowOnboarding(true);
+    };
+
+    const handleOnboardingComplete = () => {
+        setShowOnboarding(false);
+        // Refresh profile to get updated preferences
+        getProfile().then(profile => setUser(profile)).catch(() => { });
+        router.push('/my-feed');
+    };
+
     return (
-        <AuthContext.Provider value={{ user, login, signup, logout, loading }}>
+        <AuthContext.Provider value={{ user, setUser, login, signup, logout, openOnboarding, loading }}>
             {children}
+            {showOnboarding && (
+                <OnboardingWizard mode={onboardingMode} onComplete={handleOnboardingComplete} />
+            )}
         </AuthContext.Provider>
     );
 }

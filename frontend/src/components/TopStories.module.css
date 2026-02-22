@@ -1,0 +1,99 @@
+.topStories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    height: 500px;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 40px;
+}
+
+.storyCard {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 30px;
+    overflow: hidden;
+}
+
+.bgImage {
+    object-fit: cover;
+    z-index: 1;
+    transition: transform 0.6s ease;
+}
+
+.imageOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.1) 100%);
+    z-index: 2;
+}
+
+.content {
+    position: relative;
+    z-index: 3;
+}
+
+.categoryBadge {
+    display: inline-block;
+    background: var(--black);
+    color: var(--white);
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 15px;
+    color: var(--white);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.meta {
+    font-size: 0.85rem;
+    font-weight: 500;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.separator {
+    opacity: 0.6;
+}
+
+.storyCard:hover .bgImage {
+    transform: scale(1.05);
+}
+
+@media (max-width: 1024px) {
+    .topStories {
+        height: 400px;
+    }
+
+    .title {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .topStories {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+
+    .storyCard {
+        height: 350px;
+    }
+}

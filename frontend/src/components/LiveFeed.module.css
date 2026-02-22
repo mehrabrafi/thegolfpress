@@ -55,7 +55,7 @@
 }
 
 .scoreRed {
-    color: #ff4d4d;
+    color: var(--primary-red);
 }
 
 @keyframes scroll {

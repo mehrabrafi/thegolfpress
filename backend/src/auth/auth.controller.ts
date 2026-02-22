@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, Request, Body, Get, Res } from '@nestjs/common';
+import { Controller, Post, UseGuards, Request, Body, Get, Res, Patch } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Throttle } from '@nestjs/throttler';
@@ -45,8 +45,41 @@ export class AuthController {
 
     @UseGuards(AuthGuard('jwt'))
     @Get('profile')
-    getProfile(@Request() req) {
-        return req.user;
+    async getProfile(@Request() req) {
+        return this.authService.getFullProfile(req.user.id);
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Patch('profile')
+    async updateProfile(@Request() req, @Body() body: { name?: string; image?: string }) {
+        return this.authService.updateProfile(req.user.id, body);
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Post('delete-account')
+    async deleteAccount(@Request() req, @Res({ passthrough: true }) res: Response) {
+        const result = await this.authService.deleteAccount(req.user.id);
+        const isProduction = process.env.NODE_ENV === 'production';
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: isProduction,
+            sameSite: 'lax',
+            domain: isProduction ? '.thegolfpress.com' : 'localhost',
+        });
+        return result;
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Patch('onboarding')
+    async completeOnboarding(
+        @Request() req,
+        @Body() body: { preferredCategories: string[]; playerIds: string[] }
+    ) {
+        return this.authService.completeOnboarding(
+            req.user.id,
+            body.preferredCategories || [],
+            body.playerIds || []
+        );
     }
 
     @Post('logout')

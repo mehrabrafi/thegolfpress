@@ -1,0 +1,113 @@
+.playerContainer {
+    margin: 40px 0;
+    padding: 20px 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #000;
+    letter-spacing: -0.5px;
+}
+
+.myFeedBtn {
+    background: transparent;
+    color: var(--black);
+    border: 2px solid var(--black);
+    padding: 10px 30px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    font-family: var(--font-sans-condensed);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
+}
+
+.myFeedBtn:hover {
+    background: var(--black);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.playerGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.playerCard {
+    background: #f9f9f9;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.playerCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 12px;
+    border: 2px solid #ddd;
+}
+
+.playerName {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.followBtn {
+    background: white;
+    color: var(--primary-red);
+    border: 1px solid var(--primary-red);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.followBtn:hover {
+    background: rgba(219, 39, 39, 0.05);
+}
+
+.followingBtn {
+    background: var(--primary-red);
+    color: white;
+    border: 1px solid var(--primary-red);
+}
+
+.followingBtn:hover {
+    background: #b91d1d;
+}
+
+@media (max-width: 768px) {
+    .playerGrid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 12px;
+    }
+}

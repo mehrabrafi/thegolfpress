@@ -1,0 +1,28 @@
+--- backend/prisma/schema.prisma
++++ backend/prisma/schema.prisma
+@@ -42,6 +42,7 @@
+   subTagId    String?
+   categoryRef Category?  @relation(fields: [categoryId], references: [id])
+   subTag      SubTag?    @relation(fields: [subTagId], references: [id])
++  players     Player[]   @relation("NewsToPlayer")
+ }
+ 
+ model User {
+@@ -55,6 +56,16 @@
+   createdAt         DateTime  @default(now())
+   updatedAt         DateTime  @updatedAt
++  followedPlayers   Player[]  @relation("UserFollowsPlayer")
++}
++
++model Player {
++  id        String   @id @default(uuid())
++  name      String   @unique
++  slug      String   @unique
++  image     String?
++  createdAt DateTime @default(now())
++  updatedAt DateTime @updatedAt
++  users     User[]   @relation("UserFollowsPlayer")
++  news      News[]   @relation("NewsToPlayer")
+ }
+ 
+ model Setting {

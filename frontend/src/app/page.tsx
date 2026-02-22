@@ -1,51 +1,43 @@
-import { fetchLeaderboard, fetchNews, fetchHomeSections, fetchTrendingNews } from '@/lib/api';
+import { fetchLeaderboard, fetchNews, fetchTrendingNews } from '@/lib/api';
 import HomeClient from './HomeClient';
 
 export default async function Home() {
   // Fetch all data server-side in parallel
-  const [leaderboardData, allNews, trendingData, sections] = await Promise.allSettled([
+  const [leaderboardData, allNews, trendingData, guidesNews, coursesNews, equipmentNews, lifestyleNews] = await Promise.allSettled([
     fetchLeaderboard(),
-    fetchNews(),
+    fetchNews(), // General News
     fetchTrendingNews(),
-    fetchHomeSections(),
+    fetchNews('GUIDES-TIPS'),
+    fetchNews('COURSES'),
+    fetchNews('EQUIPMENT'),
+    fetchNews('LIFESTYLE'),
   ]);
 
   const leaderboard = leaderboardData.status === 'fulfilled' ? leaderboardData.value : null;
 
-  // Filter out Guides & Tips and Courses from general news
-  const rawNews = allNews.status === 'fulfilled' ? allNews.value : [];
+  // Filter out specialized categories from general news
+  const rawNews = allNews.status === 'fulfilled' ? allNews.value.data : [];
   const filteredNews = rawNews.filter((item: any) => {
     const cat = (item.category || '').toUpperCase();
-    return cat !== 'GUIDES-TIPS' && cat !== 'COURSES' && cat !== 'COURSE';
+    const exclude = ['GUIDES-TIPS', 'COURSES', 'EQUIPMENT', 'EQUIPMENT-REVIEW', 'LIFESTYLE'];
+    return !exclude.includes(cat) && cat !== 'COURSE' && cat !== 'HOW-TO';
   });
 
   const trending = trendingData.status === 'fulfilled' ? trendingData.value : [];
-  const homeSections = sections.status === 'fulfilled' ? sections.value : [];
-
-  // Fetch articles for each dynamic section
-  const sectionArticles: { [key: string]: any[] } = {};
-  console.log(`[Home] Processing ${homeSections.length} active home sections...`);
-
-  await Promise.all(
-    homeSections.map(async (section: any) => {
-      try {
-        console.log(`[Home] Fetching articles for section: "${section.title}" (Category: ${section.category})`);
-        const articles = await fetchNews(section.category);
-        console.log(`[Home] Section "${section.title}" returned ${articles.length} articles.`);
-        sectionArticles[section.id] = articles.slice(0, section.maxItems);
-      } catch (err) {
-        console.error(`[Home] Error loading articles for section ${section.id} (${section.title}):`, err);
-      }
-    })
-  );
+  const guides = guidesNews.status === 'fulfilled' ? guidesNews.value.data : [];
+  const courses = coursesNews.status === 'fulfilled' ? coursesNews.value.data : [];
+  const equipment = equipmentNews.status === 'fulfilled' ? equipmentNews.value.data : [];
+  const lifestyle = lifestyleNews.status === 'fulfilled' ? lifestyleNews.value.data : [];
 
   return (
     <HomeClient
       initialNews={filteredNews.length > 0 ? filteredNews : null}
       initialTrending={trending.length > 0 ? trending : null}
       initialLeaderboard={leaderboard}
-      initialSections={homeSections}
-      initialSectionArticles={sectionArticles}
+      initialGuides={guides}
+      initialCourses={courses}
+      initialEquipment={equipment}
+      initialLifestyle={lifestyle}
     />
   );
 }

@@ -43,6 +43,10 @@ export class CreateNewsDto {
     @IsOptional()
     @IsUUID()
     subTagId?: string;
+
+    @IsOptional()
+    @IsString()
+    author?: string;
 }
 
 export class UpdateNewsDto {
@@ -93,6 +97,10 @@ export class UpdateNewsDto {
     @IsOptional()
     @IsUUID()
     subTagId?: string;
+
+    @IsOptional()
+    @IsString()
+    author?: string;
 }
 
 export class CreateCategoryDto {
@@ -119,6 +127,10 @@ export class CreateSubTagDto {
 
     @IsUUID()
     categoryId: string;
+
+    @IsOptional()
+    @IsString()
+    image?: string;
 }
 
 export class UpdateSubTagDto {
@@ -129,6 +141,10 @@ export class UpdateSubTagDto {
     @IsOptional()
     @IsUUID()
     categoryId?: string;
+
+    @IsOptional()
+    @IsString()
+    image?: string;
 }
 
 export class UpdateUserRoleDto {
@@ -141,60 +157,4 @@ export class UpdateSettingDto {
     value: string;
 }
 
-export class CreateHomeSectionDto {
-    @IsString()
-    title: string;
 
-    @IsString()
-    category: string;
-
-    @IsOptional()
-    @IsNumber()
-    order?: number;
-
-    @IsOptional()
-    @IsBoolean()
-    active?: boolean;
-
-    @IsOptional()
-    @IsString()
-    link?: string;
-
-    @IsOptional()
-    @IsString()
-    linkText?: string;
-
-    @IsOptional()
-    @IsNumber()
-    maxItems?: number;
-}
-
-export class UpdateHomeSectionDto {
-    @IsOptional()
-    @IsString()
-    title?: string;
-
-    @IsOptional()
-    @IsString()
-    category?: string;
-
-    @IsOptional()
-    @IsNumber()
-    order?: number;
-
-    @IsOptional()
-    @IsBoolean()
-    active?: boolean;
-
-    @IsOptional()
-    @IsString()
-    link?: string;
-
-    @IsOptional()
-    @IsString()
-    linkText?: string;
-
-    @IsOptional()
-    @IsNumber()
-    maxItems?: number;
-}

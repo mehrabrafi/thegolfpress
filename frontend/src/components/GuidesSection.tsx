@@ -12,12 +12,18 @@ export default function GuidesSection({ articles }: { articles: any[] }) {
                 <Link href="/guides-and-tips" className={styles.link}>VIEW ALL TIPS →</Link>
             </div>
             <div className={styles.grid}>
-                {articles.slice(0, 4).map((item, idx) => (
+                {articles.slice(0, 3).map((item, idx) => (
                     <Link key={idx} href={`/guides-and-tips/post/${item.id}`} className={styles.card}>
                         <div className={styles.imageWrapper}>
-                            <Image src={item.image} alt={item.title} fill className={styles.image} sizes="(max-width: 768px) 50vw, 25vw" />
+                            <Image src={item.image} alt={item.title} fill className={styles.image} sizes="(max-width: 768px) 100vw, 33vw" />
                         </div>
-                        <h3 className={styles.cardTitle}>{item.title}</h3>
+                        <div className={styles.content}>
+                            <h3 className={styles.cardTitle}>{item.title}</h3>
+                            <p className={styles.excerpt}>{item.excerpt}</p>
+                            <div className={styles.meta}>
+                                BY {item.author?.toUpperCase() || 'THE GOLF PRESS'} • PUBLISHED {item.time?.toUpperCase() || (item.createdAt ? new Date(item.createdAt).toLocaleDateString().toUpperCase() : '')}
+                            </div>
+                        </div>
                     </Link>
                 ))}
             </div>

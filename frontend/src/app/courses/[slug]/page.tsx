@@ -2,6 +2,8 @@ import { fetchNewsById, fetchNews } from '@/lib/api';
 import CourseDetailClient from './CourseDetailClient';
 import type { Metadata } from 'next';
 
+const PAGE_SIZE = 10;
+
 export async function generateMetadata({ params }: { params: any }): Promise<Metadata> {
     const { slug } = await params;
 
@@ -43,8 +45,11 @@ export default async function CourseDetailPage({ params }: { params: any }) {
                     <CourseDetailClient
                         viewMode="detail"
                         course={courseData}
-                        courses={[]}
+                        initialCourses={[]}
+                        serverTotal={0}
+                        pageSize={PAGE_SIZE}
                         slug={slug}
+                        tagFilter=""
                     />
                 );
             }
@@ -52,14 +57,20 @@ export default async function CourseDetailPage({ params }: { params: any }) {
             // Not a valid course ID, proceed to check category
         }
 
-        // 2. If not a specific course, try to fetch as a category (e.g. /courses/scotland)
-        const categoryData = await fetchNews('COURSES', slug);
+        // 2. If not a specific course, fetch as a category (e.g. /courses/scotland or /courses/united-states)
+        // Convert hyphenated slug back to tag name (e.g. "united-states" -> "united states")
+        const tagName = slug.replace(/-/g, ' ');
+        const { data, total } = await fetchNews('COURSES', tagName, undefined, 0, PAGE_SIZE);
+
         return (
             <CourseDetailClient
                 viewMode="category"
                 course={null}
-                courses={categoryData || []}
+                initialCourses={data || []}
+                serverTotal={total || 0}
+                pageSize={PAGE_SIZE}
                 slug={slug}
+                tagFilter={tagName}
             />
         );
 
@@ -69,8 +80,11 @@ export default async function CourseDetailPage({ params }: { params: any }) {
             <CourseDetailClient
                 viewMode="error"
                 course={null}
-                courses={[]}
+                initialCourses={[]}
+                serverTotal={0}
+                pageSize={PAGE_SIZE}
                 slug={slug}
+                tagFilter=""
             />
         );
     }

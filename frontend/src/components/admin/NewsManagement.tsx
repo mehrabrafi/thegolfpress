@@ -29,8 +29,8 @@ export default function NewsManagement({
         subTagId: '',
         type: 'REGULAR',
         status: 'PUBLISHED',
+        author: '',
         publishedAt: new Date().toISOString().slice(0, 16),
-
     });
     const [categories, setCategories] = useState<any[]>([]);
     const [subTags, setSubTags] = useState<any[]>([]);
@@ -52,7 +52,7 @@ export default function NewsManagement({
                 fetchNews(fixedCategory, undefined, 'ALL'),
                 fetchCategories()
             ]);
-            setNews(newsData);
+            setNews(newsData.data);
             setCategories(catData);
 
 
@@ -91,6 +91,7 @@ export default function NewsManagement({
             categoryTag: '',
             type: 'REGULAR',
             status: 'PUBLISHED',
+            author: '',
             publishedAt: new Date().toISOString().slice(0, 16)
         });
         setEditId(null);
@@ -145,6 +146,7 @@ export default function NewsManagement({
             categoryTag: article.categoryTag || '',
             type: article.type,
             status: article.status || 'PUBLISHED',
+            author: article.author || '',
             publishedAt: article.publishedAt ? new Date(article.publishedAt).toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16)
         });
 
@@ -321,6 +323,15 @@ export default function NewsManagement({
                                 </select>
                             </div>
                             <div className={styles.formGroup}>
+                                <label>AUTHOR NAME</label>
+                                <input
+                                    type="text"
+                                    value={formData.author}
+                                    onChange={e => setFormData({ ...formData, author: e.target.value })}
+                                    placeholder="e.g. Tiger Woods"
+                                />
+                            </div>
+                            <div className={styles.formGroup}>
                                 <label>PUBLISH DATE & TIME</label>
                                 <input
                                     type="datetime-local"
@@ -454,7 +465,7 @@ export default function NewsManagement({
                                     </tr>
                                 )) : (
                                     <tr>
-                                        <td colSpan={fixedCategory ? 4 : 5} style={{ textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
+                                        <td colSpan={fixedCategory ? 5 : 6} style={{ textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
                                             No entries found.
                                         </td>
                                     </tr>

@@ -2,6 +2,8 @@ import { fetchNews, fetchCategories } from '@/lib/api';
 import GuideCategoryClient from './GuideCategoryClient';
 import type { Metadata } from 'next';
 
+const PAGE_SIZE = 10;
+
 export async function generateMetadata({ params }: { params: any }): Promise<Metadata> {
     const { slug } = await params;
     const tagName = slug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase());
@@ -14,22 +16,20 @@ export async function generateMetadata({ params }: { params: any }): Promise<Met
 
 export default async function GuideCategoryPage({ params }: { params: any }) {
     const { slug } = await params;
-    let articles: any[] = [];
+    let initialArticles: any[] = [];
+    let total = 0;
     let currentTagName = 'All Guides & Tips';
+    let matchedTagOriginalName = '';
 
     try {
-        const [newsData, catData] = await Promise.all([
-            fetchNews(),
-            fetchCategories(),
-        ]);
+        const catData = await fetchCategories();
 
-        // Filter for Guides & Tips articles
-        const guideArticles = newsData.filter((a: any) => {
-            const c = (a.category || '').toUpperCase();
-            return c === 'GUIDES-TIPS';
-        });
+        const guidesCat = catData.find((c: any) =>
+            c.slug === 'guides-tips' ||
+            c.name.toLowerCase() === 'guides & tips' ||
+            c.name.toLowerCase() === 'guides-tips'
+        );
 
-        const guidesCat = catData.find((c: any) => c.slug === 'guides-tips' || c.name.toLowerCase() === 'guides & tips' || c.name.toLowerCase() === 'guides-tips');
         if (guidesCat && guidesCat.subTags) {
             const matchedTag = guidesCat.subTags.find((t: any) =>
                 t.name.toLowerCase().replace(/ /g, '-') === slug.toLowerCase()
@@ -37,16 +37,25 @@ export default async function GuideCategoryPage({ params }: { params: any }) {
 
             if (matchedTag) {
                 currentTagName = matchedTag.name;
-                articles = guideArticles.filter((a: any) =>
-                    (a.categoryTag || '').toUpperCase() === matchedTag.name.toUpperCase()
-                );
-            } else {
-                articles = guideArticles;
+                matchedTagOriginalName = matchedTag.name;
+
+                // Fetch paginated articles for this specific tag from the backend
+                const { data, total: t } = await fetchNews('GUIDES-TIPS', matchedTag.name, undefined, 0, PAGE_SIZE);
+                initialArticles = data ?? [];
+                total = t ?? 0;
             }
         }
     } catch (error) {
         console.error('Error fetching guides & tips category data:', error);
     }
 
-    return <GuideCategoryClient articles={articles} currentTagName={currentTagName} />;
+    return (
+        <GuideCategoryClient
+            initialArticles={initialArticles}
+            pageSize={PAGE_SIZE}
+            serverTotal={total}
+            currentTagName={currentTagName}
+            tagFilter={matchedTagOriginalName}
+        />
+    );
 }

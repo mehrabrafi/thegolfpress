@@ -18,6 +18,7 @@ model Category {
 model SubTag {
   id         String   @id @default(uuid())
   name       String
+  image      String?
   categoryId String
   news       News[]
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
@@ -40,20 +41,37 @@ model News {
   status      NewsStatus @default(PUBLISHED)
   categoryId  String?
   subTagId    String?
+  author      String?
   categoryRef Category?  @relation(fields: [categoryId], references: [id])
   subTag      SubTag?    @relation(fields: [subTagId], references: [id])
+  players     Player[]   @relation("NewsToPlayer")
 }
 
 model User {
+  id                   String   @id @default(uuid())
+  email                String   @unique
+  password             String
+  name                 String?
+  image                String?   @default("")
+  role                 Role      @default(USER)
+  resetToken           String?
+  resetTokenExpires    DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  onboardingCompleted  Boolean   @default(false)
+  preferredCategories  String    @default("[]")
+  followedPlayers      Player[]  @relation("UserFollowsPlayer")
+}
+
+model Player {
   id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  name      String?
-  role              Role      @default(USER)
-  resetToken        String?
-  resetTokenExpires DateTime?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  name      String   @unique
+  slug      String   @unique
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users     User[]   @relation("UserFollowsPlayer")
+  news      News[]   @relation("NewsToPlayer")
 }
 
 model Setting {
@@ -73,19 +91,6 @@ enum Role {
   USER
   ADMIN
   EDITOR
-}
-
-model HomeSection {
-  id        String   @id @default(uuid())
-  title     String
-  category  String
-  order     Int      @default(0)
-  active    Boolean  @default(true)
-  link      String?
-  linkText  String?
-  maxItems  Int      @default(4)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model Analytics {

@@ -1,5 +1,5 @@
+/* ===== Single Dark Nav Bar Header ===== */
 .header {
-    background: var(--white);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -11,309 +11,136 @@
     transform: translateY(-100%);
 }
 
-/* --- Top Bar --- */
-.topBar {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    padding: 0 20px;
-    height: 110px;
-    position: relative;
-    overflow: visible;
-    /* Crucial for overhang */
-}
-
-.authLeft {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
-}
-
-.signUpText {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--medium-gray);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-family: var(--font-sans);
-}
-
-.monogramLink {
-    display: flex;
-    align-items: center;
-    height: 40px;
-}
-
-.monogramLogo {
-    height: 100%;
-    width: auto;
-    object-fit: contain;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 300px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1100;
-    pointer-events: auto;
-}
-
-.logoImage {
-    height: 180px;
-    width: auto;
-    object-fit: contain;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    /* Centered vertically */
-    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
-    pointer-events: none;
-}
-
-.dot {
-    color: var(--primary-red);
-    font-size: 1.2rem;
-    margin: 0 2px;
-    font-weight: 900;
-    line-height: 0;
-}
-
-.authRight {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.loginLink {
-    font-family: var(--font-sans-condensed);
-    font-weight: 700;
-    font-size: 1rem;
-    color: var(--black);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.adminPanelLink {
-    font-family: var(--font-sans-condensed);
-    font-weight: 700;
-    font-size: 0.85rem;
-    color: var(--primary-red);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    text-decoration: none;
-    margin-right: 20px;
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s;
-}
-
-.adminPanelLink:hover {
-    border-bottom-color: var(--primary-red);
-}
-
-/* --- Navigation Bar --- */
-.navBarWrapper {
-    border-top: 1px solid var(--border-color);
-    background: var(--white);
-}
-
+/* --- Main Dark Nav Bar --- */
 .navBar {
+    background: #ffffff;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.navBarInner {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-    height: 50px;
+    height: 70px;
     padding: 0 20px;
+    gap: 30px;
 }
 
-.menuItem {
+/* Logo */
+.navLogo {
     display: flex;
     align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0;
+    flex-shrink: 0;
 }
 
-.hamburger {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    width: 18px;
+.navLogoImage {
+    height: 100px;
+    width: auto;
+    object-fit: contain;
 }
 
-.hamburger span {
-    display: block;
-    width: 100%;
-    height: 2px;
-    background-color: var(--black);
-}
-
-.menuText {
-    font-family: var(--font-sans-condensed);
-    font-weight: 700;
-    font-size: 0.9rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--black);
-}
-
+/* Center Navigation */
 .nav {
     display: flex;
-    gap: 40px;
+    align-items: center;
+    gap: 35px;
+    flex: 1;
+    justify-content: center;
 }
 
 .nav a {
     font-family: var(--font-sans-condensed);
     font-weight: 700;
     font-size: 0.85rem;
-    color: var(--black);
+    color: #000000;
     text-transform: uppercase;
     letter-spacing: 0.15em;
+    text-decoration: none;
     transition: color 0.2s;
+    white-space: nowrap;
     position: relative;
+    padding: 4px 0;
 }
 
 .nav a:hover {
     color: var(--primary-red);
 }
 
-.searchItem {
+.navLinkActive {
+    color: var(--primary-red) !important;
+}
+
+.navLinkActive::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--primary-red);
+}
+
+/* Right Actions */
+.navRight {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-shrink: 0;
+}
+
+.adminLink {
+    font-family: var(--font-sans-condensed);
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: var(--primary-red);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.adminLink:hover {
+    opacity: 0.8;
+}
+
+.authLink {
+    font-family: var(--font-sans-condensed);
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: #555555;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    background: none;
+    border: none;
     cursor: pointer;
-    color: var(--black);
+    transition: color 0.2s;
+}
+
+.authLink:hover {
+    color: #000000;
+}
+
+.searchBtn {
+    cursor: pointer;
+    color: #000000;
     display: flex;
     align-items: center;
     background: none;
     border: none;
     padding: 0;
+    transition: color 0.2s;
 }
 
-.searchItem:hover {
+.searchBtn:hover {
     color: var(--primary-red);
-}
-
-.searchItem:hover {
-    color: var(--primary-red);
-}
-
-/* --- Category Page Header (Single Row) --- */
-.categoryHeader {
-    border-bottom: 1px solid var(--border-color);
-}
-
-.catHeaderContent {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 90px;
-    position: relative;
-    padding: 0 20px;
-}
-
-.catHeaderLeft {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    min-width: 200px;
-}
-
-.sectionTitle {
-    font-family: var(--font-inter);
-    font-weight: 700;
-    font-size: 0.9rem;
-    color: #707070;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-}
-
-.logoSmall {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-}
-
-.logoImageSmall {
-    height: 100px;
-    width: auto;
-    object-fit: contain;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.catHeaderRight {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    justify-content: flex-end;
-    min-width: 200px;
-}
-
-.loginLinkSmall {
-    font-family: var(--font-sans-condensed);
-    font-weight: 700;
-    font-size: 0.8rem;
-    color: var(--black);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.adminPanelLinkSmall {
-    font-family: var(--font-sans-condensed);
-    font-weight: 700;
-    font-size: 0.8rem;
-    color: var(--primary-red);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    text-decoration: none;
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s;
-}
-
-.adminPanelLinkSmall:hover {
-    border-bottom-color: var(--primary-red);
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-    .nav {
-        display: none;
-    }
-
-    .logoImage {
-        height: 140px;
-    }
-
-    .topBar {
-        height: 90px;
-    }
-
-    .logoImage {
-        height: 130px;
-    }
 }
 
 /* --- Sub-Navigation Row --- */
 .subNavBar {
     background: #ffffff;
-    border-top: 1px solid var(--border-color);
     border-bottom: 2px solid #eee;
 }
-
 
 .subNavContent {
     max-width: 1400px;
@@ -365,41 +192,181 @@
     background: var(--primary-red);
 }
 
-/* ===== More Mobile Header ===== */
+/* User Menu Dropdown */
+.userMenuContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.userBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 50px;
+    transition: background 0.2s;
+}
+
+.userBtn:hover {
+    background: #f5f5f5;
+}
+
+.avatar {
+    width: 28px;
+    height: 28px;
+    background: var(--black);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.userName {
+    font-family: var(--font-sans-condensed);
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: var(--black);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background: white;
+    border: 1px solid #eeeeee;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    z-index: 1001;
+    overflow: hidden;
+    animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdownHeader {
+    padding: 16px;
+    border-bottom: 1px solid #eeeeee;
+    background: #f9f9f9;
+}
+
+.userEmail {
+    display: block;
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 2px;
+}
+
+.dropdownItem {
+    width: 100%;
+    padding: 12px 16px;
+    text-align: left;
+    background: none;
+    border: none;
+    font-family: var(--font-sans-condensed);
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: #444;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.dropdownItem:hover {
+    background: #f5f5f5;
+    color: var(--primary-red);
+}
+
+.dropdownItem.logout {
+    color: #cc0000;
+}
+
+.dropdownItem.logout:hover {
+    background: #fffafa;
+    color: #ff0000;
+}
+
+.dropdownItem svg {
+    opacity: 0.6;
+}
+
+.dropdownItem:hover svg {
+    opacity: 1;
+}
+
 @media (max-width: 768px) {
-    .topBar {
-        height: 70px;
+    .userName {
+        display: none;
+    }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+    .nav {
+        gap: 20px;
+    }
+
+    .nav a {
+        font-size: 0.78rem;
+        letter-spacing: 0.1em;
+    }
+
+    .navLogoImage {
+        height: 36px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navBarInner {
+        height: 60px;
         padding: 0 15px;
+        gap: 15px;
     }
 
-    .logoImage {
-        height: 100px;
+    .nav {
+        gap: 12px;
     }
 
-    .logo {
-        width: 200px;
+    .nav a {
+        font-size: 0.7rem;
+        letter-spacing: 0.05em;
     }
 
-    .signUpText {
+    .navLogoImage {
+        height: 38px;
+    }
+
+    .authLink {
+        display: none;
+    }
+
+    .adminLink {
         font-size: 0.65rem;
-    }
-
-    .loginLink {
-        font-size: 0.85rem;
-    }
-
-    .adminPanelLink {
-        font-size: 0.75rem;
-        margin-right: 10px;
-    }
-
-    .navBar {
-        height: 42px;
-        padding: 0 15px;
-    }
-
-    .menuText {
-        font-size: 0.8rem;
     }
 
     .subNavLink {
@@ -411,57 +378,26 @@
         gap: 15px;
         padding: 10px 15px;
     }
-
-    /* Category Page Header */
-    .catHeaderContent {
-        height: 60px;
-        padding: 0 15px;
-    }
-
-    .catHeaderLeft {
-        min-width: 120px;
-        gap: 8px;
-    }
-
-    .catHeaderRight {
-        min-width: 120px;
-        gap: 10px;
-    }
-
-    .logoImageSmall {
-        height: 70px;
-    }
-
-    .sectionTitle {
-        font-size: 0.75rem;
-        letter-spacing: 0.05em;
-    }
-
-    .loginLinkSmall {
-        font-size: 0.7rem;
-    }
 }
 
 @media (max-width: 480px) {
-    .topBar {
-        height: 60px;
+    .navBarInner {
+        height: 52px;
         padding: 0 12px;
+        gap: 10px;
     }
 
-    .logoImage {
-        height: 80px;
+    .nav {
+        gap: 8px;
     }
 
-    .logo {
-        width: 160px;
+    .nav a {
+        font-size: 0.6rem;
+        letter-spacing: 0;
     }
 
-    .authLeft {
-        display: none;
-    }
-
-    .loginLink {
-        font-size: 0.8rem;
+    .navLogoImage {
+        height: 32px;
     }
 
     .subNav {

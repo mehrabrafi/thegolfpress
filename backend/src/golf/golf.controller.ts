@@ -8,7 +8,6 @@ import {
     CreateCategoryDto, UpdateCategoryDto,
     CreateSubTagDto, UpdateSubTagDto,
     UpdateUserRoleDto, UpdateSettingDto,
-    CreateHomeSectionDto, UpdateHomeSectionDto,
 } from './dto/golf.dto';
 
 @Controller('golf')
@@ -58,8 +57,24 @@ export class GolfController {
     }
 
     @Get('news')
-    async getNews(@Query('category') category?: string, @Query('tag') tag?: string, @Query('status') status?: string) {
-        return this.golfService.getNews(category, tag, status);
+    async getNews(
+        @Query('category') category?: string,
+        @Query('tag') tag?: string,
+        @Query('status') status?: string,
+        @Query('skip') skip?: string,
+        @Query('take') take?: string,
+        @Query('excludeCategories') excludeCategories?: string,
+        @Query('search') search?: string,
+    ) {
+        return this.golfService.getNews(
+            category,
+            tag,
+            status,
+            skip ? parseInt(skip, 10) : 0,
+            take ? parseInt(take, 10) : undefined,
+            excludeCategories ? excludeCategories.split(',') : undefined,
+            search,
+        );
     }
 
     @Get('news/trending')
@@ -90,11 +105,6 @@ export class GolfController {
     @Get('maintenance-status')
     async getMaintenanceStatus() {
         return this.golfService.getMaintenanceStatus();
-    }
-
-    @Get('home-sections')
-    async getHomeSections() {
-        return this.golfService.getHomeSections();
     }
 
     @Post('track-activity')
@@ -215,33 +225,4 @@ export class GolfController {
         return this.golfService.updateSetting(key, body.value);
     }
 
-    // ── Home Section Management ──────────────────────────────────
-
-    @UseGuards(AuthGuard('jwt'), RolesGuard)
-    @Roles('ADMIN')
-    @Get('admin/home-sections')
-    async getAllHomeSections() {
-        return this.golfService.getAllHomeSections();
-    }
-
-    @UseGuards(AuthGuard('jwt'), RolesGuard)
-    @Roles('ADMIN')
-    @Post('admin/home-sections')
-    async createHomeSection(@Body() body: CreateHomeSectionDto) {
-        return this.golfService.createHomeSection(body);
-    }
-
-    @UseGuards(AuthGuard('jwt'), RolesGuard)
-    @Roles('ADMIN')
-    @Put('admin/home-sections/:id')
-    async updateHomeSection(@Param('id') id: string, @Body() body: UpdateHomeSectionDto) {
-        return this.golfService.updateHomeSection(id, body);
-    }
-
-    @UseGuards(AuthGuard('jwt'), RolesGuard)
-    @Roles('ADMIN')
-    @Delete('admin/home-sections/:id')
-    async deleteHomeSection(@Param('id') id: string) {
-        return this.golfService.deleteHomeSection(id);
-    }
 }

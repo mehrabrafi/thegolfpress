@@ -3,14 +3,16 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { fetchPlayerProfile } from '@/lib/api';
+import { fetchPlayerProfile, followPlayer, unfollowPlayer, fetchMyPlayers } from '@/lib/api';
 import styles from './player-profile.module.css';
 import PerformanceChart from './PerformanceChart';
-import { Twitter, Instagram, Globe, GraduationCap, Award } from 'lucide-react';
+import { Twitter, Instagram, Globe, GraduationCap, Award, Plus, Check } from 'lucide-react';
 
 export default function PlayerProfileClient({ id }: { id: string }) {
     const [player, setPlayer] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [isFollowed, setIsFollowed] = useState(false);
+    const [followingLoading, setFollowingLoading] = useState(false);
 
     useEffect(() => {
         if (!id || id === 'undefined') {
@@ -21,8 +23,14 @@ export default function PlayerProfileClient({ id }: { id: string }) {
         async function load() {
             setLoading(true);
             try {
-                const data = await fetchPlayerProfile(id);
+                const [data, myFollows] = await Promise.all([
+                    fetchPlayerProfile(id),
+                    fetchMyPlayers().catch(() => [])
+                ]);
                 setPlayer(data);
+                if (Array.isArray(myFollows)) {
+                    setIsFollowed(myFollows.some((p: any) => p.id === id));
+                }
             } catch {
                 // Player profile failed to load — handled by null state below
             } finally {
@@ -31,6 +39,23 @@ export default function PlayerProfileClient({ id }: { id: string }) {
         }
         load();
     }, [id]);
+
+    const handleFollow = async () => {
+        setFollowingLoading(true);
+        try {
+            if (isFollowed) {
+                await unfollowPlayer(id);
+                setIsFollowed(false);
+            } else {
+                await followPlayer(id);
+                setIsFollowed(true);
+            }
+        } catch (error) {
+            console.error('Failed to toggle follow:', error);
+        } finally {
+            setFollowingLoading(false);
+        }
+    };
 
     if (loading) {
         return (
@@ -89,7 +114,22 @@ export default function PlayerProfileClient({ id }: { id: string }) {
                     />
                 </div>
                 <div className={styles.playerInfo}>
-                    <h1>{player.name}</h1>
+                    <div className={styles.nameRow}>
+                        <h1>{player.name}</h1>
+                        <button
+                            className={`${styles.followBtn} ${isFollowed ? styles.following : ''}`}
+                            onClick={handleFollow}
+                            disabled={followingLoading}
+                        >
+                            {followingLoading ? (
+                                '...'
+                            ) : isFollowed ? (
+                                <><Check size={16} /> Following</>
+                            ) : (
+                                <><Plus size={16} /> Follow Player</>
+                            )}
+                        </button>
+                    </div>
                     <div className={styles.heroMeta}>
                         <div className={styles.countryTag}>
                             {player.citizenship || player.country?.abbreviation || 'PGA TOUR'}
