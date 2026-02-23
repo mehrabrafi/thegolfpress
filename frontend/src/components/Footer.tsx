@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Footer.module.css';
+import { API_BASE_URL } from '@/lib/api';
 import { Instagram, Youtube, Facebook, Twitter, Mail } from 'lucide-react';
 
 export default function Footer() {
@@ -13,10 +14,7 @@ export default function Footer() {
         const controller = new AbortController();
         async function load() {
             try {
-                const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL || '/api'}/golf/settings`,
-                    { signal: controller.signal }
-                );
+                const res = await fetch(`${API_BASE_URL}/settings`, { signal: controller.signal });
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data = await res.json();
                 setSettings(data);

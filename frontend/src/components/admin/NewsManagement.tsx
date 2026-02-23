@@ -4,12 +4,26 @@ import { useState, useEffect } from 'react';
 import { fetchNews, createNews, updateNews, deleteNews, uploadImage, fetchCategories, fetchSubTags } from '@/lib/api';
 import RichTextEditor from '@/components/RichTextEditor';
 import styles from '@/app/tgpadmin/news/news.module.css';
-import { Search, Plus, Filter, Edit, Trash2, Calendar, User, Tag, Image as ImageIcon, Check, X, Clock } from 'lucide-react';
+import { Search, Plus, Filter, Edit, Trash2, Calendar, User, Tag, Image as ImageIcon, Check, X, Clock, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface NewsManagementProps {
     fixedCategory?: string;
     title?: string;
     categoryTags?: string[];
+}
+
+const ITEMS_PER_PAGE = 20;
+
+// Map category to its frontend route prefix
+function getPreviewUrl(article: any): string {
+    const cat = (article.category || '').toUpperCase();
+    switch (cat) {
+        case 'LIFESTYLE': return `/lifestyle/${article.id}`;
+        case 'EQUIPMENT': return `/equipment/${article.id}`;
+        case 'COURSES': return `/courses/${article.id}`;
+        case 'GUIDES-TIPS': return `/guides-and-tips/post/${article.id}`;
+        default: return `/news/${article.id}`;
+    }
 }
 
 export default function NewsManagement({
@@ -30,6 +44,7 @@ export default function NewsManagement({
         type: 'REGULAR',
         status: 'PUBLISHED',
         author: '',
+        affiliateLink: '',
         publishedAt: new Date().toISOString().slice(0, 16),
     });
     const [categories, setCategories] = useState<any[]>([]);
@@ -40,6 +55,12 @@ export default function NewsManagement({
     const [searchTerm, setSearchTerm] = useState('');
     const [categoryFilter, setCategoryFilter] = useState(fixedCategory || '');
     const [statusFilter, setStatusFilter] = useState('');
+
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+
+    // Bulk delete state
+    const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
     useEffect(() => {
         loadData();
@@ -55,8 +76,6 @@ export default function NewsManagement({
             setNews(newsData.data);
             setCategories(catData);
 
-
-
             // If fixedCategory is provided, handle it
             if (fixedCategory) {
                 const matchedCat = catData.find((c: any) => c.slug === fixedCategory.toLowerCase() || c.name.toLowerCase() === fixedCategory.toLowerCase());
@@ -68,7 +87,6 @@ export default function NewsManagement({
                 }));
 
                 if (matchedCat) {
-                    // Fetch subtags for fixed category
                     const subTagData = await fetchSubTags(matchedCat.id);
                     setSubTags(subTagData);
                 }
@@ -86,12 +104,13 @@ export default function NewsManagement({
             excerpt: '',
             content: '',
             image: '',
-            categoryId: formData.categoryId, // Preserve if fixed
-            category: formData.category,     // Preserve if fixed
+            categoryId: formData.categoryId,
+            category: formData.category,
             categoryTag: '',
             type: 'REGULAR',
             status: 'PUBLISHED',
             author: '',
+            affiliateLink: '',
             publishedAt: new Date().toISOString().slice(0, 16)
         });
         setEditId(null);
@@ -118,7 +137,7 @@ export default function NewsManagement({
             ...prev,
             categoryId: catId,
             category: cat ? cat.name : prev.category,
-            subTagId: '' // Reset subtag on category change
+            subTagId: ''
         }));
 
         if (catId) {
@@ -147,10 +166,10 @@ export default function NewsManagement({
             type: article.type,
             status: article.status || 'PUBLISHED',
             author: article.author || '',
+            affiliateLink: article.affiliateLink || '',
             publishedAt: article.publishedAt ? new Date(article.publishedAt).toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16)
         });
 
-        // Trigger subtags fetch for editing
         if (article.categoryId) {
             fetchSubTags(article.categoryId).then(setSubTags).catch(() => setSubTags([]));
         }
@@ -164,16 +183,36 @@ export default function NewsManagement({
         if (!confirm('Are you sure you want to delete this article?')) return;
         try {
             await deleteNews(id);
+            setSelectedIds(prev => {
+                const next = new Set(prev);
+                next.delete(id);
+                return next;
+            });
             loadData();
         } catch (error) {
             console.error('Error deleting news', error);
         }
     };
 
+    const handleBulkDelete = async () => {
+        if (selectedIds.size === 0) return;
+        if (!confirm(`Are you sure you want to delete ${selectedIds.size} selected article(s)? This action cannot be undone.`)) return;
+
+        try {
+            const deletePromises = Array.from(selectedIds).map(id => deleteNews(id));
+            await Promise.all(deletePromises);
+            setSelectedIds(new Set());
+            loadData();
+        } catch (error) {
+            console.error('Error in bulk delete', error);
+            alert('Some articles may not have been deleted. Refreshing list.');
+            loadData();
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            // Clean up formData to match DTO expectations
             const payload = {
                 ...formData,
                 categoryId: formData.categoryId || undefined,
@@ -195,6 +234,7 @@ export default function NewsManagement({
         }
     };
 
+    // Filtered articles
     const filteredNews = news.filter(article => {
         const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
             article.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
@@ -202,6 +242,47 @@ export default function NewsManagement({
         const matchesStatus = statusFilter === '' || article.status === statusFilter;
         return matchesSearch && matchesCategory && matchesStatus;
     });
+
+    // Reset page when filters change
+    useEffect(() => {
+        setCurrentPage(1);
+        setSelectedIds(new Set());
+    }, [searchTerm, categoryFilter, statusFilter]);
+
+    // Pagination calculations
+    const totalPages = Math.ceil(filteredNews.length / ITEMS_PER_PAGE);
+    const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIdx = startIdx + ITEMS_PER_PAGE;
+    const paginatedNews = filteredNews.slice(startIdx, endIdx);
+
+    // Select helpers
+    const toggleSelect = (id: string) => {
+        setSelectedIds(prev => {
+            const next = new Set(prev);
+            if (next.has(id)) next.delete(id); else next.add(id);
+            return next;
+        });
+    };
+
+    const toggleSelectAll = () => {
+        const allOnPageIds = paginatedNews.map(a => a.id);
+        const allSelected = allOnPageIds.every(id => selectedIds.has(id));
+        if (allSelected) {
+            setSelectedIds(prev => {
+                const next = new Set(prev);
+                allOnPageIds.forEach(id => next.delete(id));
+                return next;
+            });
+        } else {
+            setSelectedIds(prev => {
+                const next = new Set(prev);
+                allOnPageIds.forEach(id => next.add(id));
+                return next;
+            });
+        }
+    };
+
+    const allOnPageSelected = paginatedNews.length > 0 && paginatedNews.every(a => selectedIds.has(a.id));
 
     const getStatusStyle = (status: string) => {
         switch (status) {
@@ -332,6 +413,15 @@ export default function NewsManagement({
                                 />
                             </div>
                             <div className={styles.formGroup}>
+                                <label>AFFILIATE LINK</label>
+                                <input
+                                    type="url"
+                                    value={formData.affiliateLink}
+                                    onChange={e => setFormData({ ...formData, affiliateLink: e.target.value })}
+                                    placeholder="e.g. https://amzn.to/..."
+                                />
+                            </div>
+                            <div className={styles.formGroup}>
                                 <label>PUBLISH DATE & TIME</label>
                                 <input
                                     type="datetime-local"
@@ -427,10 +517,34 @@ export default function NewsManagement({
                         </div>
                     </div>
 
+                    {/* Bulk Actions Bar */}
+                    {selectedIds.size > 0 && (
+                        <div className={styles.bulkBar}>
+                            <span className={styles.bulkBarText}>
+                                <Check size={14} /> {selectedIds.size} article{selectedIds.size > 1 ? 's' : ''} selected
+                            </span>
+                            <button className={styles.bulkDeleteBtn} onClick={handleBulkDelete}>
+                                <Trash2 size={14} /> Delete Selected
+                            </button>
+                            <button className={styles.bulkClearBtn} onClick={() => setSelectedIds(new Set())}>
+                                <X size={14} /> Clear Selection
+                            </button>
+                        </div>
+                    )}
+
                     <div className={styles.newsList}>
                         <table className={styles.table}>
                             <thead>
                                 <tr>
+                                    <th style={{ width: '40px' }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={allOnPageSelected}
+                                            onChange={toggleSelectAll}
+                                            className={styles.checkbox}
+                                            title="Select all on this page"
+                                        />
+                                    </th>
                                     <th>Headline</th>
                                     {!fixedCategory && <th>Category</th>}
                                     <th>Sub-Tag</th>
@@ -439,8 +553,16 @@ export default function NewsManagement({
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredNews.length > 0 ? filteredNews.map(article => (
-                                    <tr key={article.id}>
+                                {paginatedNews.length > 0 ? paginatedNews.map(article => (
+                                    <tr key={article.id} className={selectedIds.has(article.id) ? styles.selectedRow : ''}>
+                                        <td>
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedIds.has(article.id)}
+                                                onChange={() => toggleSelect(article.id)}
+                                                className={styles.checkbox}
+                                            />
+                                        </td>
                                         <td className={styles.titleCell}>
                                             {article.title}
                                             {article.type === 'FEATURED' && <span className={styles.featuredBadge}>HERO</span>}
@@ -454,6 +576,15 @@ export default function NewsManagement({
                                         </td>
                                         <td>
                                             <div className={styles.actions}>
+                                                <a
+                                                    href={getPreviewUrl(article)}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className={styles.previewBtn}
+                                                    title="Preview"
+                                                >
+                                                    <Eye size={16} />
+                                                </a>
                                                 <button onClick={() => handleEdit(article)} className={styles.editBtn} title="Edit">
                                                     <Edit size={16} />
                                                 </button>
@@ -465,7 +596,7 @@ export default function NewsManagement({
                                     </tr>
                                 )) : (
                                     <tr>
-                                        <td colSpan={fixedCategory ? 5 : 6} style={{ textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
+                                        <td colSpan={fixedCategory ? 6 : 7} style={{ textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
                                             No entries found.
                                         </td>
                                     </tr>
@@ -473,6 +604,78 @@ export default function NewsManagement({
                             </tbody>
                         </table>
                     </div>
+
+                    {/* Pagination Controls */}
+                    {totalPages > 1 && (
+                        <div className={styles.pagination}>
+                            <span className={styles.pageInfo}>
+                                Showing {startIdx + 1}–{Math.min(endIdx, filteredNews.length)} of {filteredNews.length} articles
+                            </span>
+                            <div className={styles.pageControls}>
+                                <button
+                                    className={styles.pageBtn}
+                                    onClick={() => setCurrentPage(1)}
+                                    disabled={currentPage === 1}
+                                    title="First page"
+                                >
+                                    &#171;
+                                </button>
+                                <button
+                                    className={styles.pageBtn}
+                                    onClick={() => setCurrentPage(p => p - 1)}
+                                    disabled={currentPage === 1}
+                                    title="Previous page"
+                                >
+                                    <ChevronLeft size={16} />
+                                </button>
+
+                                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                                    .filter(page => {
+                                        // Show first, last, current, and neighbors
+                                        if (page === 1 || page === totalPages) return true;
+                                        if (Math.abs(page - currentPage) <= 1) return true;
+                                        return false;
+                                    })
+                                    .reduce<(number | string)[]>((acc, page, idx, arr) => {
+                                        if (idx > 0 && page - (arr[idx - 1] as number) > 1) {
+                                            acc.push('...');
+                                        }
+                                        acc.push(page);
+                                        return acc;
+                                    }, [])
+                                    .map((item, idx) =>
+                                        typeof item === 'string' ? (
+                                            <span key={`ellipsis-${idx}`} className={styles.pageEllipsis}>…</span>
+                                        ) : (
+                                            <button
+                                                key={item}
+                                                className={`${styles.pageBtn} ${currentPage === item ? styles.pageBtnActive : ''}`}
+                                                onClick={() => setCurrentPage(item)}
+                                            >
+                                                {item}
+                                            </button>
+                                        )
+                                    )}
+
+                                <button
+                                    className={styles.pageBtn}
+                                    onClick={() => setCurrentPage(p => p + 1)}
+                                    disabled={currentPage === totalPages}
+                                    title="Next page"
+                                >
+                                    <ChevronRight size={16} />
+                                </button>
+                                <button
+                                    className={styles.pageBtn}
+                                    onClick={() => setCurrentPage(totalPages)}
+                                    disabled={currentPage === totalPages}
+                                    title="Last page"
+                                >
+                                    &#187;
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </>
             )}
         </div>

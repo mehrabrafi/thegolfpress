@@ -8,7 +8,7 @@
 .topLayout {
     display: grid;
     grid-template-columns: 1fr 350px;
-    gap: 60px;
+    gap: 100px;
 }
 
 /* Main Content Column */

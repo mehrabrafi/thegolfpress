@@ -453,10 +453,22 @@ export class GolfService {
     async getTrendingNews() {
         return this.prisma.news.findMany({
             where: { status: 'PUBLISHED' },
-            orderBy: {
-                viewCount: 'desc'
+            orderBy: [
+                { viewCount: 'desc' },
+                { createdAt: 'desc' },
+            ],
+            take: 10,
+            select: {
+                id: true,
+                title: true,
+                image: true,
+                category: true,
+                categoryTag: true,
+                excerpt: true,
+                author: true,
+                viewCount: true,
+                createdAt: true,
             },
-            take: 5,
         });
     }
 
@@ -474,6 +486,7 @@ export class GolfService {
                 status: data.status || 'PUBLISHED',
                 publishedAt: data.publishedAt ? new Date(data.publishedAt) : new Date(),
                 author: data.author || null,
+                affiliateLink: data.affiliateLink || null,
 
                 // Relations handling
                 categoryRef: data.categoryId ? { connect: { id: data.categoryId } } : undefined,
@@ -496,6 +509,7 @@ export class GolfService {
                 status: data.status,
                 publishedAt: data.publishedAt ? new Date(data.publishedAt) : undefined,
                 author: data.author,
+                affiliateLink: data.affiliateLink,
                 categoryId: data.categoryId || null,
                 subTagId: data.subTagId || null,
             }

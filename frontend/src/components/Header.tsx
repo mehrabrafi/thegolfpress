@@ -7,6 +7,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import styles from './Header.module.css';
 import { useAuth } from '@/context/AuthContext';
 import SearchOverlay from './SearchOverlay';
+import { API_BASE_URL } from '@/lib/api';
 
 function HeaderContent() {
     const { user, logout } = useAuth();
@@ -58,12 +59,12 @@ function HeaderContent() {
         const controller = new AbortController();
         const loadCategories = async () => {
             try {
-                const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL || '/api'}/golf/categories`,
-                    { signal: controller.signal }
-                );
-                if (!res.ok) return;
-                const data = await res.json();
+                const [newsRes, catsRes] = await Promise.all([
+                    fetch(`${API_BASE_URL}/news?take=10`, { signal: controller.signal }),
+                    fetch(`${API_BASE_URL}/categories`, { signal: controller.signal })
+                ]);
+                if (!catsRes.ok) return;
+                const data = await catsRes.json();
                 setCategories(data);
             } catch (e: any) {
                 if (e?.name !== 'AbortError') {

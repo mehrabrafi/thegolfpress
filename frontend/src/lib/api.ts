@@ -1,4 +1,6 @@
 const IS_SERVER = typeof window === 'undefined';
+// In production, NEXT_PUBLIC_API_URL will be set to the real backend URL (https://api.thegolfpress.com).
+// In dev, it might be undefined, so we fall back to localhost:5001 (server) or /api (client proxy).
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || (IS_SERVER ? 'http://localhost:5001' : '/api');
 export const API_BASE_URL = `${BASE_URL}/golf`;
 export const AUTH_BASE_URL = `${BASE_URL}/auth`;

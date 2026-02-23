@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import styles from '../login/login.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
+import { AUTH_BASE_URL } from '@/lib/api';
 
 function ResetPasswordForm() {
     const router = useRouter();
@@ -35,7 +36,7 @@ function ResetPasswordForm() {
         setMessage('');
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/auth/reset-password`, {
+            const res = await fetch(`${AUTH_BASE_URL}/reset-password`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ token, password }),
@@ -89,7 +90,7 @@ function ResetPasswordForm() {
                         onChange={e => setPassword(e.target.value)}
                         required
                         className={styles.input}
-                        minLength={6}
+                        minLength={8}
                     />
                 </div>
 
@@ -101,7 +102,7 @@ function ResetPasswordForm() {
                         onChange={e => setConfirmPassword(e.target.value)}
                         required
                         className={styles.input}
-                        minLength={6}
+                        minLength={8}
                     />
                 </div>
 

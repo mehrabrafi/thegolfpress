@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './equipment.module.css';
-import { fetchNews } from '@/lib/api';
+import { fetchNews, API_BASE_URL } from '@/lib/api';
 
 interface EquipmentArticle {
     id: string;
@@ -38,8 +38,7 @@ export default function EquipmentClient({ initialArticles }: { initialArticles: 
         const loadPageData = async () => {
             setLoading(true);
             try {
-                // 1. Fetch Categories to get Equipment sub-tags
-                const catRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || '/api'}/golf/categories`);
+                const catRes = await fetch(`${API_BASE_URL}/categories`);
                 if (catRes.ok) {
                     const allCats = await catRes.json();
                     const equipmentCat = allCats.find((c: any) => c.slug === 'equipment' || c.name.toLowerCase() === 'equipment');
@@ -154,20 +153,7 @@ export default function EquipmentClient({ initialArticles }: { initialArticles: 
                                     </Link>
                                 ))
                             ) : (
-                                // Mock data if nothing in DB
-                                [1, 2, 3].map((_, idx) => (
-                                    <Link key={idx} href="/equipment" className={styles.articleCard}>
-                                        <div className={styles.articleImageWrapper}>
-                                            <Image src={`https://images.unsplash.com/photo-1592910710304-a161db93d03b?auto=format&fit=crop&q=80&w=800&sig=${idx}`} alt="Mock" fill className={styles.articleImage} sizes="(max-width: 768px) 100vw, 33vw" />
-                                        </div>
-                                        <div className={styles.articleContent}>
-                                            <span className={styles.articleTag}>LATEST REVIEWS</span>
-                                            <h3 className={styles.articleTitle}>Exploring the Next Generation of Golf Club Technology</h3>
-                                            <p className={styles.articleExcerpt}>A deep dive into how manufacturers are using new materials to push the boundaries of ball speed and forgiveness...</p>
-                                            <div className={styles.articleMeta}>BY THE GOLF PRESS • FEB 22, 2026</div>
-                                        </div>
-                                    </Link>
-                                ))
+                                <div style={{ padding: '40px', color: '#888', textAlign: 'center', gridColumn: '1 / -1' }}>No equipment articles found.</div>
                             )}
                         </div>
                     )}

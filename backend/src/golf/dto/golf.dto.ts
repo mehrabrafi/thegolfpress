@@ -47,6 +47,10 @@ export class CreateNewsDto {
     @IsOptional()
     @IsString()
     author?: string;
+
+    @IsOptional()
+    @IsString()
+    affiliateLink?: string;
 }
 
 export class UpdateNewsDto {
@@ -101,6 +105,10 @@ export class UpdateNewsDto {
     @IsOptional()
     @IsString()
     author?: string;
+
+    @IsOptional()
+    @IsString()
+    affiliateLink?: string;
 }
 
 export class CreateCategoryDto {

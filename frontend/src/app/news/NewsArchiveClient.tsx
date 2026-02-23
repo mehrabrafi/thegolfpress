@@ -12,7 +12,7 @@ interface NewsArchiveClientProps {
     serverTotal: number;
 }
 
-const NEWS_EXCLUDE = ['COURSES', 'GUIDES-TIPS', 'COURSE'];
+const NEWS_EXCLUDE = ['COURSES', 'GUIDES-TIPS', 'COURSE', 'LIFESTYLE', 'EQUIPMENT', 'EQUIPMENT-REVIEW', 'LUXURY'];
 
 // Directly fetch paginated news on the client (bypasses Next.js cache for fresh data)
 async function clientFetchNews(params: {
@@ -116,17 +116,7 @@ function NewsPageContent({ initialArticles, pageSize, serverTotal }: NewsArchive
 
                     <div className={styles.articleList}>
                         {articles.map(article => {
-                            const category = (article.category || article.categoryTag || '').toUpperCase();
-                            const isCourse = category === 'COURSES';
-                            const isEquipment = category === 'EQUIPMENT';
-                            const isLifestyle = category === 'LIFESTYLE';
-                            const isGuide = category === 'GUIDES-TIPS';
-
-                            let href = `/news/${article.id}`;
-                            if (isCourse) href = `/courses/${article.id}`;
-                            else if (isEquipment) href = `/equipment/${article.id}`;
-                            else if (isLifestyle) href = `/lifestyle/${article.id}`;
-                            else if (isGuide) href = `/guides-and-tips/post/${article.id}`;
+                            const href = `/news/${article.id}`;
 
                             return (
                                 <Link href={href} key={article.id} className={styles.articleCard}>

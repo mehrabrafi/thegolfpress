@@ -1,11 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 import LiveFeed from '@/components/LiveFeed';
 import TopStories from '@/components/TopStories';
 import JsonLd, { createWebsiteJsonLd } from '@/components/JsonLd';
 import { fetchLeaderboard } from '@/lib/api';
 import LatestNews from '@/components/LatestNews';
+import DualColumnNews from '@/components/DualColumnNews';
+import ThreeColumnImageNews from '@/components/ThreeColumnImageNews';
+import EquipmentAndCoursesNews from '@/components/EquipmentAndCoursesNews';
+import Leaderboard from '@/components/Leaderboard';
 import styles from './page.module.css';
 
 interface HomeClientProps {
@@ -44,29 +50,37 @@ export default function HomeClient({
     const feedPlayers = lbData?.players?.slice(0, 10) || [];
 
     // Distribute news for the top banners
-    const topArticles = [
+    const initialTopArticles = [
         news && news.length > 0 ? news[0] : null,
         initialEquipment && initialEquipment.length > 0 ? initialEquipment[0] : null,
-        initialGuides && initialGuides.length > 0 ? initialGuides[0] : null
+        initialGuides && initialGuides.length > 0 ? initialGuides[0] : null,
+        initialCourses && initialCourses.length > 0 ? initialCourses[0] : null
     ].filter(Boolean);
 
-    const newsArticles = news && news.length > 1 ? news.slice(1, 11) : [];
+    const uniqueTopArticlesMap = new Map();
+    initialTopArticles.forEach(a => uniqueTopArticlesMap.set(a?.id, a));
 
-    // Placeholder data for Lifestyle if empty (so user can see the layout)
-    const mockLifestyle = [
-        { id: '1', title: 'Top 10 Golf Destinations for your Next Vacation', image: 'https://cdn.thegolfpress.com/ai-generated-high-resolution-image-showcasing-luxurious-golden-golf-putter-positioned-next-to-white-ball-sleek-dark-surface-397852118.jpg.png', category: 'LIFESTYLE', excerpt: 'Explore the world\'s most beautiful courses and where to stay for the ultimate golf experience.' },
-        { id: '2', title: 'Summer Collection: 2026 Golf Apparel Guide', image: 'https://cdn.thegolfpress.com/ai-generated-high-resolution-image-showcasing-luxurious-golden-golf-putter-positioned-next-to-white-ball-sleek-dark-surface-397852118.jpg.png', category: 'LIFESTYLE', excerpt: 'Stay cool and look sharp on the course with these top-rated apparel picks for the summer season.' },
-        { id: '3', title: 'The Evolution of Luxury Golf Watches', image: 'https://cdn.thegolfpress.com/ai-generated-high-resolution-image-showcasing-luxurious-golden-golf-putter-positioned-next-to-white-ball-sleek-dark-surface-397852118.jpg.png', category: 'LIFESTYLE', excerpt: 'How timepieces became an essential part of the golfer\'s wardrobe and style.' },
-        { id: '4', title: 'Inside the Most Exclusive Golf Clubhouses', image: 'https://cdn.thegolfpress.com/ai-generated-high-resolution-image-showcasing-luxurious-golden-golf-putter-positioned-next-to-white-ball-sleek-dark-surface-397852118.jpg.png', category: 'LIFESTYLE', excerpt: 'A look behind the gates of the world\'s most private and prestigious golf clubs.' },
-        { id: '5', title: 'Golf & Gastronomy: The Best 19th Holes', image: 'https://cdn.thegolfpress.com/ai-generated-high-resolution-image-showcasing-luxurious-golden-golf-putter-positioned-next-to-white-ball-sleek-dark-surface-397852118.jpg.png', category: 'LIFESTYLE', excerpt: 'Discover the clubs that offer world-class dining experiences after your round.' },
-        { id: '6', title: 'The Rise of Performance Tech in Golf Fashion', image: 'https://cdn.thegolfpress.com/ai-generated-high-resolution-image-showcasing-luxurious-golden-golf-putter-positioned-next-to-white-ball-sleek-dark-surface-397852118.jpg.png', category: 'LIFESTYLE', excerpt: 'How modern fabrics are changing the way players think about comfort and style.' },
-        { id: '7', title: 'Art on the Green: Minimalist Course Photography', image: 'https://cdn.thegolfpress.com/ai-generated-high-resolution-image-showcasing-luxurious-golden-golf-putter-positioned-next-to-white-ball-sleek-dark-timescale-397852118.jpg.png', category: 'LIFESTYLE', excerpt: 'Meeting the photographers capturing the raw beauty of golf landscapes.' },
-        { id: '8', title: 'Restorative Golf: The Best Wellness Spas', image: 'https://cdn.thegolfpress.com/ai-generated-high-resolution-image-showcasing-luxurious-golden-golf-putter-positioned-next-to-white-ball-sleek-dark-surface-397852118.jpg.png', category: 'LIFESTYLE', excerpt: 'Combining a championship round with top-tier recovery and wellness treatments.' },
-        { id: '9', title: 'Vintage Vibes: The Return of Heritage Gear', image: 'https://cdn.thegolfpress.com/ai-generated-high-resolution-image-showcasing-luxurious-golden-golf-putter-positioned-next-to-white-ball-sleek-dark-surface-397852118.jpg.png', category: 'LIFESTYLE', excerpt: 'Why classic designs and natural materials are making a massive comeback.' },
-        { id: '10', title: 'Collectors Edition: Rare Golf Memorabilia', image: 'https://cdn.thegolfpress.com/ai-generated-high-resolution-image-showcasing-luxurious-golden-golf-putter-positioned-next-to-white-ball-sleek-dark-surface-397852118.jpg.png', category: 'LIFESTYLE', excerpt: 'A guide to investing in the artifacts that defined the history of the game.' }
-    ];
+    let newsIndex = 1;
+    while (uniqueTopArticlesMap.size < 5 && news && news.length > newsIndex) {
+        const nextNews = news[newsIndex];
+        if (!uniqueTopArticlesMap.has(nextNews?.id)) {
+            uniqueTopArticlesMap.set(nextNews.id, nextNews);
+        }
+        newsIndex++;
+    }
 
-    const lifestyleDisplay = (initialLifestyle && initialLifestyle.length > 0) ? initialLifestyle.slice(0, 10) : mockLifestyle;
+    const topArticles = Array.from(uniqueTopArticlesMap.values()).slice(0, 5);
+    const newsArticles = news && news.length > newsIndex ? news.slice(newsIndex, newsIndex + 10) : [];
+
+    // Popular articles for the sidebar — use trending (viewCount-sorted) with deduplication
+    const seenIds = new Set<string>();
+    const popularArticlesForSidebar = (initialTrending || []).filter((article: any) => {
+        if (!article?.id || seenIds.has(article.id)) return false;
+        seenIds.add(article.id);
+        return true;
+    }).slice(0, 10);
+
+    const lifestyleDisplay = (initialLifestyle && initialLifestyle.length > 0) ? initialLifestyle.slice(0, 10) : [];
 
     return (
         <>
@@ -84,51 +98,114 @@ export default function HomeClient({
             <TopStories articles={topArticles} />
 
             <div className="container">
-                {/* NEWS Section */}
-                {news && <LatestNews
-                    articles={newsArticles}
-                    title="NEWS"
-                    seeAllText="SEE ALL NEWS"
-                    seeAllHref="/news"
-                />}
+                {/* Main Content + Most Popular Sidebar Layout */}
+                <div className={styles.homeGridWithSidebar}>
+                    {/* Left: NEWS + GUIDES & TIPS */}
+                    <div className={styles.homeMainContent}>
+                        {/* NEWS Section */}
+                        {news && <LatestNews
+                            articles={newsArticles}
+                            title="NEWS"
+                            seeAllText="All"
+                            seeAllHref="/news"
+                        />}
 
-                {/* EQUIPMENT Section */}
-                {initialEquipment && initialEquipment.length > 0 && (
-                    <LatestNews
-                        articles={initialEquipment.slice(0, 10)}
-                        title="EQUIPMENT"
-                        seeAllText="SEE ALL EQUIPMENT"
-                        seeAllHref="/equipment"
-                    />
-                )}
+                        {/* GUIDES & TIPS Section */}
+                        {initialGuides && initialGuides.length > 0 && (
+                            <DualColumnNews
+                                articles={initialGuides.slice(1, 13)}
+                                title="GUIDES & TIPS"
+                                seeAllText="All"
+                                seeAllHref="/guides-and-tips"
+                            />
+                        )}
+                    </div>
+
+                    {/* Right: MOST POPULAR Sidebar */}
+                    {popularArticlesForSidebar.length > 0 && (
+                        <div className={styles.homeSidebarColumn}>
+                            <div className={styles.sidebarSticky}>
+                                {/* Leaderboard */}
+                                {lbData && lbData.players && (
+                                    <Leaderboard players={lbData.players.slice(0, 6)} />
+                                )}
+
+                                {/* Social Stats */}
+                                <div className={styles.socialWidget}>
+                                    <div className={styles.socialBoxCard}>
+                                        <div className={styles.socialBoxIcon} style={{ color: '#3b5998' }}>f</div>
+                                        <a href="https://facebook.com/thegolfpress" target="_blank" rel="noopener noreferrer" className={styles.socialFollowBtn}>Like</a>
+                                    </div>
+                                    <div className={styles.socialBoxCard}>
+                                        <div className={styles.socialBoxIcon} style={{ color: '#111' }}>𝕏</div>
+                                        <a href="https://twitter.com/thegolfpress" target="_blank" rel="noopener noreferrer" className={styles.socialFollowBtn}>Follow</a>
+                                    </div>
+                                    <div className={styles.socialBoxCard}>
+                                        <div className={styles.socialBoxIcon} style={{ color: '#ff0000' }}>▶</div>
+                                        <a href="https://youtube.com/@thegolfpress" target="_blank" rel="noopener noreferrer" className={styles.socialFollowBtn} style={{ background: '#ff0000', color: '#fff', border: 'none' }}>Subscribe</a>
+                                    </div>
+                                </div>
+
+                                {/* MOST POPULAR */}
+                                <div className={styles.popularHeader}>
+                                    <h3 className={styles.popularHeaderTitle}>MOST POPULAR</h3>
+                                </div>
+                                <div className={styles.popularList}>
+                                    {popularArticlesForSidebar.map((article: any, index: number) => {
+                                        const category = (article.category || article.categoryTag || '').toUpperCase();
+                                        let linkHref = `/news/${article.id}`;
+                                        if (category === 'COURSES') linkHref = `/courses/${article.id}`;
+                                        else if (category === 'GUIDES-TIPS') linkHref = `/guides-and-tips/post/${article.id}`;
+                                        else if (category === 'EQUIPMENT') linkHref = `/equipment/${article.id}`;
+                                        else if (category === 'LIFESTYLE') linkHref = `/lifestyle/${article.id}`;
+
+                                        return (
+                                            <div key={article.id} className={styles.popularItem}>
+                                                <Link href={linkHref} className={styles.popularImageLink}>
+                                                    <div className={styles.popularImageWrapper}>
+                                                        <span className={styles.popularRank}>{index + 1}</span>
+                                                        <Image
+                                                            src={article.image || '/images/placeholder.jpg'}
+                                                            alt={article.title}
+                                                            fill
+                                                            sizes="100px"
+                                                            className={styles.popularArticleImage}
+                                                        />
+                                                    </div>
+                                                </Link>
+                                                <div className={styles.popularItemInfo}>
+                                                    <Link href={linkHref}>
+                                                        <h4 className={styles.popularTitle}>{article.title}</h4>
+                                                    </Link>
+                                                    <div className={styles.popularDateRow}>
+                                                        <span className={styles.popularBadge}>
+                                                            {article.category || 'NEWS'}
+                                                        </span>
+                                                        <span className={styles.popularDate}>
+                                                            {article.viewCount > 0 ? `${article.viewCount.toLocaleString()} views` : new Date(article.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
 
                 {/* LIFESTYLE Section - Always show mock if empty */}
-                <LatestNews
+                <ThreeColumnImageNews
                     articles={lifestyleDisplay}
                     title="LIFESTYLE"
-                    seeAllText="SEE ALL LIFESTYLE"
-                    seeAllHref="/lifestyle"
                 />
 
-                {/* GUIDES & TIPS Section */}
-                {initialGuides && initialGuides.length > 0 && (
-                    <LatestNews
-                        articles={initialGuides.slice(1, 11)}
-                        title="GUIDES & TIPS"
-                        seeAllText="SEE ALL GUIDES & TIPS"
-                        seeAllHref="/guides-and-tips"
-                    />
-                )}
-
-                {/* COURSES Section */}
-                {initialCourses && initialCourses.length > 0 && (
-                    <LatestNews
-                        articles={initialCourses.slice(1, 11)}
-                        title="COURSES"
-                        seeAllText="SEE ALL COURSES"
-                        seeAllHref="/courses"
-                    />
-                )}
+                {/* EQUIPMENT & COURSES Section Combo */}
+                <EquipmentAndCoursesNews
+                    equipmentArticles={initialEquipment}
+                    coursesArticles={initialCourses}
+                />
             </div>
         </>
     );

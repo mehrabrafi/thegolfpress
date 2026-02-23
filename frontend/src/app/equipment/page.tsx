@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default async function EquipmentPage() {
     let initialArticles = [];
     try {
-        const { data } = await fetchNews('EQUIPMENT', undefined, undefined, 0, 6);
+        const { data } = await fetchNews('EQUIPMENT', undefined, undefined, 0, 10);
         initialArticles = data || [];
     } catch (error) {
         console.error('Error fetching initial equipment news:', error);

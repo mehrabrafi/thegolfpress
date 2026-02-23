@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import DOMPurify from 'dompurify';
+import { ShoppingBag } from 'lucide-react';
 import JsonLd, { createArticleJsonLd } from '@/components/JsonLd';
 import ShareButtons from '@/components/ShareButtons';
 import styles from './EquipmentDetail.module.css';
@@ -72,6 +73,22 @@ export default function EquipmentDetailClient({
                     <div className={styles.heroImageContainer}>
                         <Image src={article.image} alt={article.title} fill className={styles.heroImage} priority sizes="(max-width: 1000px) 100vw, 850px" />
                     </div>
+
+                    {article.affiliateLink && (
+                        <div className={styles.buyButtonWrapper}>
+                            <a
+                                href={article.affiliateLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={styles.buyButton}
+                            >
+                                <ShoppingBag size={20} />
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: '1.2' }}>
+                                    <span style={{ fontSize: '1rem', fontWeight: 800 }}>CHECK PRICE</span>
+                                </div>
+                            </a>
+                        </div>
+                    )}
 
                     <div className={styles.articleBody}>
                         {article.content.trim().startsWith('<') ? (

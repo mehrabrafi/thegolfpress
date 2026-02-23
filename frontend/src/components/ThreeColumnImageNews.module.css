@@ -1,0 +1,206 @@
+.threeColumnSection {
+    margin-top: 50px;
+    margin-bottom: 60px;
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    position: relative;
+    border-bottom: 1px solid #ebebeb;
+}
+
+.title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #111;
+    margin: 0;
+    line-height: 1;
+    text-transform: uppercase;
+    display: inline-block;
+    padding-bottom: 12px;
+    position: relative;
+    background: var(--light-gray, #f6f6f6);
+}
+
+.title::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary-red);
+}
+
+.gridWrapper {
+    position: relative;
+}
+
+.arrowBtn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+.arrowLeft {
+    left: 15px;
+}
+
+.arrowRight {
+    right: 15px;
+}
+
+.arrowBtn:hover:not(.arrowDisabled) {
+    background: rgba(0, 0, 0, 0.85);
+}
+
+.arrowDisabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+}
+
+.gridContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    /* Thin gap just like the reference image */
+}
+
+.card {
+    position: relative;
+    overflow: hidden;
+}
+
+.imageLink {
+    text-decoration: none;
+    display: block;
+}
+
+.imageWrapper {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background-color: #000;
+}
+
+.articleImage {
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    opacity: 0.9;
+}
+
+.card:hover .articleImage {
+    transform: scale(1.05);
+}
+
+/* Base overlay from bottom up to darken text area */
+.imageWrapper::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 70%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.cardTitle {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 12px;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    transition: color 0.2s;
+}
+
+.card:hover .cardTitle {
+    color: var(--primary-red);
+}
+
+.metaRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 0.8rem;
+    color: #fff;
+    font-weight: 600;
+}
+
+.categoryBadge {
+    background-color: #fff;
+    color: #111;
+    padding: 2px 6px;
+    text-transform: capitalize;
+    font-weight: 800;
+    border-radius: 2px;
+    font-size: 0.75rem;
+}
+
+.authorName {
+    color: #fff;
+    text-transform: capitalize;
+}
+
+.separator {
+    color: #ccc;
+}
+
+.date {
+    color: #eee;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .gridContainer {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .gridContainer {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .imageWrapper {
+        aspect-ratio: 16 / 9;
+    }
+}

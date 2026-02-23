@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './lifestyle.module.css';
-import { fetchNews } from '@/lib/api';
+import { fetchNews, API_BASE_URL } from '@/lib/api';
 
 interface LifestyleArticle {
     id: string;
@@ -41,7 +41,7 @@ export default function LifestyleClient({ initialArticles }: { initialArticles: 
             setLoading(true);
             try {
                 // 1. Fetch Categories to get Lifestyle sub-tags
-                const catRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || '/api'}/golf/categories`);
+                const catRes = await fetch(`${API_BASE_URL}/categories`);
                 if (catRes.ok) {
                     const allCats = await catRes.json();
                     const lifestyleCat = allCats.find((c: any) => c.slug === 'lifestyle' || c.name.toLowerCase() === 'lifestyle');
@@ -176,20 +176,7 @@ export default function LifestyleClient({ initialArticles }: { initialArticles: 
                                     </Link>
                                 ))
                             ) : (
-                                // Elegant placeholder if nothing in DB
-                                [1, 2, 3].map((_, idx) => (
-                                    <Link key={idx} href="/lifestyle" className={styles.articleCard}>
-                                        <div className={styles.articleImageWrapper}>
-                                            <Image src={GOLDEN_PUTTER_IMG} alt="Mock" fill className={styles.articleImage} sizes="(max-width: 768px) 100vw, 33vw" />
-                                        </div>
-                                        <div className={styles.articleContent}>
-                                            <span className={styles.articleTag}>LUXURY DESTINATIONS</span>
-                                            <h3 className={styles.articleTitle}>Beyond the Fairway: The World's Most Exclusive Golf Retreats</h3>
-                                            <p className={styles.articleExcerpt}>From the cliffs of Scotland to the tropical shores of the Caribbean, we explore the destinations that define the pinnacle of golf luxury.</p>
-                                            <div className={styles.articleMeta}>BY THE GOLF PRESS • FEB 22, 2026</div>
-                                        </div>
-                                    </Link>
-                                ))
+                                <div style={{ padding: '40px', color: '#888', textAlign: 'center', gridColumn: '1 / -1' }}>No lifestyle articles found.</div>
                             )}
                         </div>
                     )}

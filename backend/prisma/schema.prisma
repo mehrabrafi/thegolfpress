@@ -42,6 +42,7 @@ model News {
   categoryId  String?
   subTagId    String?
   author      String?
+  affiliateLink String?
   categoryRef Category?  @relation(fields: [categoryId], references: [id])
   subTag      SubTag?    @relation(fields: [subTagId], references: [id])
   players     Player[]   @relation("NewsToPlayer")

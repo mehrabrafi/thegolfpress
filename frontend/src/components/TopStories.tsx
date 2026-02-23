@@ -27,7 +27,7 @@ export default function TopStories({ articles }: TopStoriesProps) {
                 else if (isLifestyle) linkHref = `/lifestyle/${article.id}`;
 
                 return (
-                    <Link key={idx} href={linkHref} className={styles.storyCard}>
+                    <Link key={idx} href={linkHref} className={`${styles.storyCard} ${styles[`card${idx}`]}`}>
                         <div className={styles.imageOverlay}></div>
                         <Image
                             src={article.image || '/images/placeholder.jpg'}

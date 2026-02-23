@@ -3,6 +3,7 @@ import { useState } from 'react';
 import styles from '../login/login.module.css'; // Reusing login styles for consistency
 import Link from 'next/link';
 import Image from 'next/image';
+import { AUTH_BASE_URL } from '@/lib/api';
 
 export default function ForgotPasswordPage() {
     const [email, setEmail] = useState('');
@@ -15,7 +16,7 @@ export default function ForgotPasswordPage() {
         setMessage('');
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/auth/forgot-password`, {
+            const res = await fetch(`${AUTH_BASE_URL}/forgot-password`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email }),

@@ -17,88 +17,70 @@ export default function LatestNews({
 }: LatestNewsProps) {
     if (!articles || articles.length === 0) return null;
 
-    // We need 10 articles total for this layout
-    const featuredArticles = articles.slice(0, 4);
-    const listArticles = articles.slice(4, 10);
+    // 1 large article + 4 small articles
+    const mainArticles = articles.slice(0, 1);
+    const listArticles = articles.slice(1, 5);
+
+    const getLinkHref = (article: any) => {
+        const category = (article.category || article.categoryTag || '').toUpperCase();
+        if (category === 'COURSES') return `/courses/${article.id}`;
+        if (category === 'GUIDES-TIPS') return `/guides-and-tips/post/${article.id}`;
+        if (category === 'EQUIPMENT') return `/equipment/${article.id}`;
+        if (category === 'LIFESTYLE') return `/lifestyle/${article.id}`;
+        return `/news/${article.id}`;
+    };
 
     return (
         <section className={styles.latestNews}>
             <div className={styles.sectionHeader}>
                 <h2 className={styles.title}>{title}</h2>
-                <Link href={seeAllHref} className={styles.seeAllBtn}>
-                    {seeAllText}
-                </Link>
+                <div className={styles.headerRight}>
+                    <Link href={seeAllHref} className={styles.seeAllBtn}>
+                        All <span className={styles.dropdownIcon}>▼</span>
+                    </Link>
+                </div>
             </div>
 
             <div className={styles.contentGrid}>
-                {/* Left side: Two Featured Cards */}
-                <div className={styles.featuredColumn}>
-                    {featuredArticles.map((article) => {
-                        const category = (article.category || article.categoryTag || '').toUpperCase();
-                        const isCourse = category === 'COURSES';
-                        const isGuide = category === 'GUIDES-TIPS';
-                        const isEquipment = category === 'EQUIPMENT';
-                        const isLifestyle = category === 'LIFESTYLE';
-
-                        let linkHref = `/news/${article.id}`;
-                        if (isCourse) linkHref = `/courses/${article.id}`;
-                        else if (isGuide) linkHref = `/guides-and-tips/post/${article.id}`;
-                        else if (isEquipment) linkHref = `/equipment/${article.id}`;
-                        else if (isLifestyle) linkHref = `/lifestyle/${article.id}`;
-
-                        return (
-                            <div key={article.id} className={styles.featuredCard}>
-                                <Link href={linkHref} className={styles.imageLink}>
-                                    <div className={styles.imageWrapper}>
-                                        <Image
-                                            src={article.image || '/images/placeholder.jpg'}
-                                            alt={article.title}
-                                            fill
-                                            sizes="(max-width: 1024px) 100vw, 400px"
-                                            className={styles.articleImage}
-                                        />
-                                    </div>
-                                </Link>
-                                <div className={styles.cardInfo}>
-                                    <span className={styles.categoryBadge}>
-                                        {article.category || 'NEWS'}
+                {/* Left Column: Main Articles */}
+                <div className={styles.mainColumn}>
+                    {mainArticles.map((mainArticle, index) => (
+                        <div key={mainArticle.id || index} className={styles.mainArticleCard}>
+                            <Link href={getLinkHref(mainArticle)} className={styles.imageLink}>
+                                <div className={styles.mainImageWrapper}>
+                                    <Image
+                                        src={mainArticle.image || '/images/placeholder.jpg'}
+                                        alt={mainArticle.title}
+                                        fill
+                                        sizes="(max-width: 1024px) 100vw, 600px"
+                                        className={styles.articleImage}
+                                    />
+                                    <span className={styles.imageBadge}>
+                                        {mainArticle.category || 'NEWS'}
                                     </span>
-                                    <Link href={linkHref}>
-                                        <h3 className={styles.featuredTitle}>{article.title}</h3>
-                                    </Link>
-                                    <div className={styles.authorLine}>
-                                        BY {article.author?.toUpperCase() || 'THE GOLF PRESS'}
-                                    </div>
-                                    <p className={styles.excerpt}>
-                                        {article.excerpt || article.content?.substring(0, 120) + '...'}
-                                    </p>
-                                    <Link href={linkHref} className={styles.readArticle}>
-                                        Read Article
-                                    </Link>
                                 </div>
+                            </Link>
+                            <Link href={getLinkHref(mainArticle)}>
+                                <h3 className={styles.mainTitle}>{mainArticle.title}</h3>
+                            </Link>
+                            <div className={styles.authorLine}>
+                                <span className={styles.authorName}>{mainArticle.author || 'The Golf Press'}</span>
+                                <span className={styles.separator}>-</span>
+                                <span>{new Date(mainArticle.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
                             </div>
-                        );
-                    })}
+                            <p className={styles.excerpt}>
+                                {mainArticle.excerpt || mainArticle.content?.substring(0, 120) + '...'}
+                            </p>
+                        </div>
+                    ))}
                 </div>
 
-                {/* Right side: List of Articles */}
+                {/* Middle Column: List of 8 Articles */}
                 <div className={styles.listColumn}>
                     {listArticles.map((article) => {
-                        const category = (article.category || article.categoryTag || '').toUpperCase();
-                        const isCourse = category === 'COURSES';
-                        const isGuide = category === 'GUIDES-TIPS';
-                        const isEquipment = category === 'EQUIPMENT';
-                        const isLifestyle = category === 'LIFESTYLE';
-
-                        let linkHref = `/news/${article.id}`;
-                        if (isCourse) linkHref = `/courses/${article.id}`;
-                        else if (isGuide) linkHref = `/guides-and-tips/post/${article.id}`;
-                        else if (isEquipment) linkHref = `/equipment/${article.id}`;
-                        else if (isLifestyle) linkHref = `/lifestyle/${article.id}`;
-
                         return (
                             <div key={article.id} className={styles.listItem}>
-                                <Link href={linkHref} className={styles.listImageLink}>
+                                <Link href={getLinkHref(article)} className={styles.listImageLink}>
                                     <div className={styles.listImageWrapper}>
                                         <Image
                                             src={article.image || '/images/placeholder.jpg'}
@@ -107,19 +89,17 @@ export default function LatestNews({
                                             sizes="120px"
                                             className={styles.articleImage}
                                         />
+                                        <span className={styles.smallBadge}>
+                                            {article.category || 'NEWS'}
+                                        </span>
                                     </div>
                                 </Link>
                                 <div className={styles.listInfo}>
-                                    <span className={styles.categoryBadge}>
-                                        {article.category || 'NEWS'}
-                                    </span>
-                                    <Link href={linkHref}>
+                                    <Link href={getLinkHref(article)}>
                                         <h4 className={styles.listTitle}>{article.title}</h4>
                                     </Link>
-                                    <div className={styles.listFooter}>
-                                        <Link href={linkHref} className={styles.readArticle}>
-                                            Read Article
-                                        </Link>
+                                    <div className={styles.listDate}>
+                                        {new Date(article.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                                     </div>
                                 </div>
                             </div>

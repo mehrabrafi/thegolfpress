@@ -27,11 +27,11 @@
 
 .title {
     font-family: var(--font-serif);
-    font-size: 4.5rem;
+    font-size: 3.5rem;
     font-weight: 800;
-    line-height: 1.0;
+    line-height: 1.1;
     color: #111;
-    margin: 0 0 60px 0;
+    margin: 0 0 40px 0;
     letter-spacing: -0.015em;
     max-width: 900px;
 }
@@ -121,7 +121,7 @@
     padding: 0 20px 100px;
     display: grid;
     grid-template-columns: 1fr 350px;
-    gap: 60px;
+    gap: 100px;
 }
 
 .mainContent {

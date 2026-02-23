@@ -2,7 +2,7 @@ import { Controller, Post, UseGuards, Request, Body, Get, Res, Patch } from '@ne
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Throttle } from '@nestjs/throttler';
-import { RegisterDto } from './dto/auth.dto';
+import { RegisterDto, ForgotPasswordDto, ResetPasswordDto } from './dto/auth.dto';
 import type { Response } from 'express';
 
 @Controller('auth')
@@ -94,13 +94,17 @@ export class AuthController {
         return { message: 'Logged out successfully' };
     }
 
+    // Rate limit: max 3 forgot-password requests per 60 seconds per IP
+    @Throttle({ default: { ttl: 60000, limit: 3 } })
     @Post('forgot-password')
-    async forgotPassword(@Body('email') email: string) {
-        return this.authService.forgotPassword(email);
+    async forgotPassword(@Body() body: ForgotPasswordDto) {
+        return this.authService.forgotPassword(body.email);
     }
 
+    // Rate limit: max 5 reset attempts per 60 seconds per IP
+    @Throttle({ default: { ttl: 60000, limit: 5 } })
     @Post('reset-password')
-    async resetPassword(@Body() body: any) {
+    async resetPassword(@Body() body: ResetPasswordDto) {
         return this.authService.resetPassword(body.token, body.password);
     }
 }

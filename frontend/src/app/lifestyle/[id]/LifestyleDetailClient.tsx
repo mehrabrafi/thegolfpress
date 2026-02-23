@@ -81,9 +81,7 @@ export default function LifestyleDetailClient({
                                 article.content.split('\n').map((p: string, i: number) => <p key={i}>{p}</p>)
                             )}
                         </div>
-                        <div className={styles.shareSection}>
-                            <ShareButtons title={article.title} url={`${SITE_URL}/lifestyle/${id}`} />
-                        </div>
+
                     </div>
                 </main>
 

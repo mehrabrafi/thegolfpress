@@ -3,7 +3,7 @@ import NewsArchiveClient from './NewsArchiveClient';
 
 const PAGE_SIZE = 10;
 
-const NEWS_EXCLUDE = ['COURSES', 'GUIDES-TIPS', 'COURSE'];
+const NEWS_EXCLUDE = ['COURSES', 'GUIDES-TIPS', 'COURSE', 'LIFESTYLE', 'EQUIPMENT', 'EQUIPMENT-REVIEW', 'LUXURY'];
 
 export default async function NewsPage() {
     let initialArticles: any[] = [];

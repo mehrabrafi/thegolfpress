@@ -1,3 +1,203 @@
+/* ===================== */
+/* Home Grid With Sidebar */
+/* ===================== */
+.homeGridWithSidebar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.homeMainContent {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.homeSidebarColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebarSticky {
+  position: sticky;
+  top: 20px;
+}
+
+/* ===================== */
+/* Popular Sidebar Styles */
+/* ===================== */
+.popularHeader {
+  margin-bottom: 25px;
+  border-bottom: 1px solid #ebebeb;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.popularHeaderTitle {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #111;
+  margin: 0;
+  line-height: 1;
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+}
+
+.popularHeaderTitle::after {
+  content: '';
+  position: absolute;
+  bottom: -13px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--primary-red);
+}
+
+.popularList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.popularItem {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 15px;
+}
+
+.popularImageLink {
+  text-decoration: none;
+  display: block;
+}
+
+.popularImageWrapper {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.popularArticleImage {
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.popularItem:hover .popularArticleImage {
+  transform: scale(1.05);
+}
+
+.popularItemInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.popularTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 8px;
+  color: #111;
+  transition: color 0.2s;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.popularItem:hover .popularTitle {
+  color: var(--primary-red);
+}
+
+.popularDateRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.popularBadge {
+  background: #111;
+  color: #fff;
+  padding: 2px 6px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  border-radius: 2px;
+}
+
+.popularDate {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.popularRank {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: var(--primary-red, #c41e3a);
+  color: #fff;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 800;
+  z-index: 2;
+  line-height: 1;
+}
+
+/* ===================== */
+/* Social Widget Styles  */
+/* ===================== */
+.socialWidget {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.socialBoxCard {
+  flex: 1;
+  border: 1px solid #ebebeb;
+  padding: 15px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.socialBoxIcon {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-family: serif;
+}
+
+.socialFollowBtn {
+  margin-top: 5px;
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 1px solid #111;
+  color: #111;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: center;
+}
+
+.socialFollowBtn:hover {
+  background: #111;
+  color: #fff;
+}
+
+/* ===================== */
+/* Legacy / Utility */
+/* ===================== */
 .mainGrid {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -15,12 +215,6 @@
   display: flex;
   flex-direction: column;
   gap: 40px;
-}
-
-@media (max-width: 968px) {
-  .mainGrid {
-    grid-template-columns: 1fr;
-  }
 }
 
 .skeleton {
@@ -42,5 +236,32 @@
 
   100% {
     background-position: -200% 0;
+  }
+}
+
+/* ===================== */
+/* Responsive */
+/* ===================== */
+@media (max-width: 1024px) {
+  .homeGridWithSidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .homeSidebarColumn {
+    order: -1;
+  }
+
+  .sidebarSticky {
+    position: static;
+  }
+
+  .mainGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 968px) {
+  .mainGrid {
+    grid-template-columns: 1fr;
   }
 }

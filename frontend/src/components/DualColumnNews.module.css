@@ -1,4 +1,4 @@
-.latestNews {
+.dualColumnNews {
     margin-top: 40px;
     margin-bottom: 60px;
 }
@@ -57,24 +57,48 @@
 }
 
 /* Grid Layout */
-.contentGrid {
+.gridContainer {
+    display: block;
+}
+
+.gridContainerWithSidebar {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) 300px;
     gap: 30px;
 }
 
-/* Main Column (Left) */
-.mainColumn {
+.mainContentArea {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+}
+
+.newsColumnsGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 40px;
+}
+
+/* Columns */
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+.mainArticleCard {
+    margin-bottom: 30px;
 }
 
 .mainImageWrapper {
     position: relative;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 10;
     overflow: hidden;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
+}
+
+.imageLink,
+.listImageLink {
+    text-decoration: none;
+    display: block;
 }
 
 .articleImage {
@@ -103,8 +127,8 @@
 .mainTitle {
     font-size: 1.4rem;
     font-weight: 800;
-    line-height: 1.25;
-    margin-bottom: 8px;
+    line-height: 1.35;
+    margin-bottom: 12px;
     color: #111;
     transition: color 0.2s;
 }
@@ -113,10 +137,16 @@
     color: var(--primary-red);
 }
 
+.metaRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
 .authorLine {
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     color: #666;
-    margin-bottom: 8px;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -132,65 +162,52 @@
 }
 
 .excerpt {
-    font-size: 0.95rem;
+    font-size: 1rem;
     color: #555;
-    line-height: 1.5;
-    margin-bottom: 12px;
+    line-height: 1.6;
+    margin-bottom: 20px;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-/* List Column (Middle) */
-.listColumn {
+/* List Column */
+.listContainer {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 24px;
 }
 
 .listItem {
     display: grid;
-    grid-template-columns: 120px 1fr;
-    gap: 16px;
+    grid-template-columns: 140px 1fr;
+    gap: 20px;
 }
 
 .listImageWrapper {
     position: relative;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 16 / 10;
     overflow: hidden;
-}
-
-.smallBadge {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    background: #111;
-    color: #fff;
-    padding: 2px 6px;
-    font-size: 0.6rem;
-    font-weight: 700;
-    text-transform: capitalize;
-    z-index: 2;
 }
 
 .listInfo {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .listTitle {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 700;
-    line-height: 1.35;
+    line-height: 1.4;
     margin-bottom: 8px;
     color: #111;
     transition: color 0.2s;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -199,76 +216,25 @@
     color: var(--primary-red);
 }
 
-.listDate {
-    font-size: 0.75rem;
-    color: #666;
-}
-
-/* Widget Column (Right) */
-.widgetColumn {
+.listDateRow {
     display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-.socialWidget {
-    display: flex;
+    align-items: center;
     gap: 10px;
 }
 
-.socialBoxCard {
-    flex: 1;
-    border: 1px solid #ebebeb;
-    padding: 15px 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.socialBoxIcon {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 8px;
-    font-family: serif;
-    /* fallback for mockup icons */
-}
-
-.socialBoxCount {
-    font-weight: 800;
-    font-size: 1.05rem;
-    color: #111;
-    margin-bottom: 2px;
-}
-
-.socialBoxLabel {
-    font-size: 0.75rem;
-    color: #666;
-}
-
-.adLabel {
-    text-align: center;
-    font-size: 0.75rem;
-    color: #999;
-    margin-bottom: 8px;
-}
-
-.adPlaceholder {
-    width: 100%;
-    aspect-ratio: 1;
-    position: relative;
-    overflow: hidden;
+.smallBadge {
     background: #111;
+    color: #fff;
+    padding: 2px 6px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    border-radius: 2px;
 }
 
-.adOverlayText {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    color: #fff;
-    font-size: 0.9rem;
-    font-weight: 800;
-    z-index: 2;
+.listDate {
+    font-size: 0.8rem;
+    color: #666;
 }
 
 /* Popular Section (Sidebar) */
@@ -347,44 +313,27 @@
     color: var(--primary-red);
 }
 
-.listDateRow {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-
 /* Responsive */
 @media (max-width: 1024px) {
-    .contentGrid {
-        grid-template-columns: 1fr 1fr;
+    .gridContainerWithSidebar {
+        grid-template-columns: 1fr;
     }
 
-    .widgetColumn {
+    .popularColumn {
         grid-column: 1 / -1;
-        flex-direction: row;
-    }
-
-    .socialWidget,
-    .adWidget {
-        flex: 1;
-    }
-
-    .adPlaceholder {
-        aspect-ratio: 21 / 9;
     }
 }
 
 @media (max-width: 768px) {
-    .contentGrid {
+    .newsColumnsGrid {
         grid-template-columns: 1fr;
+        gap: 40px;
     }
+}
 
-    .widgetColumn {
-        flex-direction: column;
-    }
-
-    .adPlaceholder {
-        aspect-ratio: 16 / 9;
+@media (max-width: 480px) {
+    .listItem {
+        grid-template-columns: 100px 1fr;
+        gap: 15px;
     }
 }

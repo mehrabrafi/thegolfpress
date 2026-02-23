@@ -9,6 +9,7 @@ import {
     CreateSubTagDto, UpdateSubTagDto,
     UpdateUserRoleDto, UpdateSettingDto,
 } from './dto/golf.dto';
+import { TrackActivityDto } from '../auth/dto/auth.dto';
 
 @Controller('golf')
 export class GolfController {
@@ -66,12 +67,14 @@ export class GolfController {
         @Query('excludeCategories') excludeCategories?: string,
         @Query('search') search?: string,
     ) {
+        // Cap take at 100 to prevent database dumps
+        const parsedTake = take ? Math.min(parseInt(take, 10), 100) : undefined;
         return this.golfService.getNews(
             category,
             tag,
             status,
             skip ? parseInt(skip, 10) : 0,
-            take ? parseInt(take, 10) : undefined,
+            parsedTake,
             excludeCategories ? excludeCategories.split(',') : undefined,
             search,
         );
@@ -108,7 +111,7 @@ export class GolfController {
     }
 
     @Post('track-activity')
-    async trackActivity(@Body() body: { visitorId: string, userId?: string }) {
+    async trackActivity(@Body() body: TrackActivityDto) {
         return this.golfService.trackActivity(body.visitorId, body.userId);
     }
 

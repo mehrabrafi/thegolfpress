@@ -1,5 +1,5 @@
 .pageContainer {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 40px 20px;
     font-family: var(--font-inter);
@@ -75,7 +75,7 @@
 .mainLayout {
     display: grid;
     grid-template-columns: 1fr 350px;
-    gap: 60px;
+    gap: 120px;
 }
 
 .heroImageContainer {
@@ -100,6 +100,49 @@
 
 .articleBody p {
     margin-bottom: 24px;
+}
+
+.buyButtonWrapper {
+    margin: 40px 0;
+    text-align: center;
+}
+
+.buyButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 30px;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    border: 1px solid #1a1a1a;
+}
+
+.buyButton:hover {
+    background-color: rgba(217, 32, 32, 0.05);
+    /* very light red */
+    color: var(--primary-red);
+    border-color: var(--primary-red);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(217, 32, 32, 0.15);
+}
+
+.buyButton:hover .sponsorText {
+    color: rgba(217, 32, 32, 0.7);
+}
+
+.sponsorText {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.3s ease;
 }
 
 .sidebarWidget {
