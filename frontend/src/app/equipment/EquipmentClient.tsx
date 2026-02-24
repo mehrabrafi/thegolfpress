@@ -89,6 +89,16 @@ export default function EquipmentClient({ initialArticles }: { initialArticles: 
         <div className={styles.container}>
             {/* Hero Section */}
             <section className={styles.hero}>
+                <Image
+                    src="https://cdn.thegolfpress.com/gear.png"
+                    alt="The Gear Room"
+                    fill
+                    priority
+                    quality={85}
+                    className={styles.heroBackgroundImage}
+                    sizes="100vw"
+                />
+                <div className={styles.heroOverlay}></div>
                 <div className={styles.heroContent}>
                     <h1 className={styles.heroTitle}>The Gear Room</h1>
                     <p className={styles.heroSubtitle}>EXPERT REVIEWS • TECH BREAKDOWNS • REAL WORLD TESTING</p>
