@@ -228,4 +228,12 @@ export class GolfController {
         return this.golfService.updateSetting(key, body.value);
     }
 
+    // ── Format Database (ADMIN only — DESTRUCTIVE) ──────────────
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles('ADMIN')
+    @Delete('admin/format-database')
+    async formatDatabase() {
+        return this.golfService.formatDatabase();
+    }
+
 }

@@ -937,6 +937,60 @@ export class GolfService {
         };
     }
 
+    async formatDatabase() {
+        this.logger.warn('⚠️ FORMAT DATABASE: Deleting all content except user credentials...');
+
+        // Use a transaction to ensure atomicity
+        // Order matters: delete dependent tables first to respect foreign key constraints
+        const result = await this.prisma.$transaction(async (tx) => {
+            // 1. Delete DailyActivity (no dependencies)
+            const dailyActivityCount = await tx.dailyActivity.count();
+            await tx.dailyActivity.deleteMany();
+
+            // 2. Delete Analytics (no dependencies)
+            const analyticsCount = await tx.analytics.count();
+            await tx.analytics.deleteMany();
+
+            // 3. Delete News (depends on Category, SubTag, Player via relations)
+            const newsCount = await tx.news.count();
+            await tx.news.deleteMany();
+
+            // 4. Delete SubTags (depends on Category)
+            const subTagCount = await tx.subTag.count();
+            await tx.subTag.deleteMany();
+
+            // 5. Delete Categories (no more dependents after News & SubTags are gone)
+            const categoryCount = await tx.category.count();
+            await tx.category.deleteMany();
+
+            // 6. Delete Players (News relation already cleared)
+            const playerCount = await tx.player.count();
+            await tx.player.deleteMany();
+
+            // 7. Delete Settings
+            const settingCount = await tx.setting.count();
+            await tx.setting.deleteMany();
+
+            return {
+                deletedNews: newsCount,
+                deletedCategories: categoryCount,
+                deletedSubTags: subTagCount,
+                deletedPlayers: playerCount,
+                deletedSettings: settingCount,
+                deletedAnalytics: analyticsCount,
+                deletedDailyActivity: dailyActivityCount,
+            };
+        });
+
+        this.logger.warn(`✅ FORMAT DATABASE COMPLETE: ${JSON.stringify(result)}`);
+
+        return {
+            success: true,
+            message: 'Database formatted successfully. All content has been deleted. User accounts are preserved.',
+            deleted: result,
+        };
+    }
+
     async search(query: string) {
         if (!query || query.trim().length < 2) {
             return { news: [], categories: [], players: [] };

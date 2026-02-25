@@ -361,3 +361,359 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* ── Danger Zone ─────────────────────────────────────────── */
+
+.dangerZone {
+    margin-top: 50px;
+    background: white;
+    border: 2px solid #fecaca;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.dangerHeader {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 28px;
+    background: linear-gradient(135deg, #fef2f2, #fff1f2);
+    color: #dc2626;
+    border-bottom: 1px solid #fecaca;
+}
+
+.dangerHeader h2 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin: 0;
+    color: #dc2626;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.dangerContent {
+    padding: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.dangerInfo {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    flex: 1;
+}
+
+.dangerIconWrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fef2f2;
+    color: #dc2626;
+    flex-shrink: 0;
+}
+
+.dangerInfo h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 6px 0;
+}
+
+.dangerInfo p {
+    font-size: 0.88rem;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.dangerBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: #dc2626;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.dangerBtn:hover {
+    background: #b91c1c;
+    box-shadow: 0 8px 20px rgba(220, 38, 38, 0.3);
+    transform: translateY(-1px);
+}
+
+/* ── Format Database Modal ───────────────────────────────── */
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: modalFadeIn 0.2s ease-out;
+    padding: 20px;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modalContent {
+    background: white;
+    border-radius: 24px;
+    padding: 40px;
+    max-width: 520px;
+    width: 100%;
+    position: relative;
+    animation: modalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modalClose {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: none;
+    background: #f1f5f9;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modalClose:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+}
+
+.modalIcon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #fef2f2, #fee2e2);
+    color: #dc2626;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px auto;
+}
+
+.modalTitle {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0f172a;
+    text-align: center;
+    margin: 0 0 8px 0;
+}
+
+.modalDesc {
+    font-size: 0.92rem;
+    color: #64748b;
+    text-align: center;
+    margin: 0 0 16px 0;
+    line-height: 1.5;
+}
+
+.modalList {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.modalList li {
+    font-size: 0.85rem;
+    color: #475569;
+    padding: 8px 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #f1f5f9;
+}
+
+.modalPreserve {
+    font-size: 0.88rem;
+    color: #16a34a;
+    text-align: center;
+    padding: 12px 16px;
+    background: #f0fdf4;
+    border-radius: 12px;
+    border: 1px solid #bbf7d0;
+    margin: 0 0 24px 0;
+}
+
+.confirmInput {
+    margin-bottom: 20px;
+}
+
+.confirmInput label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 8px;
+}
+
+.confirmInput input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-align: center;
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.confirmInput input:focus {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.08);
+}
+
+.modalActions {
+    display: flex;
+    gap: 12px;
+}
+
+.cancelBtn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    color: #64748b;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cancelBtn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+.confirmDeleteBtn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    background: #dc2626;
+    color: white;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.confirmDeleteBtn:hover:not(:disabled) {
+    background: #b91c1c;
+    box-shadow: 0 8px 20px rgba(220, 38, 38, 0.3);
+}
+
+.confirmDeleteBtn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.spinnerText {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.formatResultBox {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 20px;
+    background: #f0fdf4;
+    border-radius: 14px;
+    border: 1px solid #bbf7d0;
+    color: #16a34a;
+    margin-top: 8px;
+}
+
+.formatResultBox strong {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 8px;
+    color: #15803d;
+}
+
+.resultList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.resultList li {
+    font-size: 0.82rem;
+    color: #475569;
+    padding: 3px 0;
+}
+
+.resultList li strong {
+    display: inline;
+    color: #0f172a;
+    font-size: 0.82rem;
+}
+
+.formatErrorBox {
+    padding: 14px 18px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 12px;
+    color: #dc2626;
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+}

@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { fetchSettings, updateSetting, fetchMaintenanceStatus } from '@/lib/api';
+import { fetchSettings, updateSetting, fetchMaintenanceStatus, formatDatabase } from '@/lib/api';
 import styles from './settings.module.css';
-import { Save, Globe, Share2, Mail, Info, CheckCircle, Shield, AlertTriangle } from 'lucide-react';
+import { Save, Globe, Share2, Mail, Info, CheckCircle, Shield, AlertTriangle, Trash2, Database, X } from 'lucide-react';
 
 export default function SettingsPage() {
     const [settings, setSettings] = useState<any[]>([]);
@@ -15,6 +15,13 @@ export default function SettingsPage() {
     const [maintenanceEndTime, setMaintenanceEndTime] = useState('');
     const [registrationOn, setRegistrationOn] = useState(true);
     const [registrationLoading, setRegistrationLoading] = useState(false);
+
+    // Format Database state
+    const [showFormatModal, setShowFormatModal] = useState(false);
+    const [formatConfirmText, setFormatConfirmText] = useState('');
+    const [formatting, setFormatting] = useState(false);
+    const [formatResult, setFormatResult] = useState<any>(null);
+    const [formatError, setFormatError] = useState<string | null>(null);
 
     useEffect(() => {
         loadSettings();
@@ -119,6 +126,29 @@ export default function SettingsPage() {
     };
 
     const getSettingValue = (key: string) => settings.find(s => s.key === key)?.value || '';
+
+    const handleFormatDatabase = async () => {
+        if (formatConfirmText !== 'FORMAT') return;
+        setFormatting(true);
+        setFormatError(null);
+        setFormatResult(null);
+        try {
+            const result = await formatDatabase();
+            setFormatResult(result);
+            setFormatConfirmText('');
+        } catch (error: any) {
+            setFormatError(error.message || 'Failed to format database');
+        } finally {
+            setFormatting(false);
+        }
+    };
+
+    const closeFormatModal = () => {
+        setShowFormatModal(false);
+        setFormatConfirmText('');
+        setFormatResult(null);
+        setFormatError(null);
+    };
 
     if (loading) return <div className={styles.loading}>Initializing Site configuration...</div>;
 
@@ -352,6 +382,118 @@ export default function SettingsPage() {
                     </div>
                 </div>
             </div>
+
+            {/* ── Danger Zone: Format Database ──────────────────── */}
+            <div className={styles.dangerZone}>
+                <div className={styles.dangerHeader}>
+                    <Trash2 size={20} />
+                    <h2>Danger Zone</h2>
+                </div>
+                <div className={styles.dangerContent}>
+                    <div className={styles.dangerInfo}>
+                        <div className={styles.dangerIconWrap}>
+                            <Database size={24} />
+                        </div>
+                        <div>
+                            <h3>Format Database</h3>
+                            <p>Permanently delete all content from the database including News, Categories, Sub-Tags, Players, Settings, and Analytics. <strong>User accounts will be preserved.</strong></p>
+                        </div>
+                    </div>
+                    <button
+                        className={styles.dangerBtn}
+                        onClick={() => setShowFormatModal(true)}
+                    >
+                        <Trash2 size={16} />
+                        Format Database
+                    </button>
+                </div>
+            </div>
+
+            {/* ── Format Database Confirmation Modal ────────────── */}
+            {showFormatModal && (
+                <div className={styles.modalOverlay} onClick={closeFormatModal}>
+                    <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+                        <button className={styles.modalClose} onClick={closeFormatModal}>
+                            <X size={20} />
+                        </button>
+
+                        <div className={styles.modalIcon}>
+                            <AlertTriangle size={32} />
+                        </div>
+
+                        <h2 className={styles.modalTitle}>Format Database</h2>
+                        <p className={styles.modalDesc}>
+                            This action is <strong>irreversible</strong>. All content will be permanently deleted:
+                        </p>
+
+                        <ul className={styles.modalList}>
+                            <li>📰 All News Articles</li>
+                            <li>📂 All Categories & Sub-Tags</li>
+                            <li>🏌️ All Players</li>
+                            <li>⚙️ All Settings</li>
+                            <li>📊 All Analytics & Activity Data</li>
+                        </ul>
+
+                        <p className={styles.modalPreserve}>
+                            ✅ <strong>User accounts</strong> (credentials, profiles, roles) will be <strong>preserved</strong>.
+                        </p>
+
+                        {formatResult ? (
+                            <div className={styles.formatResultBox}>
+                                <CheckCircle size={20} />
+                                <div>
+                                    <strong>Database Formatted Successfully!</strong>
+                                    <ul className={styles.resultList}>
+                                        <li>News deleted: <strong>{formatResult.deleted?.deletedNews || 0}</strong></li>
+                                        <li>Categories deleted: <strong>{formatResult.deleted?.deletedCategories || 0}</strong></li>
+                                        <li>Sub-Tags deleted: <strong>{formatResult.deleted?.deletedSubTags || 0}</strong></li>
+                                        <li>Players deleted: <strong>{formatResult.deleted?.deletedPlayers || 0}</strong></li>
+                                        <li>Settings deleted: <strong>{formatResult.deleted?.deletedSettings || 0}</strong></li>
+                                        <li>Analytics deleted: <strong>{formatResult.deleted?.deletedAnalytics || 0}</strong></li>
+                                        <li>Activity logs deleted: <strong>{formatResult.deleted?.deletedDailyActivity || 0}</strong></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        ) : (
+                            <>
+                                {formatError && (
+                                    <div className={styles.formatErrorBox}>
+                                        ❌ {formatError}
+                                    </div>
+                                )}
+
+                                <div className={styles.confirmInput}>
+                                    <label>Type <strong>FORMAT</strong> to confirm:</label>
+                                    <input
+                                        type="text"
+                                        value={formatConfirmText}
+                                        onChange={(e) => setFormatConfirmText(e.target.value.toUpperCase())}
+                                        placeholder="TYPE FORMAT"
+                                        autoFocus
+                                    />
+                                </div>
+
+                                <div className={styles.modalActions}>
+                                    <button className={styles.cancelBtn} onClick={closeFormatModal}>
+                                        Cancel
+                                    </button>
+                                    <button
+                                        className={styles.confirmDeleteBtn}
+                                        disabled={formatConfirmText !== 'FORMAT' || formatting}
+                                        onClick={handleFormatDatabase}
+                                    >
+                                        {formatting ? (
+                                            <span className={styles.spinnerText}>Formatting...</span>
+                                        ) : (
+                                            <><Trash2 size={16} /> Delete All Content</>
+                                        )}
+                                    </button>
+                                </div>
+                            </>
+                        )}
+                    </div>
+                </div>
+            )}
 
             <div className={styles.infoFooter}>
                 <Info size={16} />

@@ -333,6 +333,15 @@ export async function updateSetting(key: string, value: string, _token?: string)
     return res.json();
 }
 
+export async function formatDatabase() {
+    const res = await fetch(`${API_BASE_URL}/admin/format-database`, {
+        method: 'DELETE',
+        credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Failed to format database');
+    return res.json();
+}
+
 // ── Category Endpoints ──────────────────────────────────────────
 
 export async function fetchCategories() {
