@@ -65,13 +65,14 @@ export default function MaintenanceGuard({ children }: { children: React.ReactNo
                 const data = await fetchMaintenanceStatus();
                 setMaintenance(data.enabled);
                 setEndTime(data.endTime || null);
-            } catch {
-                setMaintenance(false);
-                setEndTime(null);
+            } catch (error) {
+                console.error('Failed to check maintenance status:', error);
+                // Keep previous state on error to avoid flickering/resetting
             } finally {
                 setChecked(true);
             }
         };
+
         check();
 
         const interval = setInterval(check, 30000);

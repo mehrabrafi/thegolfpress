@@ -55,10 +55,11 @@ export default function SettingsPage() {
                 const d = new Date(data.endTime);
                 setMaintenanceEndTime(d.toISOString().slice(0, 16));
             }
-        } catch {
-            setMaintenanceOn(false);
+        } catch (error) {
+            console.error('Error loading maintenance status', error);
         }
     };
+
 
     const handleToggleMaintenance = async () => {
         setMaintenanceLoading(true);
