@@ -51,6 +51,14 @@ export class CreateNewsDto {
     @IsOptional()
     @IsString()
     affiliateLink?: string;
+
+    @IsOptional()
+    @IsNumber()
+    latitude?: number;
+
+    @IsOptional()
+    @IsNumber()
+    longitude?: number;
 }
 
 export class UpdateNewsDto {
@@ -109,6 +117,14 @@ export class UpdateNewsDto {
     @IsOptional()
     @IsString()
     affiliateLink?: string;
+
+    @IsOptional()
+    @IsNumber()
+    latitude?: number;
+
+    @IsOptional()
+    @IsNumber()
+    longitude?: number;
 }
 
 export class CreateCategoryDto {

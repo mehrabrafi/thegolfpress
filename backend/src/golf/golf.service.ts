@@ -487,6 +487,8 @@ export class GolfService {
                 publishedAt: data.publishedAt ? new Date(data.publishedAt) : new Date(),
                 author: data.author || null,
                 affiliateLink: data.affiliateLink || null,
+                latitude: data.latitude !== undefined ? data.latitude : null,
+                longitude: data.longitude !== undefined ? data.longitude : null,
 
                 // Relations handling
                 categoryRef: data.categoryId ? { connect: { id: data.categoryId } } : undefined,
@@ -510,6 +512,8 @@ export class GolfService {
                 publishedAt: data.publishedAt ? new Date(data.publishedAt) : undefined,
                 author: data.author,
                 affiliateLink: data.affiliateLink,
+                latitude: data.latitude,
+                longitude: data.longitude,
                 categoryId: data.categoryId || null,
                 subTagId: data.subTagId || null,
             }

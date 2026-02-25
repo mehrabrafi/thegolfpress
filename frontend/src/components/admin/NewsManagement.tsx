@@ -45,6 +45,8 @@ export default function NewsManagement({
         status: 'PUBLISHED',
         author: '',
         affiliateLink: '',
+        latitude: '',
+        longitude: '',
         publishedAt: new Date().toISOString().slice(0, 16),
     });
     const [categories, setCategories] = useState<any[]>([]);
@@ -111,6 +113,8 @@ export default function NewsManagement({
             status: 'PUBLISHED',
             author: '',
             affiliateLink: '',
+            latitude: '',
+            longitude: '',
             publishedAt: new Date().toISOString().slice(0, 16)
         });
         setEditId(null);
@@ -167,6 +171,8 @@ export default function NewsManagement({
             status: article.status || 'PUBLISHED',
             author: article.author || '',
             affiliateLink: article.affiliateLink || '',
+            latitude: article.latitude || '',
+            longitude: article.longitude || '',
             publishedAt: article.publishedAt ? new Date(article.publishedAt).toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16)
         });
 
@@ -215,6 +221,8 @@ export default function NewsManagement({
         try {
             const payload = {
                 ...formData,
+                latitude: formData.latitude ? parseFloat(formData.latitude) : undefined,
+                longitude: formData.longitude ? parseFloat(formData.longitude) : undefined,
                 categoryId: formData.categoryId || undefined,
                 subTagId: formData.subTagId || undefined
             };
@@ -430,6 +438,31 @@ export default function NewsManagement({
                                 />
                             </div>
                         </div>
+
+                        {(!fixedCategory || fixedCategory === 'COURSES') && (
+                            <div className={styles.row}>
+                                <div className={styles.formGroup}>
+                                    <label>LATITUDE (Maps)</label>
+                                    <input
+                                        type="number"
+                                        step="any"
+                                        value={formData.latitude}
+                                        onChange={e => setFormData({ ...formData, latitude: e.target.value })}
+                                        placeholder="e.g. 36.5683"
+                                    />
+                                </div>
+                                <div className={styles.formGroup}>
+                                    <label>LONGITUDE (Maps)</label>
+                                    <input
+                                        type="number"
+                                        step="any"
+                                        value={formData.longitude}
+                                        onChange={e => setFormData({ ...formData, longitude: e.target.value })}
+                                        placeholder="e.g. -121.9515"
+                                    />
+                                </div>
+                            </div>
+                        )}
 
                         <div className={styles.formGroup}>
                             <label>FEATURED IMAGE URL</label>

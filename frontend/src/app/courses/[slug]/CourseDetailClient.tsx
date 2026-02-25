@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import DOMPurify from 'dompurify';
-import { MapPinOff } from 'lucide-react';
+import { MapPinOff, MapPin } from 'lucide-react';
 import JsonLd, { createGolfCourseJsonLd } from '@/components/JsonLd';
 import { API_BASE_URL } from '@/lib/api';
 import styles from '../courses.module.css';
@@ -22,6 +22,8 @@ interface Course {
     author?: string;
     time?: string;
     createdAt?: string;
+    latitude?: number | null;
+    longitude?: number | null;
 }
 
 interface CourseDetailClientProps {
@@ -101,6 +103,7 @@ export default function CourseDetailClient({
 
 // ── Course Detail Component ─────────────────────────────────────
 function CourseDetailContent({ course }: { course: Course }) {
+    const [isMapLoaded, setIsMapLoaded] = useState(false);
     const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://thegolfpress.com';
     const locationInfo = course.categoryTag || '';
     const mapQuery = encodeURIComponent(`${course.title} ${locationInfo} Golf Course`);
@@ -154,19 +157,54 @@ function CourseDetailContent({ course }: { course: Course }) {
                                 <h2 className={detailStyles.sectionTitle}>Course Map</h2>
                             </div>
 
-                            {hasSufficientLocation ? (
-                                <div style={{ borderRadius: '8px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-                                    <iframe
-                                        width="100%"
-                                        height="400"
-                                        frameBorder="0"
-                                        style={{ border: 0, display: 'block' }}
-                                        src={`https://maps.google.com/maps?q=${mapQuery}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
-                                        allowFullScreen
-                                        loading="lazy"
-                                        title={`Map of ${course.title}`}
-                                    ></iframe>
-                                </div>
+                            {course.latitude && course.longitude ? (
+                                !isMapLoaded ? (
+                                    <div className={detailStyles.mapFacade} onClick={() => setIsMapLoaded(true)}>
+                                        <div className={detailStyles.mapPinIcon}>
+                                            <MapPin size={48} fill="#ea4335" stroke="white" strokeWidth={1.5} />
+                                        </div>
+                                        <button className={detailStyles.viewMapBtn}>
+                                            View Interactive Map
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div style={{ borderRadius: '8px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+                                        <iframe
+                                            width="100%"
+                                            height="400"
+                                            frameBorder="0"
+                                            style={{ border: 0, display: 'block' }}
+                                            src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}&q=${course.latitude},${course.longitude}`}
+                                            allowFullScreen
+                                            loading="lazy"
+                                            title={`Map of ${course.title}`}
+                                        ></iframe>
+                                    </div>
+                                )
+                            ) : hasSufficientLocation ? (
+                                !isMapLoaded ? (
+                                    <div className={detailStyles.mapFacade} onClick={() => setIsMapLoaded(true)}>
+                                        <div className={detailStyles.mapPinIcon}>
+                                            <MapPin size={48} fill="#ea4335" stroke="white" strokeWidth={1.5} />
+                                        </div>
+                                        <button className={detailStyles.viewMapBtn}>
+                                            View Interactive Map
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div style={{ borderRadius: '8px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+                                        <iframe
+                                            width="100%"
+                                            height="400"
+                                            frameBorder="0"
+                                            style={{ border: 0, display: 'block' }}
+                                            src={`https://maps.google.com/maps?q=${mapQuery}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+                                            allowFullScreen
+                                            loading="lazy"
+                                            title={`Map of ${course.title}`}
+                                        ></iframe>
+                                    </div>
+                                )
                             ) : (
                                 <div className={detailStyles.mapPlaceholder}>
                                     <div className={detailStyles.mapPlaceholderIcon}>
