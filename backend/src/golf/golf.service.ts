@@ -554,9 +554,16 @@ export class GolfService {
     }
 
     async deleteCategory(id: string) {
-        return this.prisma.category.delete({
-            where: { id }
-        });
+        try {
+            return await this.prisma.category.delete({
+                where: { id }
+            });
+        } catch (error) {
+            if (error.code === 'P2025') {
+                throw new NotFoundException('Category not found');
+            }
+            throw error;
+        }
     }
 
     // Sub-Tag Management
