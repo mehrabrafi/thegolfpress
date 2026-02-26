@@ -93,7 +93,7 @@ export default function NewsDetailClient({
                     </div>
 
                     <div className={styles.heroImageContainer}>
-                        <Image src={article.image} alt={article.title} fill className={styles.heroImage} priority sizes="(max-width: 1100px) 100vw, 900px" style={{ objectFit: 'cover' }} />
+                        <Image src={article.image} alt={article.imageAlt || article.title} fill className={styles.heroImage} priority sizes="(max-width: 1100px) 100vw, 900px" style={{ objectFit: 'cover' }} />
                     </div>
                     <p className={styles.imageCaption}>{article.title} - Photo by The Golf Press</p>
 

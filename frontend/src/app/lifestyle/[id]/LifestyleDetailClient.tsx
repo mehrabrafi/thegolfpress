@@ -69,7 +69,7 @@ export default function LifestyleDetailClient({
                 <main className={styles.mainContent}>
                     <div className={styles.heroSection}>
                         <div className={styles.imageWrapper}>
-                            <Image src={article.image} alt={article.title} fill priority className={styles.heroImage} sizes="(max-width: 1100px) 100vw, 900px" />
+                            <Image src={article.image} alt={article.imageAlt || article.title} fill priority className={styles.heroImage} sizes="(max-width: 1100px) 100vw, 900px" />
                         </div>
                     </div>
 

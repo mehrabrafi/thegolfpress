@@ -33,6 +33,7 @@ model News {
   excerpt     String
   time        String
   image       String
+  imageAlt    String?    @default("")
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   content     String     @default("")

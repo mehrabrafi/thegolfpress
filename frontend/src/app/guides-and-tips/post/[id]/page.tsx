@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: any }): Promise<Met
                 publishedTime: article.createdAt,
                 modifiedTime: article.updatedAt || article.createdAt,
                 authors: [article.author || 'The Golf Press Editorial'],
-                images: article.image ? [{ url: article.image, width: 1200, height: 630, alt: article.title }] : [],
+                images: article.image ? [{ url: article.image, width: 1200, height: 630, alt: article.imageAlt || article.title }] : [],
                 url: `${SITE_URL}/guides-and-tips/post/${id}`,
             },
             twitter: {

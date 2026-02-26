@@ -71,7 +71,7 @@ export default function EquipmentDetailClient({
             <div className={styles.mainLayout}>
                 <div className={styles.contentColumn}>
                     <div className={styles.heroImageContainer}>
-                        <Image src={article.image} alt={article.title} fill className={styles.heroImage} priority sizes="(max-width: 1000px) 100vw, 850px" />
+                        <Image src={article.image} alt={article.imageAlt || article.title} fill className={styles.heroImage} priority sizes="(max-width: 1000px) 100vw, 850px" />
                     </div>
 
                     {article.affiliateLink && (

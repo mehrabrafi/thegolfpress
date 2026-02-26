@@ -13,6 +13,10 @@ export class CreateNewsDto {
     @IsString()
     image: string;
 
+    @IsOptional()
+    @IsString()
+    imageAlt?: string;
+
     @IsString()
     category: string;
 
@@ -77,6 +81,10 @@ export class UpdateNewsDto {
     @IsOptional()
     @IsString()
     image?: string;
+
+    @IsOptional()
+    @IsString()
+    imageAlt?: string;
 
     @IsOptional()
     @IsString()

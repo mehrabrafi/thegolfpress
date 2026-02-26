@@ -80,7 +80,7 @@ export default function GuideDetailClient({
                     </div>
 
                     <div className={styles.heroImageContainer}>
-                        <Image src={article.image} alt={article.title} fill className={styles.heroImage} priority sizes="(max-width: 900px) 100vw, 750px" style={{ objectFit: 'cover' }} />
+                        <Image src={article.image} alt={article.imageAlt || article.title} fill className={styles.heroImage} priority sizes="(max-width: 900px) 100vw, 750px" style={{ objectFit: 'cover' }} />
                     </div>
 
                     <div className={styles.articleBody}>

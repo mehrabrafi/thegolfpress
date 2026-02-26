@@ -39,6 +39,7 @@ export default function NewsManagement({
         excerpt: '',
         content: '',
         image: '',
+        imageAlt: '',
         categoryId: '',
         subTagId: '',
         type: 'REGULAR',
@@ -106,6 +107,7 @@ export default function NewsManagement({
             excerpt: '',
             content: '',
             image: '',
+            imageAlt: '',
             categoryId: formData.categoryId,
             category: formData.category,
             categoryTag: '',
@@ -163,6 +165,7 @@ export default function NewsManagement({
             excerpt: article.excerpt,
             content: article.content,
             image: article.image || '',
+            imageAlt: article.imageAlt || '',
             category: article.category,
             categoryId: article.categoryId || '',
             subTagId: article.subTagId || '',
@@ -464,27 +467,38 @@ export default function NewsManagement({
                             </div>
                         )}
 
-                        <div className={styles.formGroup}>
-                            <label>FEATURED IMAGE URL</label>
-                            <div style={{ display: 'flex', gap: '10px' }}>
+                        <div className={styles.row}>
+                            <div className={styles.formGroup} style={{ flex: 2 }}>
+                                <label>FEATURED IMAGE URL</label>
+                                <div style={{ display: 'flex', gap: '10px' }}>
+                                    <input
+                                        type="text"
+                                        value={formData.image}
+                                        onChange={e => setFormData({ ...formData, image: e.target.value })}
+                                        placeholder="Paste URL or upload image..."
+                                        style={{ flex: 1 }}
+                                        required
+                                    />
+                                    <input
+                                        type="file"
+                                        id="img-upload-comp"
+                                        onChange={handleImageUpload}
+                                        style={{ display: 'none' }}
+                                        accept="image/*"
+                                    />
+                                    <label htmlFor="img-upload-comp" className={styles.uploadBtn}>
+                                        <ImageIcon size={18} /> {uploading ? 'Processing...' : 'Upload'}
+                                    </label>
+                                </div>
+                            </div>
+                            <div className={styles.formGroup} style={{ flex: 1 }}>
+                                <label>IMAGE ALT TEXT (SEO)</label>
                                 <input
                                     type="text"
-                                    value={formData.image}
-                                    onChange={e => setFormData({ ...formData, image: e.target.value })}
-                                    placeholder="Paste URL or upload image..."
-                                    style={{ flex: 1 }}
-                                    required
+                                    value={formData.imageAlt}
+                                    onChange={e => setFormData({ ...formData, imageAlt: e.target.value })}
+                                    placeholder="e.g. Tiger Woods playing golf"
                                 />
-                                <input
-                                    type="file"
-                                    id="img-upload-comp"
-                                    onChange={handleImageUpload}
-                                    style={{ display: 'none' }}
-                                    accept="image/*"
-                                />
-                                <label htmlFor="img-upload-comp" className={styles.uploadBtn}>
-                                    <ImageIcon size={18} /> {uploading ? 'Processing...' : 'Upload'}
-                                </label>
                             </div>
                         </div>
 

@@ -26,9 +26,15 @@ const MenuBar = ({ editor }: { editor: any }) => {
             const file = event.target.files?.[0];
             if (file) {
                 try {
+                    const altText = prompt('Enter alt text for this image (SEO):', file.name.split('.')[0]);
+                    if (altText === null) return; // User cancelled
+
                     const data = await uploadImage(file);
                     if (data && data.url) {
-                        editor.chain().focus().setImage({ src: data.url }).run();
+                        editor.chain().focus().setImage({
+                            src: data.url,
+                            alt: altText
+                        }).run();
                     }
                 } catch (error) {
                     console.error('Error uploading image:', error);
