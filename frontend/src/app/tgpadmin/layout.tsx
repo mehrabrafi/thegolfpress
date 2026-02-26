@@ -40,40 +40,40 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <aside className={styles.sidebar}>
                 <div className={styles.brand}>Admin Panel</div>
                 <nav className={styles.nav}>
-                    <Link href="/tgpadmin" className={styles.navItem}>
+                    <Link href="/tgpadmin" className={styles.navItem} prefetch={false}>
                         <LayoutDashboard size={18} /> Dashboard
                     </Link>
-                    <Link href="/tgpadmin/analytics" className={styles.navItem}>
+                    <Link href="/tgpadmin/analytics" className={styles.navItem} prefetch={false}>
                         <BarChart3 size={18} /> Content Analytics
                     </Link>
-                    <Link href="/tgpadmin/news" className={styles.navItem}>
+                    <Link href="/tgpadmin/news" className={styles.navItem} prefetch={false}>
                         <Newspaper size={18} /> Manage News
                     </Link>
-                    <Link href="/tgpadmin/categories" className={styles.navItem}>
+                    <Link href="/tgpadmin/categories" className={styles.navItem} prefetch={false}>
                         <Tags size={18} /> Manage Categories
                     </Link>
-                    <Link href="/tgpadmin/guides-and-tips" className={styles.navItem}>
+                    <Link href="/tgpadmin/guides-and-tips" className={styles.navItem} prefetch={false}>
                         <BookOpen size={18} /> Manage Guides & Tips
                     </Link>
-                    <Link href="/tgpadmin/courses" className={styles.navItem}>
+                    <Link href="/tgpadmin/courses" className={styles.navItem} prefetch={false}>
                         <Flag size={18} /> Manage Courses
                     </Link>
-                    <Link href="/tgpadmin/equipment" className={styles.navItem}>
+                    <Link href="/tgpadmin/equipment" className={styles.navItem} prefetch={false}>
                         <Wrench size={18} /> Manage Equipment
                     </Link>
-                    <Link href="/tgpadmin/lifestyle" className={styles.navItem}>
+                    <Link href="/tgpadmin/lifestyle" className={styles.navItem} prefetch={false}>
                         <Sparkles size={18} /> Manage Lifestyle
                     </Link>
-                    <Link href="/tgpadmin/players" className={styles.navItem}>
+                    <Link href="/tgpadmin/players" className={styles.navItem} prefetch={false}>
                         <Trophy size={18} /> Manage Players
                     </Link>
-                    <Link href="/tgpadmin/users" className={styles.navItem}>
+                    <Link href="/tgpadmin/users" className={styles.navItem} prefetch={false}>
                         <Users size={18} /> Users
                     </Link>
-                    <Link href="/tgpadmin/settings" className={styles.navItem}>
+                    <Link href="/tgpadmin/settings" className={styles.navItem} prefetch={false}>
                         <Settings size={18} /> Site Settings
                     </Link>
-                    <Link href="/tgpadmin/settings" className={styles.navItemMaintenance}>
+                    <Link href="/tgpadmin/settings" className={styles.navItemMaintenance} prefetch={false}>
                         <Wrench size={18} /> Maintenance Mode
                     </Link>
                     <div className={styles.navDivider}></div>
