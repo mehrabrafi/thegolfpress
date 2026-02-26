@@ -554,14 +554,21 @@ export class GolfService {
     }
 
     async deleteCategory(id: string) {
+        this.logger.log(`Attempting to delete category: ${id}`);
         try {
-            return await this.prisma.category.delete({
+            const result = await this.prisma.category.delete({
                 where: { id }
             });
+            this.logger.log(`Successfully deleted category: ${id}`);
+            return result;
         } catch (error) {
             if (error.code === 'P2025') {
-                throw new NotFoundException('Category not found');
+                this.logger.warn(`Category with ID ${id} not found during deletion. It may have been already deleted.`);
+                // Return a success-like object or at least don't throw 404 if we want idempotency
+                // For now, let's be descriptive
+                return { success: true, message: 'Category already deleted or not found' };
             }
+            this.logger.error(`Error deleting category ${id}: ${error.message}`);
             throw error;
         }
     }
@@ -601,15 +608,39 @@ export class GolfService {
     }
 
     async deleteSubTag(id: string) {
-        return this.prisma.subTag.delete({
-            where: { id }
-        });
+        this.logger.log(`Attempting to delete sub-tag: ${id}`);
+        try {
+            const result = await this.prisma.subTag.delete({
+                where: { id }
+            });
+            this.logger.log(`Successfully deleted sub-tag: ${id}`);
+            return result;
+        } catch (error) {
+            if (error.code === 'P2025') {
+                this.logger.warn(`Sub-tag with ID ${id} not found during deletion.`);
+                return { success: true, message: 'Sub-tag already deleted or not found' };
+            }
+            this.logger.error(`Error deleting sub-tag ${id}: ${error.message}`);
+            throw error;
+        }
     }
 
     async deleteNews(id: string) {
-        return this.prisma.news.delete({
-            where: { id }
-        });
+        this.logger.log(`Attempting to delete news article: ${id}`);
+        try {
+            const result = await this.prisma.news.delete({
+                where: { id }
+            });
+            this.logger.log(`Successfully deleted news article: ${id}`);
+            return result;
+        } catch (error) {
+            if (error.code === 'P2025') {
+                this.logger.warn(`News article with ID ${id} not found during deletion.`);
+                return { success: true, message: 'News article already deleted or not found' };
+            }
+            this.logger.error(`Error deleting news article ${id}: ${error.message}`);
+            throw error;
+        }
     }
 
 
