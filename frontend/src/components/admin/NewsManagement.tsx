@@ -8,6 +8,7 @@ import { Search, Plus, Filter, Edit, Trash2, Calendar, User, Tag, Image as Image
 
 interface NewsManagementProps {
     fixedCategory?: string;
+    excludeCategories?: string[];
     title?: string;
     categoryTags?: string[];
 }
@@ -28,6 +29,7 @@ function getPreviewUrl(article: any): string {
 
 export default function NewsManagement({
     fixedCategory,
+    excludeCategories,
     title = "News Management",
     categoryTags = []
 }: NewsManagementProps) {
@@ -73,7 +75,7 @@ export default function NewsManagement({
         setLoading(true);
         try {
             const [newsData, catData] = await Promise.all([
-                fetchNews(fixedCategory, undefined, 'ALL'),
+                fetchNews(fixedCategory, undefined, 'ALL', undefined, undefined, excludeCategories),
                 fetchCategories()
             ]);
             setNews(newsData.data);
