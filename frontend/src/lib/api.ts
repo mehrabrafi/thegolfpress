@@ -10,38 +10,44 @@ export const UPLOAD_URL = `${BASE_URL}/upload`;
 // ── Public Data Endpoints ───────────────────────────────────────
 
 export async function fetchLeaderboard() {
-    const res = await fetch(`${API_BASE_URL}/leaderboard`, { next: { revalidate: 30 } });
+    const isClient = typeof window !== 'undefined';
+    const res = await fetch(`${API_BASE_URL}/leaderboard`, isClient ? { cache: 'no-store' } : { next: { revalidate: 30 } });
     if (!res.ok) throw new Error('Failed to fetch leaderboard');
     return res.json();
 }
 
 export async function fetchScoreboard() {
-    const res = await fetch(`${API_BASE_URL}/scoreboard`, { next: { revalidate: 60 } });
+    const isClient = typeof window !== 'undefined';
+    const res = await fetch(`${API_BASE_URL}/scoreboard`, isClient ? { cache: 'no-store' } : { next: { revalidate: 60 } });
     if (!res.ok) throw new Error('Failed to fetch scoreboard');
     return res.json();
 }
 
 export async function fetchUpcoming() {
-    const res = await fetch(`${API_BASE_URL}/upcoming`, { next: { revalidate: 300 } });
+    const isClient = typeof window !== 'undefined';
+    const res = await fetch(`${API_BASE_URL}/upcoming`, isClient ? { cache: 'no-store' } : { next: { revalidate: 300 } });
     if (!res.ok) throw new Error('Failed to fetch upcoming events');
     return res.json();
 }
 
 export async function fetchSchedule() {
-    const res = await fetch(`${API_BASE_URL}/schedule`, { next: { revalidate: 3600 } });
+    const isClient = typeof window !== 'undefined';
+    const res = await fetch(`${API_BASE_URL}/schedule`, isClient ? { cache: 'no-store' } : { next: { revalidate: 3600 } });
     if (!res.ok) throw new Error('Failed to fetch schedule');
     return res.json();
 }
 
 export async function fetchRankings() {
-    const res = await fetch(`${API_BASE_URL}/rankings`, { next: { revalidate: 3600 } });
+    const isClient = typeof window !== 'undefined';
+    const res = await fetch(`${API_BASE_URL}/rankings`, isClient ? { cache: 'no-store' } : { next: { revalidate: 3600 } });
     if (!res.ok) throw new Error('Failed to fetch rankings');
     return res.json();
 }
 
 export async function fetchPlayerProfile(id: string) {
     const url = `${API_BASE_URL}/players/${id}`;
-    const res = await fetch(url, { next: { revalidate: 3600 } });
+    const isClient = typeof window !== 'undefined';
+    const res = await fetch(url, isClient ? { cache: 'no-store' } : { next: { revalidate: 3600 } });
     if (!res.ok) throw new Error('Failed to fetch player profile');
     return res.json();
 }
@@ -81,7 +87,8 @@ export async function fetchNews(category?: string, tag?: string, status?: string
 export async function fetchNewsById(id: string) {
     const url = `${API_BASE_URL}/news/${id}`;
     try {
-        const res = await fetch(url, { next: { revalidate: 15 } }); // Reduced from 60 to 15 seconds
+        const isClient = typeof window !== 'undefined';
+        const res = await fetch(url, isClient ? { cache: 'no-store' } : { next: { revalidate: 15 } }); // Reduced from 60 to 15 seconds
         if (!res.ok) {
             throw new Error('Failed to fetch news detail');
         }
@@ -92,13 +99,15 @@ export async function fetchNewsById(id: string) {
 }
 
 export async function fetchTrendingNews() {
-    const res = await fetch(`${API_BASE_URL}/news/trending`, { next: { revalidate: 30 } }); // Reduced from 60 to 30 seconds
+    const isClient = typeof window !== 'undefined';
+    const res = await fetch(`${API_BASE_URL}/news/trending`, isClient ? { cache: 'no-store' } : { next: { revalidate: 30 } }); // Reduced from 60 to 30 seconds
     if (!res.ok) throw new Error('Failed to fetch trending news');
     return res.json();
 }
 
 export async function fetchSearch(query: string) {
-    const res = await fetch(`${API_BASE_URL}/search?q=${encodeURIComponent(query)}`);
+    const isClient = typeof window !== 'undefined';
+    const res = await fetch(`${API_BASE_URL}/search?q=${encodeURIComponent(query)}`, isClient ? { cache: 'no-store' } : {});
     if (!res.ok) throw new Error('Failed to search');
     return res.json();
 }
@@ -303,6 +312,7 @@ export async function uploadImage(file: File, _token?: string) {
 export async function fetchAdminStats(_token?: string) {
     const res = await fetch(`${API_BASE_URL}/admin/stats`, {
         credentials: 'include',
+        cache: 'no-store',
     });
     if (!res.ok) throw new Error('Failed to fetch stats');
     return res.json();
@@ -311,6 +321,7 @@ export async function fetchAdminStats(_token?: string) {
 export async function fetchSystemHealth(_token?: string) {
     const res = await fetch(`${API_BASE_URL}/admin/health`, {
         credentials: 'include',
+        cache: 'no-store',
     });
     if (!res.ok) throw new Error('Failed to fetch system health');
     return res.json();
@@ -319,6 +330,7 @@ export async function fetchSystemHealth(_token?: string) {
 export async function fetchContentAnalytics(_token?: string) {
     const res = await fetch(`${API_BASE_URL}/admin/analytics`, {
         credentials: 'include',
+        cache: 'no-store',
     });
     if (!res.ok) throw new Error('Failed to fetch analytics');
     return res.json();
@@ -327,6 +339,7 @@ export async function fetchContentAnalytics(_token?: string) {
 export async function fetchUsers(_token?: string) {
     const res = await fetch(`${API_BASE_URL}/admin/users`, {
         credentials: 'include',
+        cache: 'no-store',
     });
     if (!res.ok) throw new Error('Failed to fetch users');
     return res.json();
@@ -344,7 +357,8 @@ export async function updateUserRole(id: string, role: string, _token?: string) 
 }
 
 export async function fetchSettings() {
-    const res = await fetch(`${API_BASE_URL}/settings`);
+    const isClient = typeof window !== 'undefined';
+    const res = await fetch(`${API_BASE_URL}/settings`, isClient ? { cache: 'no-store' } : { next: { revalidate: 3600 } });
     if (!res.ok) throw new Error('Failed to fetch settings');
     return res.json();
 }
@@ -372,7 +386,8 @@ export async function formatDatabase() {
 // ── Category Endpoints ──────────────────────────────────────────
 
 export async function fetchCategories() {
-    const res = await fetch(`${API_BASE_URL}/categories`);
+    const isClient = typeof window !== 'undefined';
+    const res = await fetch(`${API_BASE_URL}/categories`, isClient ? { cache: 'no-store' } : { next: { revalidate: 3600 } });
     if (!res.ok) throw new Error('Failed to fetch categories');
     return res.json();
 }
@@ -417,7 +432,8 @@ export async function fetchSubTags(categoryId?: string) {
     const queryString = queryParams.toString();
     const finalUrl = `${API_BASE_URL}/sub-tags${queryString ? `?${queryString}` : ''}`;
 
-    const res = await fetch(finalUrl);
+    const isClient = typeof window !== 'undefined';
+    const res = await fetch(finalUrl, isClient ? { cache: 'no-store' } : { next: { revalidate: 3600 } });
     if (!res.ok) throw new Error('Failed to fetch sub-tags');
     return res.json();
 }
@@ -461,7 +477,8 @@ export async function deleteSubTag(id: string, _token?: string) {
 // ── Player Follow Endpoints ──────────────────────────────────────
 
 export async function fetchAllPlayers() {
-    const res = await fetch(`${PLAYER_BASE_URL}`);
+    const isClient = typeof window !== 'undefined';
+    const res = await fetch(`${PLAYER_BASE_URL}`, isClient ? { cache: 'no-store' } : { next: { revalidate: 3600 } });
     if (!res.ok) throw new Error('Failed to fetch players');
     return res.json();
 }
