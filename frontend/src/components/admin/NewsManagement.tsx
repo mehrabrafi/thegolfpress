@@ -224,8 +224,8 @@ export default function NewsManagement({
         try {
             const payload = {
                 ...formData,
-                latitude: formData.latitude ? parseFloat(formData.latitude) : undefined,
-                longitude: formData.longitude ? parseFloat(formData.longitude) : undefined,
+                latitude: (formData.latitude !== '' && formData.latitude !== null && formData.latitude !== undefined) ? parseFloat(formData.latitude) : undefined,
+                longitude: (formData.longitude !== '' && formData.longitude !== null && formData.longitude !== undefined) ? parseFloat(formData.longitude) : undefined,
                 categoryId: formData.categoryId || undefined,
                 subTagId: formData.subTagId || undefined
             };
@@ -239,9 +239,9 @@ export default function NewsManagement({
             setIsEditing(false);
             resetForm();
             loadData();
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error saving news', error);
-            alert('Failed to save news. Please check console for details.');
+            alert(error.message || 'Failed to save news. Please check console for details.');
         }
     };
 

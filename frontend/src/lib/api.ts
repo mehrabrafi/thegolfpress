@@ -224,7 +224,18 @@ export async function createNews(data: any, _token?: string) {
         body: JSON.stringify(data),
         credentials: 'include',
     });
-    if (!res.ok) throw new Error('Failed to create news');
+    if (!res.ok) {
+        let errorMsg = 'Failed to create news';
+        try {
+            const errorBody = await res.json();
+            if (errorBody.message) {
+                errorMsg = Array.isArray(errorBody.message)
+                    ? `Validation Error: ${errorBody.message.join(', ')}`
+                    : errorBody.message;
+            }
+        } catch (e) { }
+        throw new Error(errorMsg);
+    }
     return res.json();
 }
 
@@ -235,7 +246,18 @@ export async function updateNews(id: string, data: any, _token?: string) {
         body: JSON.stringify(data),
         credentials: 'include',
     });
-    if (!res.ok) throw new Error('Failed to update news');
+    if (!res.ok) {
+        let errorMsg = 'Failed to update news';
+        try {
+            const errorBody = await res.json();
+            if (errorBody.message) {
+                errorMsg = Array.isArray(errorBody.message)
+                    ? `Validation Error: ${errorBody.message.join(', ')}`
+                    : errorBody.message;
+            }
+        } catch (e) { }
+        throw new Error(errorMsg);
+    }
     return res.json();
 }
 
