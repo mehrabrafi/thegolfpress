@@ -10,7 +10,7 @@ export const UPLOAD_URL = `${BASE_URL}/upload`;
 // ── Public Data Endpoints ───────────────────────────────────────
 
 export async function fetchLeaderboard() {
-    const res = await fetch(`${API_BASE_URL}/leaderboard`, { next: { revalidate: 60 } });
+    const res = await fetch(`${API_BASE_URL}/leaderboard`, { next: { revalidate: 30 } });
     if (!res.ok) throw new Error('Failed to fetch leaderboard');
     return res.json();
 }
@@ -58,7 +58,12 @@ export async function fetchNews(category?: string, tag?: string, status?: string
     const queryString = queryParams.toString();
     const finalUrl = `${API_BASE_URL}/news${queryString ? `?${queryString}` : ''}`;
 
-    const res = await fetch(finalUrl, { next: { revalidate: 60 } });
+    const isClient = typeof window !== 'undefined';
+    const fetchOptions: RequestInit = isClient
+        ? { cache: 'no-store' }
+        : { next: { revalidate: 15 } }; // Reduced from 60 to 15 seconds
+
+    const res = await fetch(finalUrl, fetchOptions);
     if (!res.ok) throw new Error('Failed to fetch news');
 
     const json = await res.json();
@@ -76,7 +81,7 @@ export async function fetchNews(category?: string, tag?: string, status?: string
 export async function fetchNewsById(id: string) {
     const url = `${API_BASE_URL}/news/${id}`;
     try {
-        const res = await fetch(url, { next: { revalidate: 60 } });
+        const res = await fetch(url, { next: { revalidate: 15 } }); // Reduced from 60 to 15 seconds
         if (!res.ok) {
             throw new Error('Failed to fetch news detail');
         }
@@ -87,7 +92,7 @@ export async function fetchNewsById(id: string) {
 }
 
 export async function fetchTrendingNews() {
-    const res = await fetch(`${API_BASE_URL}/news/trending`, { next: { revalidate: 60 } });
+    const res = await fetch(`${API_BASE_URL}/news/trending`, { next: { revalidate: 30 } }); // Reduced from 60 to 30 seconds
     if (!res.ok) throw new Error('Failed to fetch trending news');
     return res.json();
 }
